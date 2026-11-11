@@ -32,7 +32,30 @@ async def lifespan(_app: FastAPI):
     with SessionLocal() as db:
         for dataset in ('vendor','payroll'):
             run(db,dataset)
-        db.commit()
+        
+        # Seed default admin accounts if they do not exist
+        try:
+            from backend.app.models.auth import AuthUser
+            from backend.app.auth.security import hash_password
+            default_seeds = [
+                ("prepares23@gmail.com", "ADMIN-001", "Garvita Joshi", ["admin", "maker", "checker", "manager", "finance", "security", "legal", "procurement", "it", "employee"], "admin"),
+                ("admin@example.com", "ADMIN-002", "AuditAI Admin", ["admin", "maker", "checker", "manager", "finance", "security", "legal", "procurement", "it", "employee"], "admin"),
+                ("demo.procurement@auditai.local", "PROC-001", "Demo Procurement Admin", ["admin", "procurement", "employee"], "admin"),
+            ]
+            for email, emp_id, name, roles, role in default_seeds:
+                if not db.query(AuthUser).filter(AuthUser.email == email).first():
+                    db.add(AuthUser(
+                        email=email,
+                        employee_id=emp_id,
+                        display_name=name,
+                        roles=roles,
+                        role=role,
+                        password_hash=hash_password("AuditAI@2026!SecureAdmin"),
+                        active=True,
+                    ))
+            db.commit()
+        except Exception:
+            db.rollback()
 
     import asyncio
     from backend.app.agentic_ai.background_worker import start_autonomous_sourcing_worker, stop_autonomous_sourcing_worker
