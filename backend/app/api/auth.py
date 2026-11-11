@@ -38,13 +38,29 @@ def _send_otp_smtp(email: str, code: str) -> None:
     import smtplib
     import ssl
     message = EmailMessage()
-    message["Subject"] = "Your AuditAI verification code"
-    message["From"] = SMTP_FROM_EMAIL
+    message["Subject"] = f"{code} is your AuditAI verification code"
+    message["From"] = f"AuditAI Security <{SMTP_FROM_EMAIL}>"
     message["To"] = email
-    message.set_content(f"Your AuditAI verification code is {code}. It expires in {OTP_EXPIRE_MINUTES} minutes.")
-    implicit_ssl = SMTP_PORT == 465
+    
+    text_content = f"Your AuditAI verification code is: {code}\n\nThis code will expire in {OTP_EXPIRE_MINUTES} minutes. If you did not request this, please ignore this email."
+    html_content = f"""
+    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 28px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+      <div style="display: flex; align-items: center; margin-bottom: 20px;">
+        <h2 style="color: #0f172a; margin: 0; font-size: 20px;">AuditAI Verification</h2>
+      </div>
+      <p style="color: #334155; font-size: 15px; line-height: 1.5;">Here is your single-use verification code to sign in to the AuditAI platform:</p>
+      <div style="background-color: #f8fafc; border: 1px dashed #cbd5e1; padding: 18px; border-radius: 8px; text-align: center; margin: 24px 0;">
+        <span style="font-family: monospace; font-size: 34px; font-weight: 700; letter-spacing: 8px; color: #0284c7;">{code}</span>
+      </div>
+      <p style="color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 0;">This code is valid for <strong>{OTP_EXPIRE_MINUTES} minutes</strong>. If you did not attempt to sign in, please ignore this email.</p>
+    </div>
+    """
+    message.set_content(text_content)
+    message.add_alternative(html_content, subtype="html")
+
+    implicit_ssl = int(SMTP_PORT or 465) == 465
     client = smtplib.SMTP_SSL if implicit_ssl else smtplib.SMTP
-    with client(SMTP_HOST, SMTP_PORT, timeout=10, **({"context": ssl.create_default_context()} if implicit_ssl else {})) as server:
+    with client(SMTP_HOST, int(SMTP_PORT or 465), timeout=10, **({"context": ssl.create_default_context()} if implicit_ssl else {})) as server:
         if not implicit_ssl:
             server.starttls(context=ssl.create_default_context())
         if SMTP_USERNAME:
@@ -58,22 +74,14 @@ def deliver_otp(email: str, code: str) -> None:
     if not SMTP_HOST or not SMTP_FROM_EMAIL:
         if AUTH_DEBUG_OTP:
             return
-        raise HTTPException(status_code=503, detail="OTP delivery is not configured.")
-    if AUTH_DEBUG_OTP:
-        import threading
-        threading.Thread(target=lambda: _safe_smtp(email, code), daemon=True).start()
-        return
+        raise HTTPException(status_code=503, detail="Email service is not configured. Contact your administrator.")
     try:
         _send_otp_smtp(email, code)
     except Exception as exc:
-        raise HTTPException(status_code=503, detail="Unable to deliver the one-time code.") from exc
+        if AUTH_DEBUG_OTP:
+            return
+        raise HTTPException(status_code=503, detail=f"Unable to send verification code email: {exc}") from exc
 
-
-def _safe_smtp(email: str, code: str) -> None:
-    try:
-        _send_otp_smtp(email, code)
-    except Exception:
-        pass
 
 
 def issue_tokens(response: Response, user: User, db: Session) -> TokenResponse:
