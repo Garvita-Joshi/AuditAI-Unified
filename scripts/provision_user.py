@@ -15,7 +15,7 @@ from backend.app.db import Base, SessionLocal, engine
 from backend.app.models.auth import AuthUser  # noqa: F401 - registers the table
 from backend.app.models import expense  # noqa: F401 - registers related tables
 
-ALLOWED_ROLES = {"employee", "maker", "checker", "admin"}
+ALLOWED_ROLES = {"employee", "maker", "checker", "admin", "procurement", "finance", "legal", "security", "manager", "it"}
 
 
 def provision(email: str, employee_id: str, name: str, roles: list[str], password: str):
@@ -41,6 +41,7 @@ def provision(email: str, employee_id: str, name: str, roles: list[str], passwor
                             display_name=name.strip() or email.split("@")[0],
                             roles=roles, password_hash=hash_password(password))
             db.add(user)
+        user.role = next((r for r in ["admin","procurement","finance","legal","security","manager","it"] if r in roles), "employee")
         db.commit()
     return email
 

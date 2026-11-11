@@ -1,3 +1,15 @@
+# AuditAI Unified
+
+Expense auditing and procurement integrated using AuditAI’s orange-and-black interface.
+
+See [integration status and setup](docs/UNIFIED_INTEGRATION.md). Start with a new database; existing company data and credentials are not migrated.
+
+The procurement calling extension now has a [Phase 2 backend foundation](docs/VOICE_AGENT_PHASE_2.md): owner-scoped call drafts, quotation fields, transcripts and audit history. Live calls remain disabled.
+
+Validation after AuditAI upstream refresh `8c62504`: **149 backend tests passed, 3 skipped; 21 frontend tests passed**. Frontend production build passed.
+
+---
+
 # AuditAI
 
 > **AI-powered financial fraud detection system for enterprise audit teams.**

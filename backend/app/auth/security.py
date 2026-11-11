@@ -71,18 +71,12 @@ def get_current_user(
     credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
     db: Session = Depends(get_db),
 ) -> AuthUser:
-    if credentials is None or credentials.scheme.lower() != "bearer":
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Sign in to continue.", headers={"WWW-Authenticate": "Bearer"})
-    session = db.query(AuthSession).filter(AuthSession.token_hash == token_digest(credentials.credentials)).first()
-    if not session or session.revoked_at or session.expires_at <= datetime.utcnow():
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Session expired. Sign in again.")
-    user = db.query(AuthUser).filter(AuthUser.id == session.user_id).first()
-    if not user or not user.active:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Account is inactive.")
+    from backend.app.core.security import require_authenticated_user
+    user = require_authenticated_user(credentials, db)
     try:
         normalize_company_email(user.email)
     except ValueError:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, "Account email domain is not approved.")
+        raise HTTPException(403, "Account email domain is not approved.")
     return user
 
 

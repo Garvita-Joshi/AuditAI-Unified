@@ -237,6 +237,7 @@ async def upload_claims(
             ClaimContributor(claim_id=claim.claim_id, user_id=user.id, source="claim_upload")
             for claim in claims_to_add
         ])
+        db.flush()
         run_checks(db,True)
         db.commit()
 

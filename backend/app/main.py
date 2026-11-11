@@ -33,7 +33,14 @@ async def lifespan(_app: FastAPI):
         for dataset in ('vendor','payroll'):
             run(db,dataset)
         db.commit()
-    yield
+
+    import asyncio
+    from backend.app.agentic_ai.background_worker import start_autonomous_sourcing_worker, stop_autonomous_sourcing_worker
+    worker_task = asyncio.create_task(start_autonomous_sourcing_worker(poll_interval_seconds=15))
+    try:
+        yield
+    finally:
+        await stop_autonomous_sourcing_worker(worker_task)
 
 app = FastAPI(
     title="AuditAI API",
@@ -48,7 +55,7 @@ app.add_middleware(
     allow_origins=[origin.strip() for origin in os.getenv(
         "FRONTEND_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
     ).split(",") if origin.strip()],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -69,7 +76,8 @@ app.include_router(reports_router, dependencies=[Depends(require_roles("maker", 
 app.include_router(cases_router, dependencies=[Depends(get_current_user)])
 app.include_router(analytics_router, dependencies=[Depends(require_roles("maker", "checker", "admin"))])
 
-@app.get("/")
+@app.get("/health")
+@app.get("/api/v1/health")
 def read_root():
     return {
         "app": "AuditAI",
@@ -77,6 +85,11 @@ def read_root():
         "version": "1.0.0",
         "status": "healthy"
     }
+
+@app.get("/api/v1/sourcing/worker/status")
+def get_sourcing_worker_status():
+    from backend.app.agentic_ai.background_worker import get_worker_status
+    return get_worker_status()
 
 if __name__ == "__main__":
     import uvicorn
@@ -90,3 +103,56 @@ app.include_router(master_checks_router)
 
 from backend.app.api.detection import router as detection_router
 app.include_router(detection_router)
+
+from backend.app.api.procurement import router as procurement_router
+from backend.app.api.procurement_extraction import router as extraction_router
+from backend.app.api.procurement_payments import router as payments_router
+from backend.app.api.sourcing import router as sourcing_router
+from backend.app.api.company_password import router as company_password_router
+for router in (procurement_router, extraction_router, payments_router, sourcing_router):
+    app.include_router(router, dependencies=[Depends(get_current_user)])
+app.include_router(company_password_router)
+
+# Voice foundation registers additive tables and authenticated data APIs.
+from backend.app.api.voice_calls import router as voice_calls_router
+app.include_router(voice_calls_router)
+
+# Dograh Voice AI Integration: Outbound triggers (dry-run safe), Webhook receiver, status lookups
+from backend.app.api.dograh_routes import router as dograh_router
+app.include_router(dograh_router)
+
+# Static frontend serving (for unified production cloud deployment)
+from pathlib import Path
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from fastapi import HTTPException
+
+frontend_dist = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if frontend_dist.is_dir():
+    if (frontend_dist / "assets").is_dir():
+        app.mount("/assets", StaticFiles(directory=str(frontend_dist / "assets")), name="assets")
+
+    @app.get("/")
+    async def serve_spa_root():
+        return FileResponse(frontend_dist / "index.html")
+
+    @app.get("/{full_path:path}")
+    async def serve_spa_route(full_path: str):
+        # Do not intercept API routes, OpenAPI docs, or health endpoints
+        if full_path.startswith("api/") or full_path.startswith("voice/") or full_path in ("docs", "openapi.json", "redoc", "health"):
+            raise HTTPException(status_code=404, detail="Not Found")
+
+        file_candidate = frontend_dist / full_path
+        if file_candidate.is_file():
+            return FileResponse(file_candidate)
+        return FileResponse(frontend_dist / "index.html")
+else:
+    @app.get("/")
+    def read_root_fallback():
+        return {
+            "app": "AuditAI",
+            "description": "Financial Transaction Anomaly Detection & Ingestion Engine",
+            "version": "1.0.0",
+            "status": "healthy"
+        }
+

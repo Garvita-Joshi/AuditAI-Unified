@@ -16,12 +16,16 @@ elif DATABASE_URL.startswith("DATABASE_URL"):
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Create engine. Connect args are not needed for postgres, but we can set pool size
+# Create engine with compatible pool settings for both PostgreSQL and SQLite
 connect_args = {}
+engine_kwargs = {}
 if DATABASE_URL.startswith("sqlite"):
     connect_args["check_same_thread"] = False
+else:
+    engine_kwargs["pool_size"] = 10
+    engine_kwargs["max_overflow"] = 20
 
-engine = create_engine(DATABASE_URL, pool_size=10, max_overflow=20, connect_args=connect_args)
+engine = create_engine(DATABASE_URL, connect_args=connect_args, **engine_kwargs)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

@@ -9,6 +9,11 @@ import ClaimsTable from './pages/ClaimsTable';
 import ClaimDetail from './pages/ClaimDetail';
 import AuditScreens from './pages/AuditScreens';
 import Login from './pages/Login';
+import Procurement from './pages/Procurement';
+import './pages/UnifiedTheme.css';
+function ProcurementWorkspace(){const {user}=useAuth();return <Procurement user={user}/>;}
+function OtpLogin(){const {user,authenticate}=useAuth();return user?<Navigate to="/" replace/>:<Login onAuthenticated={authenticate}/>;}
+
 import ReviewQueue from './pages/ReviewQueue';
 import CaseDetail from './pages/CaseDetail';
 import RecordDetail from './pages/RecordDetail';
@@ -72,9 +77,10 @@ export default function App() {
       <AuthProvider>
         <AuditProfileProvider>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<OtpLogin />} />
             <Route element={<ProtectedLayout />}>
               <Route path="/" element={<ReviewerOnly><Dashboard /></ReviewerOnly>} />
+              <Route path="/procurement/*" element={<ProcurementWorkspace/>} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/claims" element={<ClaimsTable />} />
               <Route path="/claims/:id" element={<ClaimDetail />} />

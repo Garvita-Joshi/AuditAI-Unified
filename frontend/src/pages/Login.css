@@ -1,0 +1,14 @@
+.login-page { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.login-card { width: min(100%, 420px); text-align: center; }
+.login-icon { color: var(--accent-primary); margin-bottom: 12px; }
+.login-card h1 { font-size: 1.65rem; margin-bottom: 8px; }
+.login-card > p { color: var(--text-secondary); margin-bottom: 24px; }
+.login-card form { display: grid; gap: 12px; text-align: left; }
+.login-card label { font-size: .9rem; color: var(--text-secondary); }
+.login-submit { width: 100%; margin-top: 8px; }
+.otp-input { text-align: center; letter-spacing: .45em; font-size: 1.35rem; }
+.login-message, .login-error { margin-top: 18px !important; font-size: .9rem; }
+.login-message { color: var(--status-warning) !important; }
+.login-error { color: var(--status-danger) !important; }
+.login-link { color: var(--text-secondary); font-size: .85rem; margin-top: 4px; }
+.login-link:hover { color: var(--text-primary); }

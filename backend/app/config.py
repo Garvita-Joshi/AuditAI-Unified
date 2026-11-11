@@ -7,9 +7,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env file for local development
-load_dotenv()
-
 # === Paths ===
 PROJECT_ROOT = Path(__file__).resolve().parents[2]  # AuditAI/
 BACKEND_ROOT = PROJECT_ROOT / "backend"
@@ -18,6 +15,19 @@ RECEIPTS_DIR = DATA_DIR / "receipts"
 SROIE_DIR = DATA_DIR / "sroie"
 TRAINED_MODELS_DIR = BACKEND_ROOT / "trained_models"
 UPLOAD_DIR = PROJECT_ROOT / "uploads"
+ENV_FILE = PROJECT_ROOT / ".env"
+
+
+def reload_env() -> None:
+    """Reload environment variables from project-root .env with override=True."""
+    if ENV_FILE.is_file():
+        load_dotenv(dotenv_path=ENV_FILE, override=True)
+    else:
+        load_dotenv(override=True)
+
+
+# Load project-root .env file deterministically with override=True
+reload_env()
 
 # Ensure critical directories exist
 for d in [DATA_DIR, RECEIPTS_DIR, TRAINED_MODELS_DIR, UPLOAD_DIR]:
@@ -28,7 +38,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://localhost:5433/postgres")
 
 # === Gemini LLM ===
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
 
 # === OCR ===
 # Bundled CPU OCR with optional PaddleOCR/Tesseract fallbacks.
@@ -85,6 +95,70 @@ HOLIDAYS = [
     "2026-10-02", "2026-10-10", "2026-11-14", "2026-12-25",
 ]
 
+# === Dograh Voice AI Configuration ===
+DOGRAH_API_KEY = os.getenv("DOGRAH_API_KEY", "")
+DOGRAH_API_URL = os.getenv("DOGRAH_API_URL", "https://api.dograh.com/api/v1/public/agent")
+DOGRAH_TEST_API_URL = os.getenv("DOGRAH_TEST_API_URL", "https://api.dograh.com/api/v1/public/agent/test")
+DOGRAH_TRIGGER_PATH = os.getenv("DOGRAH_TRIGGER_PATH", "fe74624e-3928-482b-821e-9be6416df7c8")
+DOGRAH_WEBHOOK_SECRET = os.getenv("DOGRAH_WEBHOOK_SECRET", "")
+# CRITICAL: DOGRAH_DRY_RUN MUST remain True by default during development.
+# When True, zero outbound telephony requests are sent, and no phone is dialed.
+DOGRAH_DRY_RUN = os.getenv("DOGRAH_DRY_RUN", "true").lower() in ("true", "1", "yes")
+DOGRAH_TIMEOUT_SECONDS = int(os.getenv("DOGRAH_TIMEOUT_SECONDS", "30"))
+
+# === Twilio Telephony Configuration ===
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER", "")
+
+# === Exotel OpenVBX Indian Telephony Configuration ===
+EXOTEL_ACCOUNT_SID = os.getenv("EXOTEL_ACCOUNT_SID", "")
+EXOTEL_API_KEY = os.getenv("EXOTEL_API_KEY", "")
+EXOTEL_API_TOKEN = os.getenv("EXOTEL_API_TOKEN", "")
+EXOTEL_BASE_URL = os.getenv("EXOTEL_BASE_URL", "https://api.in.exotel.com").rstrip("/")
+EXOTEL_CALLER_ID = os.getenv("EXOTEL_CALLER_ID", "")
+
+# === Voice Calling Safety Controls ===
+# Comma-separated E.164 authorized phone numbers for testing (e.g. +919876543210)
+VOICE_AUTHORIZED_ALLOWLIST = [
+    num.strip() for num in os.getenv("VOICE_AUTHORIZED_ALLOWLIST", "").split(",") if num.strip()
+]
+VOICE_MAX_DAILY_CALLS = int(os.getenv("VOICE_MAX_DAILY_CALLS", "1"))
+VOICE_MAX_DURATION_SECONDS = int(os.getenv("VOICE_MAX_DURATION_SECONDS", "120"))
+VOICE_EMERGENCY_DISABLE = os.getenv("VOICE_EMERGENCY_DISABLE", "false").lower() in ("true", "1", "yes")
+
 # === API ===
 API_V1_PREFIX = "/api/v1"
 MAX_UPLOAD_SIZE_MB = int(os.getenv("MAX_UPLOAD_SIZE_MB", "50"))
+
+# Procurement and OTP settings
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-this-development-secret-before-production")
+JWT_ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "15"))
+REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "30"))
+OTP_EXPIRE_MINUTES = int(os.getenv("OTP_EXPIRE_MINUTES", "10"))
+OTP_MAX_ATTEMPTS = int(os.getenv("OTP_MAX_ATTEMPTS", "5"))
+AUTH_COOKIE_SECURE = os.getenv("AUTH_COOKIE_SECURE", "false").lower() == "true"
+AUTH_DEBUG_OTP = os.getenv("AUTH_DEBUG_OTP", "false").lower() == "true"
+SMTP_HOST = os.getenv("SMTP_HOST", "")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USERNAME = os.getenv("SMTP_USERNAME", "")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_FROM_EMAIL = os.getenv("SMTP_FROM_EMAIL", SMTP_USERNAME)
+SOURCING_MAIL_FROM = os.getenv("SOURCING_MAIL_FROM", "prepares23@gmail.com")
+CORS_ORIGINS = [origin.strip() for origin in os.getenv(
+    "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+).split(",") if origin.strip()]
+CONTROL_DUPLICATE_WINDOW_DAYS = int(os.getenv("CONTROL_DUPLICATE_WINDOW_DAYS", "90"))
+CONTROL_SPLIT_WINDOW_DAYS = int(os.getenv("CONTROL_SPLIT_WINDOW_DAYS", "3"))
+CONTROL_APPROVAL_THRESHOLD = float(os.getenv("CONTROL_APPROVAL_THRESHOLD", "50000"))
+CONTROL_GHOST_VENDOR_THRESHOLD = float(os.getenv("CONTROL_GHOST_VENDOR_THRESHOLD", "25000"))
+CONTROL_KEYWORDS = [item.strip().lower() for item in os.getenv(
+    "CONTROL_KEYWORDS", "adjustment,misc,personal,reimburse,cash,urgent,one-time"
+).split(",") if item.strip()]
+RATIO_DEFINITIONS = {
+    "bad_debt_to_ar": {"name": "Bad-debt write-off to Accounts Receivable", "numerator_accounts": ["Bad Debt Write-off"], "denominator_accounts": ["Accounts Receivable"]},
+    "cash_receipts_to_revenue": {"name": "Cash receipts to Revenue", "numerator_accounts": ["Cash Receipts"], "denominator_accounts": ["Revenue"]},
+    "current_ratio_proxy": {"name": "Current assets to Current liabilities", "numerator_accounts": ["Current Assets"], "denominator_accounts": ["Current Liabilities"]},
+    "cash_to_expense": {"name": "Cash payments to total spend", "numerator_accounts": [], "denominator_accounts": []},
+}

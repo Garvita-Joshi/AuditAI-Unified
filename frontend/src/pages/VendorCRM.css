@@ -1,0 +1,383 @@
+.crm-dashboard{padding:30px;background:linear-gradient(120deg,#352a25,#352a25);border:1px solid #352a25;border-radius:22px;margin-bottom:28px;color:#ef9976}.crm-dashboard header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.crm-dashboard h2{font-size:27px;margin:7px 0}.crm-dashboard p{color:#99918c;margin:0}.crm-dashboard small,.crm-contact small,.crm-record-summary small{font-size:11px;letter-spacing:.07em;color:#99918c}.crm-live{font-size:12px;background:#292320;color:#ef9976;border:1px solid rgba(239,153,118,0.25);padding:8px 12px;border-radius:20px}.crm-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:22px}.crm-metrics article{background:#ffffffbd;border:1px solid white;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:9px;box-shadow:0 8px 22px #5180ab08}.crm-metrics strong{font-size:30px}.crm-metric-icon{font-size:23px}.crm-chart-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px}.crm-surface{background:#ffffffc9;border:1px solid #352a25;border-radius:16px;padding:20px;min-width:0}.crm-surface h3{font-size:14px;margin:0 0 18px}.crm-legend{display:grid;gap:7px;font-size:11px}.crm-legend span{display:flex;align-items:center;gap:7px}.crm-legend i{width:7px;height:7px;border-radius:50%}.crm-legend b{margin-left:auto}.crm-events>div{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid #352a25}.crm-events i{width:8px;height:8px;flex-shrink:0;background:#ef9976;border-radius:50%;margin-top:5px}.crm-events strong{display:block;font-size:12px;text-transform:capitalize}.crm-events small{display:block;font-size:10px;margin-top:6px;color:#99918c}.crm-events p{font-size:13px;line-height:1.7;color:#99918c}.cv-vendor-page{background:#352a25!important;padding:28px!important}.cv-vendor-page-header{border-bottom:1px solid #352a25;padding-bottom:20px;margin-bottom:24px}.crm-vendor-layout{display:grid;grid-template-columns:250px minmax(300px,1fr) 250px;gap:24px;align-items:start}.crm-worklist{background:#1a1715!important;border:1px solid #38302a!important;border-radius:18px;padding:16px 12px;min-height:65vh}.crm-worklist>small{color:#ef9976!important;display:block;padding:8px 10px 12px;font-size:11px!important;letter-spacing:.12em;font-weight:700;text-transform:uppercase;border-bottom:1px solid #2d2621;margin-bottom:8px}.crm-worklist button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid #2e2621;border-radius:12px;background:#24201d;color:#f5f5f4!important;padding:12px 12px;margin-top:8px;cursor:pointer;transition:all .15s ease}.crm-worklist button:hover{background:#2d2621;border-color:rgba(239,153,118,0.4)}.crm-worklist button.active{background:#ef9976!important;color:#14100c!important;border-color:#ef9976!important;box-shadow:0 4px 14px rgba(239,153,118,0.35)!important}.crm-worklist strong{font-size:13px!important;display:block;color:#f5f5f4!important;font-weight:600}.crm-worklist button.active strong{color:#14100c!important;font-weight:700}.crm-worklist button small{display:block;font-size:11px!important;margin-top:4px;color:#a8a29e!important;opacity:1!important}.crm-worklist button small.crm-status-reply{color:#4ade80!important;font-weight:600}.crm-worklist button small.crm-status-awaiting{color:#fbbf24!important;font-weight:500}.crm-worklist button small.crm-status-draft{color:#9ca3af!important}.crm-worklist button.active small{color:#2b170c!important;font-weight:600}.crm-worklist button.active small.crm-status-reply{color:#064e3b!important;font-weight:700}.crm-avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#352a25;color:#ef9976;flex-shrink:0;font-weight:700;border:1px solid rgba(239,153,118,0.35)}.crm-worklist button.active .crm-avatar{background:#14100c;color:#ef9976;border-color:#14100c}.crm-avatar.large{width:70px;height:70px;font-size:28px;background:#352a25;color:#ef9976}.crm-contact{min-width:0}.crm-contact-heading{display:flex;gap:18px;align-items:center;padding:12px 0 22px}.crm-contact h2{margin:7px 0;font-size:24px}.crm-contact-heading p{font-size:12px;color:#99918c}.crm-contact-actions{display:flex;gap:12px;margin:0 0 30px}.crm-contact-actions button,.crm-record-summary>button{border:1px solid #352a25;background:#202020;border-radius:24px;padding:12px 20px;color:#ef9976;cursor:pointer}.crm-contact>h3{font-size:14px;margin:24px 0 14px}.crm-contact .crm-surface{margin-bottom:16px}.crm-contact .crm-surface h3{margin-top:20px}.crm-contact .crm-surface p{font-size:13px;color:#99918c;line-height:1.7}.crm-reply{white-space:pre-wrap}.crm-record-summary article{background:#352a25;border-radius:18px;padding:24px;margin-bottom:20px;overflow-wrap:anywhere}.crm-record-summary article:nth-child(2){background:#202020}.crm-record-summary h3{font-size:17px;line-height:1.5}.crm-record-summary p,.crm-record-summary dl{font-size:12px;line-height:1.7}.crm-record-summary dt{color:#cfc7c2;margin-top:15px}.crm-record-summary dd{margin:5px 0}.cv-tag-winner{display:none!important}.cv-table-spacious .row-winner{background:inherit!important}@media(max-width:1150px){.crm-vendor-layout{grid-template-columns:190px 1fr}.crm-record-summary{grid-column:2}.crm-chart-grid{grid-template-columns:1fr 1fr}.crm-chart-grid>article:last-child{grid-column:1/-1}}@media(max-width:700px){.crm-metrics{grid-template-columns:1fr 1fr}.crm-chart-grid,.crm-vendor-layout{display:flex;flex-direction:column}.crm-worklist{min-height:0;width:100%;box-sizing:border-box;max-height:180px;overflow:auto}.crm-contact,.crm-record-summary{width:100%}.crm-dashboard{padding:18px}.crm-dashboard header{align-items:start;gap:10px}.crm-live{white-space:nowrap}}
+
+/* CRM supplier list */
+.cv-dispatch-feedback{white-space:pre-wrap;margin:12px 24px;padding:14px 18px;border:1px solid rgba(239,153,118,0.3);border-radius:10px;background:#292320;color:#f5d0bc;font-size:13px;line-height:1.6}.cv-dispatch-feedback.is-error{border-color:#bb6868;background:#3a2424;color:#ffcece}.cv-rfq-edit-label input,.cv-rfq-edit-label textarea{background:#202020;color:#f0e9e4;border-color:#635247}.cv-rfq-review-actions{flex-wrap:wrap}
+.cv-table-container{border:1px solid #352a25;border-radius:18px;overflow:hidden;background:#202020;margin:0 24px 20px}.cv-table-spacious thead th{background:#352a25!important;padding:20px 24px!important;letter-spacing:.08em;color:#99918c!important}.cv-table-spacious .cv-spacious-row td{padding:27px 24px!important;border-bottom:1px solid #352a25!important}.cv-table-spacious .cv-spacious-row:hover{background:#352a25!important}.cv-vendor-open-btn{font-size:14px!important;color:#ef9976!important;gap:14px!important}.cv-open-indicator{display:grid;place-items:center;background:#352a25!important;color:#ef9976!important;width:34px;height:34px;border-radius:10px}.cv-vendor-hint{color:#ef9976!important}.cv-table-spacious .cv-badge{border-radius:20px;padding:8px 12px!important}.chosen-vendors-panel{border-radius:22px!important;border-color:#352a25!important;background:#202020!important}.cv-header{padding:26px!important}.cv-title{color:#ef9976!important}.cv-subtitle{max-width:700px;line-height:1.8!important}
+
+/* AI Decision: No Negotiation Needed & Automatic Counteroffer Highlights (Warm Muted Palette - Zero Neon) */
+.badge-optimal {
+  background: #2c2420 !important;
+  color: #f5d0bc !important;
+  border: 1px solid rgba(239, 153, 118, 0.35) !important;
+  font-weight: 700 !important;
+}
+
+.cv-tag-optimal {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #2c2420;
+  color: #f5d0bc;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 153, 118, 0.35);
+}
+
+.vendor-name-highlighted {
+  color: #f5d0bc !important;
+}
+
+.cv-table-spacious .cv-spacious-row.row-optimal-highlight {
+  background: rgba(239, 153, 118, 0.05) !important;
+  border-left: 3px solid #ef9976 !important;
+}
+
+.cv-no-neg-alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  border-radius: 14px;
+  background: #241f1c;
+  border: 1px solid rgba(239, 153, 118, 0.3);
+  margin: 18px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+.cv-no-neg-alert-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.cv-no-neg-alert-bell {
+  font-size: 24px;
+  line-height: 1;
+}
+.cv-no-neg-alert-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f0e9e4;
+  margin-bottom: 4px;
+}
+.cv-vendor-highlight-tag {
+  color: #ef9976;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.cv-no-neg-alert-text {
+  font-size: 12px;
+  color: #cfc7c2;
+  margin-bottom: 6px;
+}
+.cv-no-neg-alert-question {
+  display: block;
+  font-size: 13px;
+  color: #f5d0bc;
+  font-weight: 600;
+}
+.cv-no-neg-alert-actions {
+  flex-shrink: 0;
+}
+
+/* Inside Vendor Negotiation View: Decision Box */
+.cv-no-neg-card {
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: #241f1c;
+  border: 1px solid rgba(239, 153, 118, 0.3);
+  margin-bottom: 20px;
+}
+.cv-no-neg-card-header {
+  margin-bottom: 14px;
+}
+.cv-no-neg-vendor-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #f0e9e4;
+  margin: 8px 0 4px;
+}
+.cv-no-neg-desc {
+  font-size: 12.5px;
+  color: #cfc7c2;
+  line-height: 1.6;
+}
+.cv-no-neg-prompt-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  border: 1px solid rgba(239, 153, 118, 0.22);
+}
+.cv-prompt-q {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #f5d0bc;
+  margin-bottom: 3px;
+}
+.cv-prompt-sub {
+  font-size: 11.5px;
+  color: #99918c;
+  margin: 0;
+}
+
+/* ── Sleek, Thin Modern UI for Vendor Communications & Sub-Bars ── */
+.cv-back-btn-thin {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 8px 16px !important;
+  background: rgba(36, 29, 25, 0.8) !important;
+  border: 1px solid rgba(239, 153, 118, 0.28) !important;
+  border-radius: 20px !important;
+  color: #ef9976 !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.18s ease !important;
+  white-space: nowrap !important;
+}
+.cv-back-btn-thin:hover {
+  background: rgba(239, 153, 118, 0.15) !important;
+  border-color: rgba(239, 153, 118, 0.6) !important;
+  color: #f5bba2 !important;
+  transform: translateX(-2px);
+}
+
+.cv-header-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cv-header-kicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: #a89f99;
+  text-transform: uppercase;
+}
+.cv-kicker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef9976;
+}
+.cv-kicker-sep {
+  color: #635247;
+}
+.cv-kicker-sub {
+  color: #ef9976;
+  font-weight: 700;
+}
+.cv-header-h2-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Thin Sleek Sub-Bars (Email & Channel Options - Stacked Vertically) */
+.cv-email-sub-bars {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 16px !important;
+  max-width: 880px !important;
+  width: 100% !important;
+  margin: 24px auto 36px !important;
+}
+
+.cv-email-sub-bar-btn {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  padding: 22px 28px !important;
+  min-height: unset !important;
+  background: #202020 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 14px !important;
+  color: #f0e9e4 !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+  text-align: left !important;
+}
+.cv-email-sub-bar-btn:hover {
+  background: linear-gradient(135deg, rgba(48, 37, 31, 0.95), rgba(30, 24, 21, 0.98)) !important;
+  border-color: rgba(239, 153, 118, 0.55) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 153, 118, 0.12), 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+.cv-email-sub-bar-btn.active {
+  border-color: #ef9976 !important;
+  background: linear-gradient(135deg, rgba(56, 42, 35, 0.95), rgba(38, 29, 25, 0.98)) !important;
+  box-shadow: 0 0 0 1px rgba(239, 153, 118, 0.4) !important;
+}
+
+.cv-btn-left-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+.cv-btn-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(239, 153, 118, 0.12);
+  border: 1px solid rgba(239, 153, 118, 0.25);
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.cv-email-sub-bar-btn:hover .cv-btn-icon-box {
+  transform: scale(1.08);
+  border-color: rgba(239, 153, 118, 0.5);
+  background: rgba(239, 153, 118, 0.2);
+}
+.cv-btn-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cv-btn-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #f0e9e4;
+  line-height: 1.3;
+}
+.cv-btn-desc {
+  font-size: 12px;
+  color: #a89f99;
+  line-height: 1.4;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cv-btn-right-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.cv-thin-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.cv-thin-status-tag.tag-optimal {
+  background: rgba(239, 153, 118, 0.14);
+  color: #f5d0bc;
+  border: 1px solid rgba(239, 153, 118, 0.35);
+}
+.cv-thin-status-tag.tag-countered {
+  background: rgba(239, 153, 118, 0.14);
+  color: #ef9976;
+  border: 1px solid rgba(239, 153, 118, 0.32);
+}
+.cv-thin-status-tag.tag-success {
+  background: rgba(239, 153, 118, 0.12);
+  color: #f5d0bc;
+  border: 1px solid rgba(239, 153, 118, 0.28);
+}
+.cv-thin-status-tag.tag-sent {
+  background: rgba(255, 255, 255, 0.06);
+  color: #d6d3d1;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.cv-thin-status-tag.tag-ready {
+  background: rgba(239, 153, 118, 0.12);
+  color: #ef9976;
+  border: 1px solid rgba(239, 153, 118, 0.28);
+}
+.cv-thin-status-tag.tag-draft,
+.cv-thin-status-tag.tag-pending {
+  background: rgba(255, 255, 255, 0.07);
+  color: #cfc7c2;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.cv-thin-arrow {
+  font-size: 15px;
+  color: #ef9976;
+  opacity: 0.6;
+  transition: all 0.2s ease;
+}
+.cv-email-sub-bar-btn:hover .cv-thin-arrow {
+  opacity: 1;
+  transform: translateX(4px);
+}
+
+/* Thin Top Segmented Tab Strip (when viewing /email/progress or /email/negotiations) */
+.cv-email-nav-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(20, 16, 14, 0.7);
+  border: 1px solid rgba(239, 153, 118, 0.2);
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+.cv-nav-tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px;
+  border-radius: 7px;
+  background: transparent;
+  border: 0;
+  color: #a89f99;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cv-nav-tab-item:hover {
+  color: #f0e9e4;
+  background: rgba(239, 153, 118, 0.1);
+}
+.cv-nav-tab-item.active {
+  background: #352a25;
+  color: #ef9976;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.cv-nav-tab-icon {
+  font-size: 13px;
+}
+.cv-nav-tab-pill {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(239, 153, 118, 0.2);
+  color: #ef9976;
+  font-weight: 700;
+}
+.cv-nav-tab-pill.optimal {
+  background: rgba(239, 153, 118, 0.18);
+  color: #f5d0bc;
+}
+.cv-nav-tab-pill.sent {
+  background: rgba(239, 153, 118, 0.18);
+  color: #ef9976;
+}

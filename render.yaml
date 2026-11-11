@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: auditai-unified
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DOGRAH_DRY_RUN
+        value: "true"
+      - key: VOICE_AUTHORIZED_ALLOWLIST
+        value: "+916350209890"
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

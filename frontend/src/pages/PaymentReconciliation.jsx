@@ -93,7 +93,7 @@ export default function PaymentReconciliation() {
                 <ul className="mb-3">
                   {item.flags.map(flag => (
                     <li key={flag} className="text-xs text-status-warning font-medium">
-                      ⚠️ {LABELS[flag] || flag}
+                      {LABELS[flag] || flag}
                     </li>
                   ))}
                 </ul>

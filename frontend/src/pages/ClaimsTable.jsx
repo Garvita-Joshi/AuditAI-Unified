@@ -101,7 +101,21 @@ export default function ClaimsTable() {
   };
 
   const columns = [
-    { key: 'claim_id', label: 'Claim ID', sortable: true, render: (val) => <span className="font-medium text-accent-primary">{val}</span> },
+    {
+      key: 'claim_id',
+      label: 'Claim ID',
+      sortable: true,
+      render: (val) => (
+        <div className="flex items-center gap-2">
+          <span className="font-medium text-accent-primary">{val}</span>
+          {String(val || '').startsWith('INV-') && (
+            <span className="badge badge-blue text-xs" style={{ fontSize: '0.65rem', padding: '1px 6px' }}>
+              Procurement ML
+            </span>
+          )}
+        </div>
+      ),
+    },
     { key: 'employee_name', label: 'Employee', sortable: true },
     {
       key: 'vendor_name',
@@ -115,14 +129,19 @@ export default function ClaimsTable() {
               className="badge badge-amber text-xs flex items-center gap-1 cursor-help"
               title={`Possible vendor name typo: ${Math.round(row.vendor_similarity_score * 100)}% similarity to '${row.closest_vendor_match}'`}
             >
-              ⚠ Typo
+              Typo
             </span>
           )}
         </div>
       )
     },
     { key: 'claimed_date', label: 'Date', sortable: true },
-    { key: 'claimed_amount', label: 'Amount', sortable: true, render: (val) => `₹${val.toLocaleString(undefined, { minimumFractionDigits: 2 })}` },
+    {
+      key: 'claimed_amount',
+      label: 'Amount',
+      sortable: true,
+      render: (val, row) => `${row?.currency === 'USD' ? '$' : '₹'}${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`,
+    },
     {
       key: 'status', label: 'Status', sortable: true, render: (val) => (
         <span className={`badge ${val === 'approved' ? 'badge-green' :

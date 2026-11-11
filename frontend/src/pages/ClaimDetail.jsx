@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Shield, Clock, FileText, ClipboardList, Info, CheckCircle2, AlertTriangle, ChevronRight, Layers, FileCheck } from 'lucide-react';
-import { claimsApi, casesApi, reportsApi, reviewQueueApi } from '../api/client';
+import { claimsApi, casesApi, reportsApi, reviewQueueApi, sourcingApi } from '../api/client';
 import ScoreGauge from '../components/ScoreGauge';
 import ShapChart from '../components/ShapChart';
 import ReviewEvidence from '../components/ReviewEvidence';
@@ -58,6 +58,8 @@ export default function ClaimDetail() {
   const [submittingAction, setSubmittingAction] = useState(false);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportError, setReportError] = useState('');
+  const [paypalBusy, setPaypalBusy] = useState(false);
+  const [paypalMsg, setPaypalMsg] = useState('');
 
   const fetchDetail = async () => {
     setLoading(true);
@@ -133,7 +135,7 @@ export default function ClaimDetail() {
     : null;
   const modelEnabled = prediction?.feature_values?._model_enabled !== false;
   const modelThreshold = Number(prediction?.feature_values?._model_threshold ?? 0.5);
-  
+
   // Risk tier classification
   const isHighRisk = anomalyScore !== null && anomalyScore >= 65;
   const isModerateRisk = anomalyScore !== null && anomalyScore >= 35 && anomalyScore < 65;
@@ -168,6 +170,68 @@ export default function ClaimDetail() {
   );
 
   const hasReceiptData = ocr_result && (ocr_result.extracted_vendor || ocr_result.extracted_amount || ocr_result.raw_ocr_text);
+  const procMeta = prediction?.feature_values?._procurement_ml || null;
+  const procPay = procMeta?.paypal_payment || null;
+  const currencySymbol = (procMeta?.currency || currency) === 'USD' ? '$' : '₹';
+
+  const handleClaimPaypalDirectSettle = async () => {
+    if (!procMeta?.request_id || paypalBusy) return;
+    setPaypalBusy(true);
+    setPaypalMsg('');
+    try {
+      const res = await sourcingApi.paypalDirectSettle(procMeta.request_id);
+      const payload = res?.data || res;
+      if (payload?.paypal_payment) {
+        const oid = payload.paypal_payment.paypal_order_id || payload.paypal_payment.order_id;
+        setPaypalMsg(`✓ Direct Settlement Successful! Live PayPal Sandbox Order ${oid} settled via API without login.`);
+        await fetchDetail();
+      }
+    } catch (err) {
+      setPaypalMsg(`Error: ${err.response?.data?.detail || err.message || 'Direct settlement failed'}`);
+    } finally {
+      setPaypalBusy(false);
+    }
+  };
+
+  const handleClaimPaypalCheckout = async () => {
+    if (!procMeta?.request_id || paypalBusy) return;
+    setPaypalBusy(true);
+    setPaypalMsg('');
+    try {
+      const res = await sourcingApi.paypalCheckout(procMeta.request_id);
+      const payload = res?.data || res;
+      if (payload?.paypal_payment) {
+        const oid = payload.paypal_payment.paypal_order_id || payload.paypal_payment.order_id;
+        setPaypalMsg(`PayPal Sandbox Order Created: ${oid}`);
+        if (payload.paypal_payment.approval_url) {
+          window.open(payload.paypal_payment.approval_url, '_blank', 'noopener,noreferrer');
+        }
+        await fetchDetail();
+      }
+    } catch (err) {
+      setPaypalMsg(`Error: ${err.response?.data?.detail || err.message || 'PayPal Sandbox checkout failed'}`);
+    } finally {
+      setPaypalBusy(false);
+    }
+  };
+
+  const handleClaimPaypalCapture = async () => {
+    if (!procMeta?.request_id || paypalBusy) return;
+    setPaypalBusy(true);
+    setPaypalMsg('');
+    try {
+      const res = await sourcingApi.paypalCapture(procMeta.request_id);
+      const payload = res?.data || res;
+      if (payload?.paypal_payment) {
+        setPaypalMsg(`PayPal Sandbox Order Settled (${payload.paypal_payment.status})`);
+        await fetchDetail();
+      }
+    } catch (err) {
+      setPaypalMsg(`Error: ${err.response?.data?.detail || err.message || 'PayPal capture failed'}`);
+    } finally {
+      setPaypalBusy(false);
+    }
+  };
 
   return (
     <div className="main-content">
@@ -247,7 +311,7 @@ export default function ClaimDetail() {
               <div>
                 <span className="text-xs text-secondary uppercase font-semibold tracking-wider block mb-1">Claimed Amount</span>
                 <div className="claim-amount-highlight">
-                  ₹{claim.claimed_amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                  {currencySymbol}{claim.claimed_amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>
               </div>
               {claim.category && (
@@ -372,10 +436,10 @@ export default function ClaimDetail() {
                 <div className={`risk-verdict-banner ${isHighRisk ? 'risk-verdict-high' : isModerateRisk ? 'risk-verdict-moderate' : 'risk-verdict-low'}`}>
                   <strong>
                     {isHighRisk
-                      ? '⚠️ High Anomaly Index Detected'
+                      ? 'High Anomaly Index Detected'
                       : isModerateRisk
-                      ? '⚡ Moderate Statistical Variance'
-                      : '✅ Normal Spending Pattern'}
+                      ? 'Moderate Statistical Variance'
+                      : 'Normal Spending Pattern'}
                   </strong>
                   <p className="mt-1 text-xs opacity-90 leading-relaxed">
                     {isHighRisk
@@ -429,6 +493,238 @@ export default function ClaimDetail() {
           )}
         </div>
       </div>
+
+      {procMeta && (
+        <div className="glass-card mb-6" style={{ padding: '24px', border: procMeta.is_fraud ? '1px solid rgba(239, 68, 68, 0.35)' : '1px solid rgba(16, 185, 129, 0.35)' }}>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <div className="flex items-center gap-2.5">
+              <Shield size={20} className={procMeta.is_fraud ? 'text-status-danger' : 'text-status-success'} />
+              <div>
+                <h2 className="text-base font-bold tracking-tight">
+                  Procurement Final Invoice ML Fraud Evaluation & PayPal Sandbox Settlement
+                </h2>
+                <p className="text-xs text-muted">
+                  Hybrid PyTorch Autoencoder + Isolation Forest ({procMeta.version || 'procurement-hybrid-v3'}) · Source {procMeta.source_ref || claim.claim_id}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`badge ${procMeta.is_fraud ? 'badge-red' : 'badge-green'} text-xs font-bold`}>
+                {procMeta.verdict || (procMeta.is_fraud ? 'FRAUD_FLAGGED' : 'CLEAN_APPROVED')}
+              </span>
+              {procMeta.request_id && String(procMeta.source_ref || '').startsWith('SR-') && (
+                <button
+                  type="button"
+                  className="btn btn-secondary text-xs py-1 px-3"
+                  onClick={() => navigate(`/intake/${procMeta.request_id}`)}
+                >
+                  Open Sourcing Request ({procMeta.source_ref}) →
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Core ML Scores & PO/Invoice Comparison */}
+          <div className="grid gap-3 mb-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(175px, 1fr))' }}>
+            <div className="p-3 rounded-lg bg-bg-surface border border-border-light">
+              <span className="text-[11px] uppercase text-muted font-semibold block">Combined Anomaly Score</span>
+              <strong className={`text-lg font-extrabold ${procMeta.is_fraud ? 'text-status-danger' : 'text-status-success'}`}>
+                {((procMeta.score || 0) * 100).toFixed(2)}%
+              </strong>
+              <small className="text-[11px] text-muted block mt-0.5">
+                Decision Threshold: {((procMeta.threshold || 0.72) * 100).toFixed(1)}%
+              </small>
+            </div>
+            <div className="p-3 rounded-lg bg-bg-surface border border-border-light">
+              <span className="text-[11px] uppercase text-muted font-semibold block">Autoencoder (60% Weight)</span>
+              <strong className="text-base font-bold text-primary">
+                {((procMeta.autoencoder_score || 0) * 100).toFixed(2)}%
+              </strong>
+              <small className="text-[11px] text-muted block mt-0.5">
+                Raw MSE: {Number(procMeta.autoencoder_raw_mse || 0).toFixed(4)}
+              </small>
+            </div>
+            <div className="p-3 rounded-lg bg-bg-surface border border-border-light">
+              <span className="text-[11px] uppercase text-muted font-semibold block">Isolation Forest (40% Weight)</span>
+              <strong className="text-base font-bold text-primary">
+                {((procMeta.isolation_forest_score || 0) * 100).toFixed(2)}%
+              </strong>
+              <small className="text-[11px] text-muted block mt-0.5">
+                Raw Score: {Number(procMeta.isolation_forest_raw || 0).toFixed(4)}
+              </small>
+            </div>
+            <div className="p-3 rounded-lg bg-bg-surface border border-border-light">
+              <span className="text-[11px] uppercase text-muted font-semibold block">PO vs Stated Invoice</span>
+              <strong className="text-sm font-bold text-primary block">
+                PO ({procMeta.po_number || 'N/A'}): {currencySymbol}{Number(procMeta.po_total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              </strong>
+              <small className="text-[11px] text-secondary block mt-0.5">
+                Inv ({procMeta.invoice_number || 'N/A'}): {currencySymbol}{Number(procMeta.stated_total || claim.claimed_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+              </small>
+            </div>
+          </div>
+
+          {/* 4-Pillar ML Basis Checks */}
+          {Array.isArray(procMeta.basis) && procMeta.basis.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-secondary mb-2">
+                4-Pillar Procurement ML Basis Checks
+              </h3>
+              <div className="grid gap-2.5" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
+                {procMeta.basis.map((b, idx) => {
+                  const isStr = typeof b === 'string';
+                  const checkTitle = isStr ? (b.split(':')[0] || `Check ${idx + 1}`) : b.check;
+                  const detailText = isStr ? (b.split(':').slice(1).join(':').trim() || b) : b.detail;
+                  const passed = isStr ? !/(mismatch|anomaly|exceed|flag|spike)/i.test(b) : Boolean(b.passed);
+                  const statusLabel = isStr ? (passed ? 'PASSED' : 'REVIEW') : b.status;
+                  return (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-lg border text-xs"
+                      style={{
+                        background: passed ? 'rgba(16, 185, 129, 0.06)' : 'rgba(239, 68, 68, 0.08)',
+                        borderColor: passed ? 'rgba(16, 185, 129, 0.25)' : 'rgba(239, 68, 68, 0.3)',
+                      }}
+                    >
+                      <div className="flex items-center justify-between font-bold mb-1">
+                        <span className={passed ? 'text-status-success' : 'text-status-danger'}>
+                          {passed ? '✓' : '✗'} {checkTitle}
+                        </span>
+                        <span className="badge text-[10px]" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                          {statusLabel}
+                        </span>
+                      </div>
+                      <p className="text-secondary leading-relaxed">{detailText}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Triggers if any */}
+          {Array.isArray(procMeta.triggers) && procMeta.triggers.length > 0 && (
+            <div className="mb-4 p-3 rounded-lg bg-status-danger/10 border border-status-danger/30 text-xs">
+              <strong className="text-status-danger block mb-1">Active Risk Triggers:</strong>
+              <ul className="list-disc pl-5 space-y-1 text-secondary">
+                {procMeta.triggers.map((t, i) => (
+                  <li key={i}>{t}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* 8-Feature Breakdown Table */}
+          {procMeta.feature_values && Object.keys(procMeta.feature_values).length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-secondary mb-2">
+                8-Feature Model Input Vector & Autoencoder Reconstruction Errors
+              </h3>
+              <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))' }}>
+                {Object.entries(procMeta.feature_values).map(([feat, val]) => {
+                  const errVal = procMeta.feature_errors?.[feat] ?? prediction?.shap_values?.[feat] ?? 0;
+                  return (
+                    <div key={feat} className="p-2.5 rounded bg-bg-surface border border-border-light text-xs flex flex-col justify-between">
+                      <span className="font-mono text-[11px] text-accent-primary font-semibold">{feat}</span>
+                      <div className="flex items-baseline justify-between mt-1">
+                        <span className="text-secondary">Value: <strong className="text-primary">{Number(val).toFixed(4)}</strong></span>
+                        <span className="text-muted text-[11px]">Err: <strong>{Number(errVal).toFixed(4)}</strong></span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* PayPal Sandbox Settlement Gate */}
+          {!procMeta.is_fraud && (
+            <div
+              className="p-4 rounded-xl border mt-3"
+              style={{
+                background: 'linear-gradient(135deg, rgba(0, 112, 186, 0.12), rgba(16, 185, 129, 0.08))',
+                borderColor: 'rgba(0, 112, 186, 0.35)',
+              }}
+            >
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: '#60a5fa' }}>
+                      PayPal Sandbox Settlement Gate
+                    </span>
+                    <span className={`badge ${String(procPay?.status || '').toUpperCase() === 'COMPLETED' ? 'badge-green' : procPay ? 'badge-blue' : 'badge-amber'} text-xs`}>
+                      {String(procPay?.status || 'READY_FOR_CHECKOUT').toUpperCase()}
+                    </span>
+                  </div>
+                  <p className="text-xs text-secondary mt-1">
+                    {(procPay?.paypal_order_id || procPay?.order_id) ? (
+                      <>
+                        PayPal Sandbox Order ID: <strong className="font-mono text-primary">{procPay.paypal_order_id || procPay.order_id}</strong>
+                        {(procPay.paypal_amount || procPay.amount_usd) ? (
+                          <> · Settlement Amount: <strong>${Number(procPay.paypal_amount || procPay.amount_usd || 0).toFixed(2)} USD</strong></>
+                        ) : null}
+                        {procPay.capture_id ? <> · Capture ID: <strong className="font-mono">{procPay.capture_id}</strong></> : null}
+                      </>
+                    ) : (
+                      'ML model approved this final invoice. Connect to PayPal Sandbox to generate a live Sandbox order and settle supplier payment.'
+                    )}
+                  </p>
+                  {(procPay?.paypal_order_id || procPay?.order_id) && String(procPay?.status || '').toUpperCase() !== 'COMPLETED' && (
+                    <div className="mt-2 p-2 rounded bg-status-success/10 border border-status-success/30 text-xs text-status-success">
+                      <strong>⚡ Direct Settlement:</strong> You can skip filling card numbers on PayPal. Click <strong>"Confirm / Capture Sandbox Payment"</strong> on the right to settle immediately.
+                    </div>
+                  )}
+                </div>
+
+                {String(procMeta.source_ref || '').startsWith('SR-') && procMeta.request_id && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    {String(procPay?.status || '').toUpperCase() !== 'COMPLETED' && (
+                      <button
+                        type="button"
+                        className="btn btn-primary text-xs font-bold py-2 px-4"
+                        onClick={handleClaimPaypalDirectSettle}
+                        disabled={paypalBusy}
+                        style={{ background: '#059669', borderColor: '#059669' }}
+                      >
+                        {paypalBusy ? 'Settling via API…' : '⚡ 1-Click Direct Settlement (Skip Login)'}
+                      </button>
+                    )}
+
+                    {procPay?.approval_url && String(procPay?.status || '').toUpperCase() !== 'COMPLETED' && (
+                      <a
+                        href={procPay.approval_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-secondary text-xs font-bold py-2 px-3"
+                        style={{ borderColor: '#60a5fa', color: '#93c5fd' }}
+                      >
+                        Open PayPal Web Login ↗
+                      </a>
+                    )}
+
+                    {(procPay?.paypal_order_id || procPay?.order_id) && String(procPay?.status || '').toUpperCase() !== 'COMPLETED' && (
+                      <button
+                        type="button"
+                        className="btn btn-primary text-xs font-bold py-2 px-3"
+                        onClick={handleClaimPaypalCapture}
+                        disabled={paypalBusy}
+                        style={{ background: '#059669', borderColor: '#059669' }}
+                      >
+                        {paypalBusy ? 'Capturing...' : 'Confirm / Capture Sandbox Payment'}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+              {paypalMsg && (
+                <div className="mt-2 text-xs font-semibold" style={{ color: paypalMsg.startsWith('Error') ? '#f87171' : '#34d399' }}>
+                  {paypalMsg}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Deep-Dive Analysis Section with Clean Tabs */}
       <div className="claim-section-tabs">
@@ -499,7 +795,7 @@ export default function ClaimDetail() {
 
             {noReviewNeeded ? (
               <div className="p-3 rounded-lg bg-status-success/10 border border-status-success/30 text-xs text-secondary">
-                ✅ This claim scored below the review threshold and passed all automated policy checks. No manual intervention required.
+                This claim scored below the review threshold and passed all automated policy checks. No manual intervention required.
               </div>
             ) : reviewBlockReason ? (
               <div className="p-3 rounded-lg bg-status-warning/10 border border-status-warning/30 text-xs text-secondary">

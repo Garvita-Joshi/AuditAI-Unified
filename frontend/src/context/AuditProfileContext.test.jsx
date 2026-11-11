@@ -49,7 +49,7 @@ describe('AuditProfileContext & Workspace Settings', () => {
     cleanup();
   });
 
-  it('defaults to corporate profile and Acme Global Corp without circular payments', () => {
+  it('defaults to corporate profile and Demo Industries Inc without circular payments', () => {
     render(
       <AuditProfileProvider>
         <TestConsumer />
@@ -58,7 +58,7 @@ describe('AuditProfileContext & Workspace Settings', () => {
 
     expect(screen.getByTestId('profile-id').textContent).toBe('corporate');
     expect(screen.getByTestId('profile-name').textContent).toBe('Corporate Enterprise Edition');
-    expect(screen.getByTestId('company-name').textContent).toBe('Acme Global Corp');
+    expect(screen.getByTestId('company-name').textContent).toBe('Demo Industries Inc');
     expect(screen.getByTestId('currency').textContent).toBe('INR (₹)');
   });
 

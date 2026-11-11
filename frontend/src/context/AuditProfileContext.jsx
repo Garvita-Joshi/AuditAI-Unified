@@ -55,9 +55,11 @@ export function AuditProfileProvider({ children }) {
 
   const [companyName, setCompanyName] = useState(() => {
     try {
-      return localStorage.getItem('auditai_workspace_company') || 'Acme Global Corp';
+      const saved = localStorage.getItem('auditai_workspace_company');
+      if (!saved || saved === 'Acme Global Corp') return 'Demo Industries Inc';
+      return saved;
     } catch {
-      return 'Acme Global Corp';
+      return 'Demo Industries Inc';
     }
   });
 

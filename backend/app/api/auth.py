@@ -1,68 +1,194 @@
-"""Login for provisioned company accounts. Roles are never supplied by the browser."""
-import secrets
-from datetime import datetime, timedelta
+"""OTP sign-in, JWT refresh rotation, and logout endpoints."""
+from datetime import timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials
-from pydantic import BaseModel
+from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
+from fastapi.security import HTTPAuthorizationCredentials
+from backend.app.core.security import bearer_scheme
 
-from backend.app.auth.security import (
-    DUMMY_PASSWORD_HASH, SESSION_HOURS, bearer, get_current_user, normalize_company_email,
-    token_digest, user_payload, verify_password,
+from backend.app.config import (
+    ACCESS_TOKEN_EXPIRE_MINUTES, AUTH_COOKIE_SECURE, AUTH_DEBUG_OTP,
+    OTP_EXPIRE_MINUTES, OTP_MAX_ATTEMPTS, REFRESH_TOKEN_EXPIRE_DAYS,
+    SMTP_FROM_EMAIL, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USERNAME,
 )
-from backend.app.db import get_db
-from backend.app.models.auth import AuthSession, AuthUser
+from backend.app.core.security import (
+    create_access_token, create_refresh_token, digest, generate_otp, require_authenticated_user, utcnow,
+)
+from backend.app.db import Base, engine, get_db
+from backend.app.models.auth import OtpChallenge, RefreshSession, User
+from backend.app.schemas.auth import OtpRequest, OtpRequestResponse, OtpVerifyRequest, TokenResponse, UserResponse
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
+AUTH_TABLES = [User.__table__, OtpChallenge.__table__, RefreshSession.__table__]
 
 
-class LoginRequest(BaseModel):
-    email: str
-    password: str
+def ensure_auth_tables() -> None:
+    Base.metadata.create_all(bind=engine, tables=AUTH_TABLES)
 
 
-@router.post("/login")
-def login(body: LoginRequest, db: Session = Depends(get_db)):
+def set_refresh_cookie(response: Response, token: str) -> None:
+    response.set_cookie(
+        key="auditai_refresh_token", value=token, max_age=REFRESH_TOKEN_EXPIRE_DAYS * 86400,
+        httponly=True, secure=AUTH_COOKIE_SECURE, samesite="lax", path="/api/v1/auth",
+    )
+
+
+def _send_otp_smtp(email: str, code: str) -> None:
+    from email.message import EmailMessage
+    import smtplib
+    import ssl
+    message = EmailMessage()
+    message["Subject"] = "Your AuditAI verification code"
+    message["From"] = SMTP_FROM_EMAIL
+    message["To"] = email
+    message.set_content(f"Your AuditAI verification code is {code}. It expires in {OTP_EXPIRE_MINUTES} minutes.")
+    implicit_ssl = SMTP_PORT == 465
+    client = smtplib.SMTP_SSL if implicit_ssl else smtplib.SMTP
+    with client(SMTP_HOST, SMTP_PORT, timeout=10, **({"context": ssl.create_default_context()} if implicit_ssl else {})) as server:
+        if not implicit_ssl:
+            server.starttls(context=ssl.create_default_context())
+        if SMTP_USERNAME:
+            password = SMTP_PASSWORD.replace(" ", "") if SMTP_HOST.endswith("gmail.com") else SMTP_PASSWORD
+            server.login(SMTP_USERNAME, password)
+        server.send_message(message)
+
+
+def deliver_otp(email: str, code: str) -> None:
+    """Deliver a code by SMTP when configured."""
+    if not SMTP_HOST or not SMTP_FROM_EMAIL:
+        if AUTH_DEBUG_OTP:
+            return
+        raise HTTPException(status_code=503, detail="OTP delivery is not configured.")
+    if AUTH_DEBUG_OTP:
+        import threading
+        threading.Thread(target=lambda: _safe_smtp(email, code), daemon=True).start()
+        return
     try:
-        email = normalize_company_email(body.email)
-    except ValueError:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password.")
-    user = db.query(AuthUser).filter(AuthUser.email == email, AuthUser.active.is_(True)).first()
-    now = datetime.utcnow()
-    if user and user.locked_until and user.locked_until > now:
-        raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS, "Too many attempts. Try again in 15 minutes.")
-    password_valid = verify_password(body.password, user.password_hash if user else DUMMY_PASSWORD_HASH)
-    if not user or not password_valid:
-        if user:
-            user.failed_attempts = (user.failed_attempts or 0) + 1
-            if user.failed_attempts >= 5:
-                user.locked_until = now + timedelta(minutes=15)
-                user.failed_attempts = 0
-            db.commit()
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password.")
-    user.failed_attempts = 0
-    user.locked_until = None
-    token = secrets.token_urlsafe(32)
-    db.add(AuthSession(user_id=user.id, token_hash=token_digest(token),
-                       expires_at=now + timedelta(hours=SESSION_HOURS)))
+        _send_otp_smtp(email, code)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Unable to deliver the one-time code.") from exc
+
+
+def _safe_smtp(email: str, code: str) -> None:
+    try:
+        _send_otp_smtp(email, code)
+    except Exception:
+        pass
+
+
+def issue_tokens(response: Response, user: User, db: Session) -> TokenResponse:
+    refresh_token = create_refresh_token()
+    session = RefreshSession(
+        user_id=user.id, token_digest=digest(refresh_token),
+        expires_at=utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS),
+    )
+    db.add(session)
     db.commit()
-    return {"access_token": token, "token_type": "bearer", "user": user_payload(user)}
+    set_refresh_cookie(response, refresh_token)
+    return TokenResponse(
+        access_token=create_access_token(user), expires_in=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        user=UserResponse.model_validate(user),
+    )
 
 
-@router.get("/me")
-def me(user: AuthUser = Depends(get_current_user)):
-    return user_payload(user)
+@router.post("/request-otp", response_model=OtpRequestResponse)
+def request_otp(payload: OtpRequest, db: Session = Depends(get_db)):
+    ensure_auth_tables()
+    email = str(payload.email).lower()
+    from backend.app.auth.security import normalize_company_email
+    try:
+        normalize_company_email(email)
+    except ValueError:
+        raise HTTPException(403, "Company email domain is not approved.")
+    db.query(OtpChallenge).filter(OtpChallenge.email == email, OtpChallenge.consumed_at.is_(None)).update(
+        {OtpChallenge.consumed_at: utcnow()}, synchronize_session=False
+    )
+    account = db.query(User).filter(User.email == email, User.active.is_(True)).first()
+    if not account:
+        raise HTTPException(403, "Ask your administrator to provision your company account.")
+    code = generate_otp()
+    deliver_otp(email, code)
+    db.add(OtpChallenge(email=email, code_digest=digest(code), expires_at=utcnow() + timedelta(minutes=OTP_EXPIRE_MINUTES)))
+    db.commit()
+    # Connect an email/SMS provider here in production. The code is returned only when explicitly enabled for local development.
+    return OtpRequestResponse(
+        message="A one-time code has been issued.", expires_in_seconds=OTP_EXPIRE_MINUTES * 60,
+        development_code=code if AUTH_DEBUG_OTP else None,
+    )
+
+
+@router.post("/verify-otp", response_model=TokenResponse)
+def verify_otp(payload: OtpVerifyRequest, response: Response, db: Session = Depends(get_db)):
+    ensure_auth_tables()
+    email = str(payload.email).lower()
+    from backend.app.auth.security import normalize_company_email
+    try:
+        normalize_company_email(email)
+    except ValueError:
+        raise HTTPException(403, "Company email domain is not approved.")
+    challenge = (
+        db.query(OtpChallenge).filter(OtpChallenge.email == email, OtpChallenge.consumed_at.is_(None))
+        .order_by(OtpChallenge.created_at.desc()).first()
+    )
+    if not challenge or challenge.expires_at <= utcnow():
+        raise HTTPException(status_code=400, detail="The one-time code has expired. Request a new code.")
+    if challenge.attempts >= OTP_MAX_ATTEMPTS:
+        raise HTTPException(status_code=429, detail="Too many incorrect attempts. Request a new code.")
+    if not hmac_compare(challenge.code_digest, digest(payload.code)):
+        challenge.attempts += 1
+        db.commit()
+        raise HTTPException(status_code=400, detail="Invalid one-time code.")
+    challenge.consumed_at = utcnow()
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(403, "Company account is not provisioned.")
+    if not user.is_active:
+        raise HTTPException(status_code=403, detail="This account has been disabled.")
+    user.last_login_at = utcnow()
+    db.commit()
+    db.refresh(user)
+    return issue_tokens(response, user, db)
+
+
+def hmac_compare(left: str, right: str) -> bool:
+    import hmac
+    return hmac.compare_digest(left, right)
+
+
+@router.post("/refresh", response_model=TokenResponse)
+def refresh_session(response: Response, auditai_refresh_token: str | None = Cookie(default=None), db: Session = Depends(get_db)):
+    ensure_auth_tables()
+    if not auditai_refresh_token:
+        raise HTTPException(status_code=401, detail="Refresh token is missing.")
+    session = db.query(RefreshSession).filter(RefreshSession.token_digest == digest(auditai_refresh_token)).first()
+    if not session or session.revoked_at or session.expires_at <= utcnow():
+        raise HTTPException(status_code=401, detail="Refresh token is invalid or expired.")
+    user = session.user
+    if not user.is_active:
+        raise HTTPException(status_code=401, detail="Account is unavailable.")
+    session.revoked_at = utcnow()
+    db.commit()
+    return issue_tokens(response, user, db)
 
 
 @router.post("/logout")
-def logout(
-    user: AuthUser = Depends(get_current_user),
-    credentials: HTTPAuthorizationCredentials = Depends(bearer),
-    db: Session = Depends(get_db),
-):
-    session = db.query(AuthSession).filter(AuthSession.token_hash == token_digest(credentials.credentials)).first()
-    if session and session.user_id == user.id:
-        session.revoked_at = datetime.utcnow()
-        db.commit()
+def logout(response: Response, auditai_refresh_token: str | None = Cookie(default=None), db: Session = Depends(get_db), credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme)):
+    if auditai_refresh_token:
+        session = db.query(RefreshSession).filter(RefreshSession.token_digest == digest(auditai_refresh_token)).first()
+        if session and not session.revoked_at:
+            session.revoked_at = utcnow()
+            db.commit()
+    response.delete_cookie("auditai_refresh_token", path="/api/v1/auth", httponly=True, secure=AUTH_COOKIE_SECURE, samesite="lax")
+    if credentials:
+        from backend.app.models.auth import AuthSession
+        from backend.app.auth.security import token_digest
+        legacy = db.query(AuthSession).filter(AuthSession.token_hash == token_digest(credentials.credentials)).first()
+        if legacy:
+            legacy.revoked_at = utcnow()
+            db.commit()
     return {"status": "signed_out"}
+
+
+@router.get("/me", response_model=UserResponse)
+def get_me(user: User = Depends(require_authenticated_user)):
+    return UserResponse.model_validate(user)

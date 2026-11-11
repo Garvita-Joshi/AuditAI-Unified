@@ -1,0 +1,35 @@
+
+:root{--accent-primary:#ef9976;--accent-hover:#e88760;--accent-glow:rgba(239,153,118,.18)}
+.procurement{background:#181818!important;color:#f2ece7!important;padding:32px;min-height:100vh}
+.procurement .p-panel,.procurement .p-card,.p-dialog,.p-dialog-body,.cv-vendor-page,.crm-dashboard{background:#202020!important;color:#f2ece7!important}
+.p-dialog header,.p-dialog footer,.p-stepper,.cv-header,.cv-toolbar,.cv-subtabs{background:#242424!important;border-color:#3a3633!important}
+.p-dialog input,.p-dialog select,.p-dialog textarea,.procurement input,.procurement select{background:#292929!important;color:#f2ece7!important;border-color:#4b423e!important;color-scheme:dark}
+.p-button.primary,.cv-btn-primary,.cv-btn-violet{background:#ef9976!important;color:#211914!important;border-color:#ef9976!important}
+.p-dialog :is(h1,h2,h3,h4,strong),.procurement :is(h1,h2,h3,h4){color:#f2ece7}
+.p-muted,.cv-subtitle{color:#b6aaa3!important}.p-dialog a,.p-link{color:#ef9976!important}
+.p-overlay{background:rgba(0,0,0,.7)!important}.p-dialog{box-shadow:0 24px 80px #0008!important}
+.crm-surface,.crm-metrics article,.cv-table-container{background:#292929!important;border-color:#443b36!important}
+.crm-worklist{background:#181818!important;border:1px solid #332d29!important;border-radius:18px!important;padding:16px 12px!important}
+.crm-worklist>small{color:#ef9976!important;display:block;padding:8px 10px;font-size:11px!important;font-weight:700!important;letter-spacing:.12em!important;text-transform:uppercase!important}
+.crm-worklist button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1px solid transparent;border-radius:12px;background:#241f1c;color:#f5f5f4!important;padding:12px 12px;margin-top:8px;cursor:pointer;transition:all .18s ease}
+.crm-worklist button:hover{background:#2e2621;border-color:rgba(239,153,118,0.35);color:#fff!important}
+.crm-worklist button.active{background:#ef9976!important;color:#1a130e!important;border-color:#ef9976!important;box-shadow:0 4px 14px rgba(239,153,118,0.3)!important}
+.crm-worklist strong{font-size:13px!important;display:block;font-weight:600!important;color:#f5f5f4!important}
+.crm-worklist button.active strong{color:#1a130e!important;font-weight:700!important}
+.crm-worklist button small{display:block;font-size:11px!important;margin-top:4px;color:#cfc7c2!important;opacity:1!important}
+.crm-worklist button.active small{color:#2b1d16!important;font-weight:600!important}
+.crm-worklist .crm-avatar{background:#352a25!important;color:#ef9976!important;border:1px solid rgba(239,153,118,0.35)!important;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px}
+.crm-worklist button.active .crm-avatar{background:#1a130e!important;color:#ef9976!important;border-color:rgba(26,19,14,0.4)!important}
+.crm-record-summary article{background:#302722!important}.crm-live{background:#263b30!important;color:#92d0ac!important}
+.login-page{background:#181818!important}.login-card{background:#242424!important}
+
+/* Explicit surface/text pairs prevent inherited pale text on white legacy surfaces. */
+.procurement{--p-bg:#181818;--p-panel:#242424;--p-border:#45403c;--p-text:#f4eee9;--p-muted:#bfb5ae;--p-accent:#ef9976}
+.procurement .p-topbar{background:#202020!important;color:#e8dfd8!important;border-bottom:1px solid #45403c!important}
+.procurement .p-org-icon{background:#302a26;color:#ef9976;border-color:#5a4940}
+.procurement .p-top-divider{color:#9e928a}
+.procurement .p-metric{background:#292929!important;border:1px solid #49403a!important;box-shadow:0 6px 20px #0002}
+.procurement .p-metric>strong{color:#fff4ed!important}
+.procurement .p-metric>span{color:#e0d5cd!important}
+.procurement .p-metric>small{color:#bfb3aa!important}
+.procurement .p-environment{background:#352a25;color:#e4c3b2}

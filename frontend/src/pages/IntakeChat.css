@@ -1,0 +1,128 @@
+/* Independent movable buying assistant. */
+.p-dialog.p-dialog-wide:has(.intake-footer){height:min(92vh,980px);max-height:calc(100vh - 32px);display:flex;flex-direction:column}
+.p-dialog.p-dialog-wide:has(.intake-footer)>.intake-footer{flex:none}
+.p-buying-assistant-root{position:fixed;inset:0;z-index:120;pointer-events:none;font-family:inherit;color:#f0e9e4}
+.p-buying-assistant-root button{font:inherit}
+
+/* Movable Roaming Bot Mascot (Clean mascot-only, no background/pill/text) */
+.p-buying-assistant-launcher.roaming-kitty-launcher{
+  pointer-events:auto;
+  position:fixed;
+  right:28px;
+  bottom:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  margin:0;
+  border:none;
+  outline:none;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+  z-index:1000;
+  width:82px;
+  height:62px;
+  transition:transform 0.2s ease;
+  animation:kitty-roam-bob 3.8s ease-in-out infinite, bot-launch-in 0.5s cubic-bezier(.2,.8,.2,1) both;
+}
+.p-buying-assistant-launcher.roaming-kitty-launcher:hover{
+  transform:translateY(-6px) scale(1.08);
+}
+.p-buying-assistant-launcher.roaming-kitty-launcher.is-dragging{
+  cursor:grabbing !important;
+  animation:none !important;
+  transform:scale(1.12) rotate(4deg);
+  transition:none;
+}
+
+/* Avatar container with lively walking motion */
+.p-buying-assistant-launcher-bot.roaming-kitty-avatar{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  flex-shrink:0;
+  animation:kitty-roam-walk 2.4s ease-in-out infinite;
+}
+.p-buying-assistant-launcher:hover .buying-bot{
+  transform:scale(1.05) rotate(-2deg);
+}
+
+/* AuditAI pixel mascot styling matching navbar brand-logo */
+.buying-bot{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
+  transition:transform 0.2s ease;
+}
+
+/* Subtle soft shadow underneath the roaming mascot */
+.roaming-kitty-shadow{
+  position:absolute;
+  bottom:1px;
+  left:50%;
+  transform:translateX(-50%);
+  width:46px;
+  height:6px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 70%);
+  animation:kitty-shadow-pulse 2.4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+.p-intake-chat-window{pointer-events:auto;position:fixed;right:26px;bottom:24px;width:min(370px,calc(100vw - 24px));height:min(510px,calc(100vh - 32px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #352a25;border-radius:18px;background:#202020;box-shadow:0 18px 60px #20133d3b;transform-origin:bottom right;animation:bot-panel-in .24s cubic-bezier(.2,.8,.2,1) both}
+.p-intake-chat-window.is-dragging{transition:none;cursor:grabbing;user-select:none}
+.p-intake-chat-header{display:flex;align-items:center;gap:11px;flex:none;padding:12px 13px;background:linear-gradient(120deg,#352a25,#352a25);border-bottom:1px solid #352a25;cursor:grab;touch-action:none;user-select:none}
+.p-intake-chat-header:active{cursor:grabbing}
+.p-intake-bot-small{width:46px;height:38px;flex:none;animation:kitty-roam-walk 2.4s ease-in-out infinite}
+.p-intake-chat-title{display:grid;gap:3px;flex:1;min-width:0}.p-intake-chat-title strong{font-size:13px;color:#ef9976}.p-intake-chat-title small{font-size:10px;color:#99918c}
+.p-intake-chat-header>button{width:30px;height:30px;border:1px solid #352a25;border-radius:50%;background:#202020;color:#ef9976;font-size:20px;line-height:1;cursor:pointer}
+.p-intake-chat-body{flex:1;min-height:0;overflow:auto;padding:12px;background:radial-gradient(ellipse at 50% 0,#352a25 0,white 70%)}
+.p-intake-chat-welcome{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px}.p-intake-chat-welcome>.buying-bot{width:86px;height:64px;animation:kitty-roam-walk 2.4s ease-in-out infinite}.p-intake-chat-welcome strong{font-size:13px;color:#ef9976}.p-intake-chat-welcome span{max-width:270px;color:#99918c;font-size:11px;line-height:1.55}
+.p-intake-chat-window .p-intake-chat-history{max-height:none;overflow:visible;margin:0;padding:0}.p-intake-chat-window .sourcing-message{padding:10px 12px;margin:7px 0;border-radius:12px;background:#352a25;font-size:11px}.p-intake-chat-window .sourcing-message.user{margin-left:28px;background:#352a25}.p-intake-chat-window .sourcing-message p{margin:5px 0 0;line-height:1.5}.p-intake-chat-window .p-notice{font-size:11px;padding:9px;margin:8px 0}
+.p-intake-chat-window .p-intake-chat-composer{flex:none;margin:10px;padding:5px 6px 5px 13px;border-radius:22px;box-shadow:0 3px 12px #35225810}.p-intake-chat-window .p-intake-chat-composer .p-button{width:34px;height:34px;min-width:34px;display:grid;place-items:center;padding:0;border-radius:50%}
+
+/* Roaming kitty pacing and wandering motion */
+@keyframes kitty-roam-bob{
+  0%{transform:translate(0, 0) rotate(0deg);}
+  18%{transform:translate(-5px, -4px) rotate(-2deg);}
+  36%{transform:translate(-8px, -1px) rotate(-1deg);}
+  50%{transform:translate(-3px, -3px) rotate(1deg);}
+  68%{transform:translate(5px, -5px) rotate(2deg);}
+  84%{transform:translate(7px, -1px) rotate(1deg);}
+  100%{transform:translate(0, 0) rotate(0deg);}
+}
+
+/* Pattering walking steps of the kitty */
+@keyframes kitty-roam-walk{
+  0%, 100%{transform:translateY(0) rotate(0deg);}
+  25%{transform:translateY(-3px) rotate(-2deg) scale(1.02);}
+  50%{transform:translateY(1px) rotate(0deg) scale(0.99);}
+  75%{transform:translateY(-3px) rotate(2deg) scale(1.02);}
+}
+
+@keyframes kitty-shadow-pulse{
+  0%, 50%, 100%{transform:translateX(-50%) scale(1);opacity:0.5;}
+  25%, 75%{transform:translateX(-50%) scale(0.8);opacity:0.3;}
+}
+
+@keyframes sparkle-twinkle{
+  0%{transform:scale(0.9);opacity:0.7;}
+  100%{transform:scale(1.2);opacity:1;filter:drop-shadow(0 0 4px #ef9976);}
+}
+
+@keyframes bot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes bot-launch-in{from{opacity:0;transform:translateY(14px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes bot-panel-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:600px){.p-dialog.p-dialog-wide:has(.intake-footer){height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}.p-buying-assistant-launcher{right:14px;bottom:14px}.p-intake-chat-window{right:12px;bottom:12px;height:min(500px,calc(100dvh - 24px))}}
+@media(prefers-reduced-motion:reduce){.p-buying-assistant-launcher,.p-intake-chat-window,.p-buying-assistant-launcher-bot,.p-intake-bot-small,.p-intake-chat-welcome>.buying-bot{animation:none;transition:none}}

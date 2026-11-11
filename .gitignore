@@ -53,3 +53,18 @@ uploads/
 # Gemini/Antigravity
 .gemini/
 .agents/
+
+.env*
+!.env.example
+*.db
+*.sqlite*
+node_modules/
+__pycache__/
+*.pyc
+frontend/dist/
+
+.runtime/
+data/company_workflow_data.json
+data/vendors/company_catalog.json
+
+.venv-model/

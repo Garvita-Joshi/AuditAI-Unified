@@ -1,7 +1,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
   z-index: 9999;
   display: flex;
@@ -16,10 +16,83 @@
   max-width: 440px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #0d1321 !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7) !important;
-  border-radius: 12px;
-  padding: 20px 24px;
+  background: #1e1b18 !important;
+  border: 1px solid #3c342f !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.75) !important;
+  border-radius: 14px;
+  padding: 22px 24px;
+  color: #f5f5f4 !important;
   animation: slideUp 0.2s ease-out;
+}
+
+.modal-content h2 {
+  color: #f5f5f4 !important;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.modal-content .text-muted {
+  color: #a8a29e !important;
+}
+
+.modal-content .text-secondary {
+  color: #d6d3d1 !important;
+}
+
+.modal-content .border-glass {
+  border-color: #332b26 !important;
+}
+
+.modal-content input.input,
+.modal-content select.input {
+  width: 100%;
+  background: #28231f !important;
+  border: 1px solid #443a33 !important;
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #f5f5f4 !important;
+  font-size: 13px;
+  box-sizing: border-box;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.modal-content input.input:focus,
+.modal-content select.input:focus {
+  border-color: #ef9976 !important;
+  box-shadow: 0 0 0 2px rgba(239, 153, 118, 0.25) !important;
+}
+
+.modal-content .btn-secondary {
+  background: #2b2520 !important;
+  color: #d6d3d1 !important;
+  border: 1px solid #443a33 !important;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modal-content .btn-secondary:hover {
+  background: #352d27 !important;
+  color: #fff !important;
+}
+
+.modal-content .btn-primary {
+  background: #ef9976 !important;
+  color: #1a130e !important;
+  border: 1px solid #ef9976 !important;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(239, 153, 118, 0.25);
+  transition: all 0.15s ease;
+}
+
+.modal-content .btn-primary:hover {
+  background: #f1aa8d !important;
+  transform: translateY(-1px);
 }

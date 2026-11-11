@@ -96,7 +96,7 @@ function ModelScoreEvidence({ prediction }) {
           <div className="flex flex-wrap gap-2">
             {humanFlags.map((flag, i) => (
               <span key={i} className="badge badge-amber text-xs" title={flag.desc}>
-                ⚠️ {flag.label}
+                {flag.label}
               </span>
             ))}
           </div>

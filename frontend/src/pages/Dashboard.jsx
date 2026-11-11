@@ -289,7 +289,7 @@ export default function Dashboard() {
                             title={`Possible vendor name typo: ${Math.round(claim.vendor_similarity_score * 100)}% similarity to '${claim.closest_vendor_match}'`}
                             onClick={e => e.stopPropagation()}
                           >
-                            ⚠ Typo
+                            Typo
                           </span>
                         )}
                       </div>

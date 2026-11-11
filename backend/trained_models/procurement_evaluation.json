@@ -1,0 +1,31 @@
+{
+  "data_source": "Multi-currency (INR/USD) & Service/Goods calibrated procurement simulator",
+  "architecture": "8 features -> Contrastive Autoencoder decoded output -> Isolation Forest; 0.55 AE percentile + 0.45 IF percentile",
+  "split": "Independent random seeds; normal-only validation reference; held-out normal and injected anomalies for testing",
+  "training_rows": 6000,
+  "validation_rows": 1500,
+  "test_rows": 2000,
+  "test_anomalies": 500,
+  "threshold": 0.9,
+  "precision": 0.8960573476702509,
+  "recall": 1.0,
+  "f1": 0.945179584120983,
+  "average_precision": 1.0,
+  "false_positive_rate": 0.03866666666666667,
+  "confusion_matrix": {
+    "true_negative": 1442,
+    "false_positive": 58,
+    "false_negative": 0,
+    "true_positive": 500
+  },
+  "feature_names": [
+    "amount_log",
+    "item_count",
+    "quantity_total",
+    "delivery_ratio",
+    "tax_ratio",
+    "po_difference_ratio",
+    "supplier_history_count",
+    "supplier_amount_ratio"
+  ]
+}

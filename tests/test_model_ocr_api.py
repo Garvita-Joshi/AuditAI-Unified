@@ -49,8 +49,16 @@ def png():
     return stream.getvalue()
 
 
-def test_receipt_refreshes_affected_score_automatically_and_preserves_confidence(api, monkeypatch):
+def test_receipt_refreshes_affected_score_automatically_and_preserves_confidence(api, monkeypatch, tmp_path):
     client, session = api
+    # Build an isolated tiny test bundle; never depend on a developer's installed model.
+    from backend.app import config
+    from backend.app.ml.pipeline import train_claims
+    from tests.test_behavioral_pipeline import records
+    monkeypatch.setattr(config, 'TRAINED_MODELS_DIR', tmp_path / 'models')
+    monkeypatch.setattr(config, 'AE_EPOCHS', 2)
+    monkeypatch.setattr(config, 'IF_N_ESTIMATORS', 10)
+    train_claims(records(200), np.zeros(200, dtype=int), config)
     session.add(FraudPrediction(claim_id='C0', combined_fraud_score=.1))
     session.commit()
     monkeypatch.setattr(receipts.ocr_engine, 'extract_text', lambda image: ('Vendor\n2025-01-01\nTotal: 50.00', .4, 'test'))
@@ -146,3 +154,17 @@ def test_real_ocr_receipt_image_and_pdf(tmp_path):
         fields = extract_fields(text, use_llm_fallback=False)
         assert method != 'failed' and confidence > .6
         assert fields['amount'] == pytest.approx(123.45)
+
+
+def test_claim_import_with_autoflush_disabled_creates_one_policy_per_claim(api):
+    from backend.app.models.policy import ClaimPolicy
+    client, session = api
+    session.autoflush = False
+    data = b"claim_id,employee_id,employee_name,claimed_amount,vendor_name,claimed_date\nUPLOAD-ONE,E,Employee,4500,Vendor,2025-01-02\nUPLOAD-TWO,E,Employee,45000,Vendor,2025-01-03\n"
+    response = client.post('/api/v1/claims/upload',files={'file':('claims.csv',data,'text/csv')})
+    assert response.status_code == 200, response.text
+    assert response.json()['error_count'] == 0
+    assert session.query(ClaimPolicy).filter(ClaimPolicy.claim_id.in_(['UPLOAD-ONE','UPLOAD-TWO'])).count() == 2
+    response = client.post('/api/v1/claims/upload',files={'file':('claims.csv',data,'text/csv')})
+    assert response.status_code == 200, response.text
+    assert session.query(ClaimPolicy).filter(ClaimPolicy.claim_id.in_(['UPLOAD-ONE','UPLOAD-TWO'])).count() == 2

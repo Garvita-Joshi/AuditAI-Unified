@@ -7,6 +7,7 @@ from backend.app.features.policy_rules import evaluate_policy,CONFIG
 
 
 def run_checks(db, persist=False):
+    db.flush()
     claims=db.query(ExpenseClaim).all()
     meta={p.claim_id:p for p in db.query(ClaimPolicy).all()}
     records=[]

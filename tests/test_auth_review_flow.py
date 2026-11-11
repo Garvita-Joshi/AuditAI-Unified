@@ -15,7 +15,8 @@ from backend.app.models.auth import AuthUser
 from backend.app.models.expense import Case, ExpenseClaim
 
 
-def test_login_visibility_and_separation_of_duties():
+def test_login_visibility_and_separation_of_duties(monkeypatch):
+    monkeypatch.setattr("backend.app.auth.security.COMPANY_EMAIL_DOMAINS", {"auditai.example"})
     engine = create_engine("sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool)
     Base.metadata.create_all(engine)
     session_factory = sessionmaker(bind=engine)
