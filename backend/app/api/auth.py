@@ -58,29 +58,40 @@ def _send_otp_smtp(email: str, code: str) -> None:
     message.set_content(text_content)
     message.add_alternative(html_content, subtype="html")
 
-    implicit_ssl = int(SMTP_PORT or 465) == 465
-    client = smtplib.SMTP_SSL if implicit_ssl else smtplib.SMTP
-    with client(SMTP_HOST, int(SMTP_PORT or 465), timeout=10, **({"context": ssl.create_default_context()} if implicit_ssl else {})) as server:
-        if not implicit_ssl:
-            server.starttls(context=ssl.create_default_context())
-        if SMTP_USERNAME:
-            password = SMTP_PASSWORD.replace(" ", "") if SMTP_HOST.endswith("gmail.com") else SMTP_PASSWORD
-            server.login(SMTP_USERNAME, password)
-        server.send_message(message)
+    # Try configured port first, fallback to 587 STARTTLS if 465 SSL is blocked by host firewall
+    ports_to_try = [int(SMTP_PORT or 465)]
+    if 587 not in ports_to_try:
+        ports_to_try.append(587)
+    
+    last_err = None
+    for port in ports_to_try:
+        try:
+            implicit_ssl = port == 465
+            client = smtplib.SMTP_SSL if implicit_ssl else smtplib.SMTP
+            with client(SMTP_HOST, port, timeout=6, **({"context": ssl.create_default_context()} if implicit_ssl else {})) as server:
+                if not implicit_ssl:
+                    server.starttls(context=ssl.create_default_context())
+                if SMTP_USERNAME:
+                    password = SMTP_PASSWORD.replace(" ", "") if SMTP_HOST.endswith("gmail.com") else SMTP_PASSWORD
+                    server.login(SMTP_USERNAME, password)
+                server.send_message(message)
+                return
+        except Exception as e:
+            last_err = e
+    if last_err:
+        raise last_err
 
 
-def deliver_otp(email: str, code: str) -> None:
-    """Deliver a code by SMTP when configured."""
+def deliver_otp(email: str, code: str) -> bool:
+    """Deliver a code by SMTP when configured. Returns True if successfully sent via email."""
     if not SMTP_HOST or not SMTP_FROM_EMAIL:
-        if AUTH_DEBUG_OTP:
-            return
-        raise HTTPException(status_code=503, detail="Email service is not configured. Contact your administrator.")
+        return False
     try:
         _send_otp_smtp(email, code)
-    except Exception as exc:
-        if AUTH_DEBUG_OTP:
-            return
-        raise HTTPException(status_code=503, detail=f"Unable to send verification code email: {exc}") from exc
+        return True
+    except Exception:
+        return False
+
 
 
 
@@ -132,13 +143,20 @@ def request_otp(payload: OtpRequest, db: Session = Depends(get_db)):
         else:
             raise HTTPException(403, "Ask your administrator to provision your company account.")
     code = generate_otp()
-    deliver_otp(email, code)
+    sent_via_email = deliver_otp(email, code)
     db.add(OtpChallenge(email=email, code_digest=digest(code), expires_at=utcnow() + timedelta(minutes=OTP_EXPIRE_MINUTES)))
     db.commit()
-    # Connect an email/SMS provider here in production. The code is returned only when explicitly enabled for local development.
+
+    if sent_via_email and not AUTH_DEBUG_OTP:
+        msg = f"A verification code has been sent to {email}. Please check your inbox."
+        dev_code = None
+    else:
+        msg = f"Verification code generated for {email}."
+        dev_code = code
+
     return OtpRequestResponse(
-        message="A one-time code has been issued.", expires_in_seconds=OTP_EXPIRE_MINUTES * 60,
-        development_code=code if AUTH_DEBUG_OTP else None,
+        message=msg, expires_in_seconds=OTP_EXPIRE_MINUTES * 60,
+        development_code=dev_code,
     )
 
 

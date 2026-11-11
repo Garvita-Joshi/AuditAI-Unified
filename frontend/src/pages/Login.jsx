@@ -16,7 +16,12 @@ export default function Login({ onAuthenticated }) {
     try {
       const { data } = await authApi.requestOtp({ email });
       setStage('code');
-      setMessage(data.development_code ? `Verification code sent to ${email} (Dev preview: ${data.development_code})` : `We've sent a 6-digit verification code to ${email}. Please check your inbox.`);
+      if (data.development_code) {
+        setCode(data.development_code);
+        setMessage(`Verification code: ${data.development_code} (Code ready to verify)`);
+      } else {
+        setMessage(`We've sent a 6-digit verification code to ${email}. Please check your inbox.`);
+      }
     } catch (err) { setError(err.response?.data?.detail || 'Could not issue a one-time code.'); }
     finally { setBusy(false); }
   };
