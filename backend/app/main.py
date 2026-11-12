@@ -131,8 +131,9 @@ from backend.app.api.procurement import router as procurement_router
 from backend.app.api.procurement_extraction import router as extraction_router
 from backend.app.api.procurement_payments import router as payments_router
 from backend.app.api.sourcing import router as sourcing_router
+from backend.app.api.assistant import router as assistant_router
 from backend.app.api.company_password import router as company_password_router
-for router in (procurement_router, extraction_router, payments_router, sourcing_router):
+for router in (procurement_router, extraction_router, payments_router, sourcing_router, assistant_router):
     app.include_router(router, dependencies=[Depends(get_current_user)])
 app.include_router(company_password_router)
 

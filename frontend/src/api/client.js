@@ -238,4 +238,9 @@ export const dograhApi = {
 
 
 
+export const assistantApi = {
+  context: () => api.get('/assistant/context'),
+  chat: (message, history) => api.post('/assistant/chat', { message, history }),
+};
+
 export default api;

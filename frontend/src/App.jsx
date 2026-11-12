@@ -17,6 +17,7 @@ function OtpLogin(){const {user,authenticate}=useAuth();return user?<Navigate to
 import ReviewQueue from './pages/ReviewQueue';
 import CaseDetail from './pages/CaseDetail';
 import RecordDetail from './pages/RecordDetail';
+import GlobalCopilot from './components/GlobalCopilot';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -63,7 +64,15 @@ function ProtectedLayout() {
   const location = useLocation();
   if (loading) return <div className="auth-loading">Checking your session…</div>;
   if (!user) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
-  return <div className="app-container"><Navbar /><ErrorBoundary><Outlet /></ErrorBoundary></div>;
+  return (
+    <div className="app-container">
+      <Navbar />
+      <ErrorBoundary>
+        <Outlet />
+      </ErrorBoundary>
+      <GlobalCopilot />
+    </div>
+  );
 }
 
 function ReviewerOnly({ children }) {
