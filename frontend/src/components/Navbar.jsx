@@ -140,9 +140,9 @@ export default function Navbar() {
             </button>
           )}
 
-          <button className="nav-link navbar-signout" onClick={logout} title="Sign out">
-            <LogOut size={16} />
-            <span>Sign out</span>
+          <button className="nav-link navbar-signout" onClick={logout} title="Sign out" aria-label="Sign out">
+            <LogOut size={15} />
+            <span className="navbar-signout-text">Sign out</span>
           </button>
         </div>
       </div>
