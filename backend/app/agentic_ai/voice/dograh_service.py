@@ -199,10 +199,22 @@ async def initiate_vendor_rfq_call(
     1. Database-backed execution (via `request_id` and `agent_vendor_id`).
     2. Synthetic / direct dry-run testing (via direct vendor/RFQ fields).
     """
+    request_row = None
+    vendor_row = None
     if payload.request_id and payload.agent_vendor_id:
-        request_row = owned_rfq(db, payload.request_id, actor)
-        vendor_row = owned_vendor(db, request_row.id, payload.agent_vendor_id, actor)
+        try:
+            request_row = owned_rfq(db, payload.request_id, actor)
+            vendor_row = owned_vendor(db, request_row.id, payload.agent_vendor_id, actor)
+        except VoiceServiceError as exc:
+            # In dry-run mode or synthetic testing, gracefully fall back to direct simulation
+            # instead of returning a hard 404 error when records are from different sessions.
+            if not (dograh_client.dry_run or payload.test_mode):
+                raise
+            logger.info("Falling back to synthetic dry-run call execution: %s", exc.detail)
+            request_row = None
+            vendor_row = None
 
+    if request_row and vendor_row:
         # Resolve phone number: payload override > vendor offer > vendor catalog
         offer = vendor_row.offer or {}
         phone_number = (

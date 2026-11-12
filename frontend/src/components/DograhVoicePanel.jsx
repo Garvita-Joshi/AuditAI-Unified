@@ -99,8 +99,8 @@ export function DograhVoicePanel({
 
     try {
       const payload = {
-        request_id: request?.id || run?.request_id || 1,
-        agent_vendor_id: vendor?.id || 1,
+        request_id: run?.request_id || request?.id || null,
+        agent_vendor_id: vendor?.id || null,
         vendor_name: vendor?.name || 'Demo Vendor',
         phone_number: phone,
         rfq_reference: rfqRef,
@@ -140,8 +140,8 @@ export function DograhVoicePanel({
 
     try {
       const payload = {
-        request_id: request?.id || run?.request_id || 1,
-        agent_vendor_id: vendor?.id || 1,
+        request_id: run?.request_id || request?.id || null,
+        agent_vendor_id: vendor?.id || null,
         vendor_name: vendor?.name || 'Demo Vendor',
         phone_number: phone,
         rfq_reference: rfqRef,
