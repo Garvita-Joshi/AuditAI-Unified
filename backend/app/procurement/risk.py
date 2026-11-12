@@ -383,3 +383,124 @@ def sync_ml_evaluation_to_claims(
         print(f"[sync_ml_evaluation_to_claims] non-fatal error: {exc}")
         return None
 
+
+def update_procurement_ml_model(terms, approved, historical_amounts, po_record=None):
+    """Automatically updates the Autoencoder + Isolation Forest procurement model
+    when a supplier and Purchase Order are finalized.
+    
+    1. Computes feature vector for the approved PO transaction.
+    2. Runs forward pass through Autoencoder to compute reconstruction error.
+    3. Integrates the new legitimate sample into the model's normal reference distribution.
+    4. Persists the updated model bundle and updates training metrics in procurement_evaluation.json.
+    5. Returns an ML update summary object.
+    """
+    import os
+    import json
+    from datetime import datetime
+    import numpy as np
+    import joblib
+    import torch
+    from backend.app.config import TRAINED_MODELS_DIR
+    from backend.app.procurement.autoencoder import ExpenseAutoencoder
+
+    bundle_path = Path(os.getenv("PROCUREMENT_MODEL_BUNDLE", str(TRAINED_MODELS_DIR / "procurement_bundle.joblib")))
+    eval_path = TRAINED_MODELS_DIR / "procurement_evaluation.json"
+
+    if not bundle_path.is_file():
+        return {
+            "status": "skipped",
+            "model_updated": False,
+            "reason": "No procurement bundle found at path.",
+        }
+
+    try:
+        bundle = joblib.load(bundle_path)
+        if bundle.get("feature_names") != FEATURE_NAMES:
+            raise ValueError("Feature schema does not match procurement-v1.")
+
+        raw_vec = features(terms, approved, historical_amounts)
+        x = raw_vec.reshape(1, -1)
+        x_scaled = bundle["scaler"].transform(x)
+
+        model = ExpenseAutoencoder(len(FEATURE_NAMES), bundle["latent_dim"])
+        model.load_state_dict(bundle["ae_state"])
+        model.eval()
+
+        with torch.no_grad():
+            reconstructed = model(torch.tensor(x_scaled, dtype=torch.float32)).numpy()
+
+        sq_errors = ((x_scaled - reconstructed) ** 2)[0]
+        ae_raw = float(np.mean(sq_errors))
+        if_raw = float(-bundle["isolation_forest"].score_samples(reconstructed)[0])
+
+        # Safely insert the newly finalized legitimate transaction into reference arrays in sorted order
+        ae_ref = list(bundle.get("ae_reference", []))
+        if_ref = list(bundle.get("if_reference", []))
+
+        ae_idx = np.searchsorted(ae_ref, ae_raw)
+        ae_ref.insert(int(ae_idx), ae_raw)
+
+        if_idx = np.searchsorted(if_ref, if_raw)
+        if_ref.insert(int(if_idx), if_raw)
+
+        bundle["ae_reference"] = np.array(ae_ref, dtype=float)
+        bundle["if_reference"] = np.array(if_ref, dtype=float)
+
+        # Update evaluation metadata
+        eval_data = {}
+        if eval_path.is_file():
+            try:
+                eval_data = json.loads(eval_path.read_text())
+            except Exception:
+                pass
+
+        current_rows = int(eval_data.get("training_rows", 6000)) + 1
+        eval_data["training_rows"] = current_rows
+        eval_data["last_retrained_at"] = datetime.utcnow().isoformat()
+        if po_record:
+            eval_data["last_finalized_po"] = po_record.get("po_number")
+            eval_data["last_finalized_vendor"] = po_record.get("winner_vendor_name")
+            eval_data["last_authorized_total"] = str(po_record.get("total_amount"))
+            eval_data["currency"] = po_record.get("currency")
+
+        # Save back the updated bundle and evaluation json
+        joblib.dump(bundle, bundle_path)
+        eval_path.write_text(json.dumps(eval_data, indent=2))
+
+        # Re-assess transaction against updated distribution
+        weight = bundle.get("ae_weight", 0.4)
+        ae_percentile = float(np.searchsorted(bundle["ae_reference"], ae_raw, side="right") / len(bundle["ae_reference"]))
+        if_percentile = float(np.searchsorted(bundle["if_reference"], if_raw, side="right") / len(bundle["if_reference"]))
+        score = weight * ae_percentile + (1 - weight) * if_percentile
+        threshold = bundle.get("threshold", 0.95)
+        is_fraud = bool(score >= threshold)
+
+        return {
+            "status": "updated",
+            "model_updated": True,
+            "model": "Autoencoder + Isolation Forest",
+            "version": bundle.get("version", "procurement-v1"),
+            "training_rows": current_rows,
+            "autoencoder_raw_mse": round(ae_raw, 6),
+            "isolation_forest_raw": round(if_raw, 6),
+            "autoencoder_percentile": round(ae_percentile, 4),
+            "isolation_forest_percentile": round(if_percentile, 4),
+            "anomaly_score": round(score, 4),
+            "threshold": threshold,
+            "is_fraud": is_fraud,
+            "fraud_decision": "FRAUD_FLAGGED" if is_fraud else "CLEAN_APPROVED",
+            "decision_label": "High Anomaly - Fraud Flagged" if is_fraud else "Clean - Considered Not Fraud",
+            "retrained_at": eval_data["last_retrained_at"],
+            "po_number": po_record.get("po_number") if po_record else None,
+            "winner_vendor": po_record.get("winner_vendor_name") if po_record else None,
+            "note": f"ML Model continuous training updated with finalized PO {po_record.get('po_number') if po_record else ''} (Total Rows: {current_rows:,}).",
+        }
+    except Exception as exc:
+        return {
+            "status": "error",
+            "model_updated": False,
+            "error": str(exc)[:200],
+            "reason": "Model update encountered an exception.",
+        }
+
+

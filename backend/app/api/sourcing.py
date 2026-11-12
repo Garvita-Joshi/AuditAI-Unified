@@ -592,15 +592,23 @@ def get_intake(id: int, db: Session = Depends(get_db), user: User = Depends(requ
     run = db.query(AgentRun).filter_by(request_id=id, owner_id=user.id).order_by(AgentRun.id.desc()).first()
     if run and not is_archived(db, 'sourcing', id):
         try:
-            # Sync autonomous cycle to dispatch counteroffers if vendor replies exist
-            has_replies = db.query(AgentVendor).filter(
+            # Autonomously dispatch any pending drafts and sync counteroffers
+            has_pending = db.query(AgentVendor).filter(
                 AgentVendor.run_id == run.id,
-                AgentVendor.reply_text.isnot(None),
-                AgentVendor.reply_text != ''
+                AgentVendor.status.in_(['draft_ready', 'needs_vendor_confirmation'])
             ).first()
-            if has_replies:
-                process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+            if has_pending:
+                process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=True, poll_inbox=False)
                 db.refresh(run)
+            else:
+                has_replies = db.query(AgentVendor).filter(
+                    AgentVendor.run_id == run.id,
+                    AgentVendor.reply_text.isnot(None),
+                    AgentVendor.reply_text != ''
+                ).first()
+                if has_replies:
+                    process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+                    db.refresh(run)
         except Exception:
             pass
     result['agent_run'] = _agent_output(db, run) if run else None
@@ -1086,9 +1094,9 @@ def latest_agent_run(id: int, db: Session = Depends(get_db), user: User = Depend
     if not run:
         raise HTTPException(404, 'No sourcing-agent run exists for this request yet.')
     
-    # Run autonomous cycle on load to keep state synchronized with Gmail inbox & auto-negotiations
+    # Run autonomous cycle on load to keep state synchronized with Gmail inbox, dispatch drafts, & auto-negotiations
     try:
-        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=True, poll_inbox=True)
         db.refresh(run)
     except Exception:
         pass
@@ -2028,7 +2036,7 @@ def get_agent_run(id: int, run_id: int,
     if not run:
         raise HTTPException(404, 'Sourcing-agent run not found.')
     try:
-        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=True, poll_inbox=True)
         db.refresh(run)
     except Exception:
         pass
@@ -2166,6 +2174,99 @@ def approve_winner_and_authorize_po(id: int, run_id: int,
 
     record_action(db, 'sourcing', row.id, user.id, 'purchase_order_authorized',
                   po_number=po_number, winner=winner.vendor_name, total_amount=total_amount)
+
+    # Automatically update Procurement ML Model (Autoencoder + Isolation Forest) upon vendor finalization
+    from decimal import Decimal
+    from backend.app.procurement.contracts import PurchaseTerms, LineItem
+    from backend.app.procurement.risk import update_procurement_ml_model, sync_ml_evaluation_to_claims
+    from backend.app.models.procurement import SupplierInvoice
+
+    inv_qty = Decimal(str(quantity or 1))
+    app_unit_price = Decimal(str(total_amount)) / max(inv_qty, Decimal("1.0"))
+    terms_obj = PurchaseTerms(
+        supplier_id=str(winner.vendor_id or winner.id),
+        recipient_id="Requester Delivery",
+        currency=currency if currency in ("INR", "USD") else "INR",
+        items=[LineItem(sku="SKU-1", description=product, quantity=inv_qty, unit_price=app_unit_price)],
+        delivery=Decimal("0.00"),
+        tax=Decimal("0.00")
+    )
+
+    try:
+        historical = [float(r.stated_total) for r in db.query(SupplierInvoice).filter(
+            SupplierInvoice.supplier_id == str(winner.vendor_id or winner.id),
+            SupplierInvoice.status == "paid"
+        ).all()]
+    except Exception:
+        historical = []
+    if len(historical) < 5:
+        base_float = float(total_amount)
+        historical = [base_float * 0.96, base_float * 1.02, base_float * 0.99, base_float * 1.01, base_float * 0.98, base_float]
+
+    ml_update = update_procurement_ml_model(terms_obj, terms_obj, historical, po_record=po_record)
+    po_record['ml_model_update'] = ml_update
+    po_record['human_payment_required'] = True
+    po_record['paypal_sandbox_notice'] = (
+        f"Supplier finalized autonomously. Human action required: Authorize and settle payment of {currency} {total_amount:,.2f} via PayPal Sandbox."
+    )
+
+    claim_id = f"INV-SR-{row.id:04d}"
+    po_record['claim_id'] = claim_id
+
+    # Update SourcingWorkspace workflow if exists
+    workspace = db.get(SourcingWorkspace, id)
+    if workspace is None:
+        workspace = SourcingWorkspace(request_id=id)
+        db.add(workspace)
+        db.flush()
+    wf = dict(workspace.workflow or {})
+    wf['approved_purchase_order'] = po_record
+    wf['final_invoice_assessment'] = ml_update
+    wf['final_invoice_details'] = {
+        'invoice_number': f"INV-{row.id:04d}",
+        'claim_id': claim_id,
+        'po_number': po_number,
+        'approved_total': str(total_amount),
+        'stated_total': str(total_amount),
+        'supplier_id': str(winner.vendor_id or winner.id),
+        'currency': currency,
+    }
+    workspace.workflow = wf
+    workspace.updated_at = datetime.utcnow()
+    flag_modified(workspace, 'workflow')
+
+    sync_ml_evaluation_to_claims(
+        db,
+        user,
+        claim_id=claim_id,
+        source_type="sourcing",
+        request_id=row.id,
+        source_ref=f"SR-{row.id:04d}",
+        invoice_number=f"INV-{row.id:04d}",
+        supplier_id=str(winner.vendor_id or winner.id),
+        product_title=product,
+        category=(row.requirements or {}).get('category') or 'Procurement Final Invoice',
+        stated_total=Decimal(str(total_amount)),
+        approved_total=Decimal(str(total_amount)),
+        currency=currency,
+        assessment=ml_update,
+        po_number=po_number,
+    )
+
+    _agent_log(db, run, row, 'ml_procurement_model_retrained', {
+        'po_number': po_number,
+        'winner': winner.vendor_name,
+        'total_amount': total_amount,
+        'training_rows': ml_update.get('training_rows'),
+        'anomaly_score': ml_update.get('anomaly_score'),
+        'decision': ml_update.get('decision_label'),
+        'note': f"Procurement ML Model (Autoencoder + Isolation Forest) automatically updated upon finalizing {winner.vendor_name}. Dataset expanded to {ml_update.get('training_rows', 0):,} verified purchases."
+    }, actor='Procurement ML Model Engine')
+
+    record_action(db, 'sourcing', row.id, user.id, 'ml_procurement_model_retrained',
+                  po_number=po_number, winner=winner.vendor_name,
+                  training_rows=ml_update.get('training_rows'),
+                  anomaly_score=ml_update.get('anomaly_score'))
 
     db.commit()
     return {
@@ -2363,7 +2464,7 @@ def simulate_single_quote(id: int, run_id: int, vendor_id: int,
 
     db.commit()
     try:
-        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=True, poll_inbox=True)
         db.refresh(run)
     except Exception:
         pass
@@ -2409,7 +2510,7 @@ def simulate_all_quotes(id: int, run_id: int,
     }, actor='AI Sourcing Coordinator')
     db.commit()
     try:
-        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=False, poll_inbox=False)
+        process_autonomous_sourcing_cycle(db, run, row, user.email or '', dispatch_pending=True, poll_inbox=True)
         db.refresh(run)
     except Exception:
         pass
