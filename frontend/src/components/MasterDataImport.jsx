@@ -65,29 +65,29 @@ export default function MasterDataImport() {
   };
 
   return (
-    <section className="glass-card mb-6">
+    <section className="upload-section-card mb-6">
       <div className="flex items-center gap-2 mb-2">
-        <Database size={18} className="text-accent-primary" />
-        <h2 className="text-lg font-semibold">Master Reference Data & Ledger Ingestion</h2>
+        <Database size={20} className="text-accent-primary" />
+        <h2 className="upload-section-title" style={{ margin: 0 }}>Master Reference Data & Ledger Ingestion</h2>
       </div>
-      <p className="text-secondary text-xs mb-4">
+      <p className="upload-section-sub">
         Upload reference datasets once. Internal checks and collusion screening run automatically.
       </p>
 
       {/* Dataset status summary pills */}
-      <div className="grid-cols-3 gap-3 mb-5">
+      <div className="master-pills-grid">
         {Object.entries(DATASETS).map(([key, label]) => {
           const s = status.find((r) => r.dataset === key);
           const isLoaded = (s?.rows_loaded ?? 0) > 0;
           return (
-            <div key={key} className="p-3 rounded-lg border border-border-light bg-bg-surface flex items-start justify-between">
+            <div key={key} className="master-pill-card">
               <div>
-                <div className="text-xs font-semibold text-primary">{label}</div>
-                <div className="text-[11px] text-muted mt-0.5">
+                <div className="pill-title">{label}</div>
+                <div className="pill-sub">
                   {s?.rows_loaded ?? 0} rows; last attempt {s?.last_imported_at || 'Never'}; status {s?.last_import_status || 'Not imported'}
                 </div>
               </div>
-              <span className={`badge text-[10px] ${isLoaded ? 'badge-green' : 'badge-gray'}`}>
+              <span className={`badge text-[11px] ${isLoaded ? 'badge-green' : 'badge-gray'}`} style={{ padding: '3px 10px', borderRadius: '6px' }}>
                 {isLoaded ? 'Loaded' : 'Pending'}
               </span>
             </div>
@@ -96,7 +96,7 @@ export default function MasterDataImport() {
       </div>
 
       {user?.roles?.includes('admin') ? (
-        <form className="transfer-controls" onSubmit={upload}>
+        <form className="master-form-controls" onSubmit={upload}>
           <label>
             Dataset type
             <select
@@ -134,11 +134,11 @@ export default function MasterDataImport() {
             {busy ? 'Importing and checking...' : 'Import and check'}
           </button>
           {DATASETS[dataset] ? (
-            <a href={`/samples/master-data/${dataset}.csv`} download className="text-xs text-accent-primary hover:underline">
+            <a href={`/samples/master-data/${dataset}.csv`} download className="text-xs text-accent-primary hover:underline" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
               Download synthetic example CSV
             </a>
           ) : (
-            <a href="/downloads/aster/aster_upload_pack.zip" download className="text-xs text-accent-primary hover:underline">
+            <a href="/downloads/aster/aster_upload_pack.zip" download className="text-xs text-accent-primary hover:underline" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
               Download Aster demo files
             </a>
           )}

@@ -306,6 +306,30 @@ export default function AuditTimeLogModal({
     return true;
   });
 
+  const quoteId = `${requestKind.toUpperCase()}-${String(requestId).padStart(4, '0')}`;
+  const firstLog = logs[0];
+  const createdDate = firstLog?.timestamp || firstLog?.log_time;
+  const createdDateFormatted = createdDate
+    ? new Date(createdDate).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
+    : '11.12.2026';
+
+  const amountEntry = logs.find(l => l.details?.amount || l.details?.total_price || l.details?.stated_total);
+  const displayAmount = amountEntry?.details?.total_price || amountEntry?.details?.stated_total || amountEntry?.details?.amount;
+  const currencySymbol = amountEntry?.details?.currency === 'USD' ? '$' : '₹';
+  const displayPrice = displayAmount ? `${currencySymbol}${Number(displayAmount).toLocaleString()}` : 'Budget Cap';
+
+  const getStageMeta = (action, category, details) => {
+    const act = (action || '').toLowerCase();
+    if (act.includes('created') || act.includes('intake')) return { title: 'Shipper', sub: details?.actor || 'Requester' };
+    if (act.includes('outreach') || act.includes('rfq') || act.includes('agent_started')) return { title: 'Outreach', sub: 'SMTP Dispatch' };
+    if (act.includes('reply') || act.includes('quoted') || act.includes('quotation')) return { title: 'Quotation', sub: 'Vendor Reply' };
+    if (act.includes('counter') || act.includes('negotiat') || act.includes('discount')) return { title: 'Negotiation', sub: 'Counteroffer' };
+    if (act.includes('winner') || act.includes('po_') || act.includes('award')) return { title: 'PO Award', sub: 'Decision Finalized' };
+    if (act.includes('invoice') || act.includes('ocr') || act.includes('ml')) return { title: 'Verification', sub: 'ML Evaluation' };
+    if (act.includes('payment') || act.includes('paypal') || act.includes('settle')) return { title: 'Settlement', sub: 'PayPal Sandbox' };
+    return { title: category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Milestone', sub: 'Audit Event' };
+  };
+
   return (
     <div className="atl-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="atl-modal-card" onClick={e => e.stopPropagation()}>
@@ -364,6 +388,30 @@ export default function AuditTimeLogModal({
             </button>
           </div>
         </header>
+
+        {/* Top Summary Metric Cards (matching reference Image 3) */}
+        <div className="atl-summary-cards">
+          <div className="atl-summary-card">
+            <div className="atl-summary-icon blue">#</div>
+            <div className="atl-summary-val">{quoteId}</div>
+            <div className="atl-summary-lbl">quote id</div>
+          </div>
+          <div className="atl-summary-card">
+            <div className="atl-summary-icon cyan">📅</div>
+            <div className="atl-summary-val">{createdDateFormatted}</div>
+            <div className="atl-summary-lbl">created</div>
+          </div>
+          <div className="atl-summary-card">
+            <div className="atl-summary-icon orange">⚡</div>
+            <div className="atl-summary-val">{logs.length} events</div>
+            <div className="atl-summary-lbl">milestones</div>
+          </div>
+          <div className="atl-summary-card">
+            <div className="atl-summary-icon pink">💲</div>
+            <div className="atl-summary-val">{displayPrice}</div>
+            <div className="atl-summary-lbl">price estimate</div>
+          </div>
+        </div>
 
         {/* Toolbar: Search + Category Filter Tabs */}
         <div className="atl-toolbar">
@@ -443,11 +491,18 @@ export default function AuditTimeLogModal({
                   ? Math.max(0, Math.floor((Date.now() - dateObj.getTime()) / 60000))
                   : null;
 
+                const stageMeta = getStageMeta(log.action, cfg.category, details);
+
                 return (
                   <div key={log.id || index} className="atl-event-row">
+                    <div className="atl-stage-col">
+                      <div className="atl-stage-title">{stageMeta.title}</div>
+                      <div className="atl-stage-sub">{stageMeta.sub}</div>
+                    </div>
+
                     <div className="atl-timeline-connector">
                       <div
-                        className="atl-event-icon-circle"
+                        className={`atl-event-icon-circle ${index === 0 ? 'atl-node-first' : ''}`}
                         style={{ background: cfg.bg, color: cfg.color, borderColor: cfg.color }}
                       >
                         <Icon size={14} />

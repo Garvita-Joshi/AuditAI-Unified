@@ -3291,15 +3291,23 @@
 
 .p-notification-button {
   position: relative;
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #352a25;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(239, 153, 118, 0.45);
   border-radius: 50%;
-  background: #202020;
+  background: #241f1c;
   color: #ef9976;
-  font-size: 20px
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.p-notification-button:hover {
+  background: #352b24;
+  border-color: #ef9976;
+  transform: scale(1.05);
 }
 
 .p-notification-button b {

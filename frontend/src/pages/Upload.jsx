@@ -4,9 +4,10 @@ import { claimsApi, fraudApi, receiptsApi, procurementApi } from '../api/client'
 import FileUpload from '../components/FileUpload';
 import MasterDataImport from '../components/MasterDataImport';
 import AutomaticCheckResult from '../components/AutomaticCheckResult';
-import { Play, FileText, Search, CheckCircle, Clock, AlertTriangle, Loader, Link2, FilePlus } from 'lucide-react';
+import { Play, FileText, Search, CheckCircle, Clock, AlertTriangle, Loader, Link2, FilePlus, Database } from 'lucide-react';
 import { isReviewer, useAuth } from '../auth/AuthContext';
 import { useAuditProfile } from '../context/AuditProfileContext';
+import './Upload.css';
 
 // ── Procurement Invoice Upload Pipeline ──────────────────────────────────────
 function PipelineStep({ label, status, timestamp }) {
@@ -84,53 +85,52 @@ function InvoiceUploadSection() {
   const trail = invResult?.audit_trail || [];
 
   return (
-    <div className="glass-card mb-6" style={{ marginTop: 24 }}>
-      <h3 id="invoice-import" className="text-lg font-semibold mb-1">
+    <div className="upload-section-card mb-6" style={{ marginTop: 28 }}>
+      <h3 id="invoice-import" className="upload-section-title">
         3. Invoice Upload
-        <span className="badge text-xs" style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.3)', marginLeft: 8, verticalAlign: 'middle' }}>Procurement</span>
+        <span className="badge text-xs" style={{ background: 'rgba(239,153,118,0.18)', color: '#ef9976', border: '1px solid rgba(239,153,118,0.35)', marginLeft: 10, verticalAlign: 'middle' }}>Procurement</span>
       </h3>
-      <p className="text-secondary text-xs mb-5">Upload a supplier invoice — OCR reads the fields, ML checks for fraud, and it's linked to a request with a full timestamped audit trail.</p>
+      <p className="upload-section-sub">Upload a supplier invoice — OCR reads the fields, ML checks for fraud, and it's linked to a request with a full timestamped audit trail.</p>
 
       {/* Mode selector */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+      <div className="upload-mode-buttons">
         {[['attach', Link2, 'Attach to existing request'], ['new', FilePlus, 'New standalone invoice']].map(([m, Icon, label]) => (
-          <button key={m} className={`btn text-xs ${mode === m ? 'btn-primary' : ''}`}
-            style={{ display: 'flex', alignItems: 'center', gap: 5, opacity: mode === m ? 1 : 0.7 }}
+          <button key={m} className={`upload-mode-btn ${mode === m ? 'active' : ''}`}
             onClick={() => { setMode(m); setInvResult(null); setInvState('idle'); setInvError(''); if (m === 'attach') loadRequests(); else setSelectedRequest(null); }}>
-            <Icon size={13} />{label}
+            <Icon size={14} />{label}
           </button>
         ))}
       </div>
 
       {/* Attach mode: request search */}
       {mode === 'attach' && (
-        <div className="mb-5">
-          <label className="text-xs text-secondary mb-1 block font-medium">Target Procurement Request</label>
-          <div style={{ position: 'relative', marginBottom: 6 }}>
-            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', opacity: 0.4, pointerEvents: 'none' }} />
-            <input type="text" className="input text-sm" style={{ paddingLeft: 30 }}
+        <div className="upload-target-search">
+          <label className="text-xs text-secondary mb-2 block font-semibold">Target Procurement Request</label>
+          <div style={{ position: 'relative', marginBottom: 8 }}>
+            <Search size={15} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', opacity: 0.5, pointerEvents: 'none' }} />
+            <input type="text" className="input"
               placeholder="Search PR number, title, or supplier…"
               value={requestSearch}
               onFocus={loadRequests}
               onChange={e => { setRequestSearch(e.target.value); loadRequests(); }} />
           </div>
           {requestSearch && filtered.length > 0 && (
-            <div className="glass-card" style={{ padding: '4px 0', maxHeight: 170, overflowY: 'auto', marginBottom: 8 }}>
+            <div className="glass-card" style={{ padding: '6px 0', maxHeight: 200, overflowY: 'auto', marginBottom: 12, background: '#241e1a' }}>
               {filtered.map(r => (
-                <button key={r.id} style={{ width: '100%', padding: '7px 14px', textAlign: 'left', display: 'block', background: selectedRequest?.id === r.id ? 'rgba(99,102,241,0.12)' : 'transparent', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                  className="text-xs" onClick={() => { setSelectedRequest(r); setRequestSearch(''); }}>
-                  <span className="font-medium">{r.label}</span>
-                  <span className="text-muted" style={{ marginLeft: 8 }}>{r.status} · {r.supplier}</span>
+                <button key={r.id} style={{ width: '100%', padding: '10px 16px', textAlign: 'left', display: 'block', background: selectedRequest?.id === r.id ? 'rgba(239,153,118,0.15)' : 'transparent', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                  className="text-xs text-primary" onClick={() => { setSelectedRequest(r); setRequestSearch(''); }}>
+                  <span className="font-semibold text-accent-primary">{r.label}</span>
+                  <span className="text-muted" style={{ marginLeft: 10 }}>{r.status} · {r.supplier}</span>
                 </button>
               ))}
             </div>
           )}
           {selectedRequest && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', background: 'rgba(99,102,241,0.08)', borderRadius: 6, border: '1px solid rgba(99,102,241,0.25)', marginBottom: 8 }}>
-              <CheckCircle size={14} style={{ color: '#10b981' }} />
-              <span className="text-xs font-medium">{selectedRequest.label}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 16px', background: 'rgba(239,153,118,0.1)', borderRadius: 8, border: '1px solid rgba(239,153,118,0.3)', marginBottom: 14 }}>
+              <CheckCircle size={16} style={{ color: '#34d399' }} />
+              <span className="text-xs font-semibold text-primary">{selectedRequest.label}</span>
               <span className="text-muted text-xs">· {selectedRequest.status}</span>
-              <button className="text-muted text-xs" style={{ marginLeft: 'auto' }} onClick={() => setSelectedRequest(null)}>✕ Clear</button>
+              <button className="text-muted text-xs hover:text-primary" style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer' }} onClick={() => setSelectedRequest(null)}>✕ Clear</button>
             </div>
           )}
         </div>
@@ -138,8 +138,8 @@ function InvoiceUploadSection() {
 
       {/* New mode info */}
       {mode === 'new' && (
-        <div className="mb-5" style={{ padding: '10px 14px', background: 'rgba(99,102,241,0.07)', borderRadius: 6, border: '1px solid rgba(99,102,241,0.2)' }}>
-          <p className="text-xs text-secondary"><span className="font-medium">Auto-create mode:</span> A new Draft procurement request will be created from the extracted invoice fields. Review and complete it in the Procurement section.</p>
+        <div className="mb-6" style={{ padding: '14px 18px', background: 'rgba(239,153,118,0.08)', borderRadius: 10, border: '1px solid rgba(239,153,118,0.25)' }}>
+          <p className="text-xs text-secondary"><span className="font-semibold text-primary">Auto-create mode:</span> A new Draft procurement request will be created from the extracted invoice fields. Review and complete it in the Procurement section.</p>
         </div>
       )}
 
@@ -450,7 +450,7 @@ export default function Upload() {
         </div>
       )}
 
-      <div className="glass-card">
+      <div className="pipeline-status-card">
         <h3 className="text-base font-semibold mb-4">Pipeline Status</h3>
         <div className="flex items-center justify-between text-xs">
           <div className={`flex flex-col items-center ${csvUploadState === 'complete' ? 'text-status-success' : 'text-muted'}`}>

@@ -503,7 +503,16 @@ def sourcing_paypal_capture(id: int, db: Session = Depends(get_db), user: User =
     paypal_state["status"] = "completed"
     paypal_state["provider_status"] = remote_status
     paypal_state["captured_at"] = datetime.utcnow().isoformat()
+    inv_details["payment_status"] = "completed"
+    inv_details["status"] = "settled"
+    wf["final_invoice_details"] = inv_details
     wf["paypal_payment"] = paypal_state
+    if "purchase_order" in wf:
+        po_dict = dict(wf["purchase_order"])
+        po_dict["payment_status"] = "completed"
+        po_dict["status"] = "paid"
+        wf["purchase_order"] = po_dict
+    workspace.status = "payment_completed"
     workspace.workflow = wf
     workspace.updated_at = datetime.utcnow()
     flag_modified(workspace, "workflow")

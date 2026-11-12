@@ -161,6 +161,90 @@
   color: #fafaf9;
 }
 
+/* Top Summary Metric Cards (Reference Image 3) */
+.atl-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 18px 26px 6px;
+  background: #1c1714;
+}
+
+@media (max-width: 640px) {
+  .atl-summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.atl-summary-card {
+  background: #251e1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  transition: all 0.15s ease;
+}
+
+.atl-summary-card:hover {
+  background: #2d231e;
+  border-color: rgba(239, 153, 118, 0.3);
+  transform: translateY(-1px);
+}
+
+.atl-summary-icon {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.atl-summary-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fafaf9;
+  letter-spacing: -0.01em;
+}
+
+.atl-summary-lbl {
+  font-size: 11px;
+  font-weight: 500;
+  color: #a8a29e;
+  text-transform: lowercase;
+}
+
+/* Stage Column (Image 3 Left Side) */
+.atl-stage-col {
+  width: 110px;
+  flex-shrink: 0;
+  text-align: right;
+  padding-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.atl-stage-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #fafaf9;
+  letter-spacing: -0.01em;
+}
+
+.atl-stage-sub {
+  font-size: 11px;
+  color: #a8a29e;
+  line-height: 1.3;
+}
+
+.atl-node-first {
+  background: #ef9976 !important;
+  color: #1a130e !important;
+  border-color: #ef9976 !important;
+  box-shadow: 0 0 12px rgba(239, 153, 118, 0.5) !important;
+}
+
 /* Toolbar */
 .atl-toolbar {
   padding: 14px 26px;
@@ -288,9 +372,9 @@
 
 .atl-timeline-line {
   flex: 1 1 auto;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 4px 0;
+  width: 0;
+  border-left: 2px dashed rgba(239, 153, 118, 0.3);
+  margin: 6px 0;
 }
 
 .atl-event-card {

@@ -63,14 +63,14 @@ export default function WorkspaceSettingsModal({ isOpen, onClose }) {
           </div>
         ) : (
           <form onSubmit={handleSave}>
-            <div className="mb-4">
-              <label htmlFor="company-name-input" className="text-xs text-secondary font-medium block mb-1">
+            <div className="mb-5">
+              <label htmlFor="company-name-input">
                 Company / Organization Name
               </label>
               <input
                 id="company-name-input"
                 type="text"
-                className="input text-sm"
+                className="input"
                 value={formCompany}
                 onChange={(e) => setFormCompany(e.target.value)}
                 placeholder="e.g. Acme Global Corp"
@@ -78,13 +78,13 @@ export default function WorkspaceSettingsModal({ isOpen, onClose }) {
               />
             </div>
 
-            <div className="mb-4">
-              <label htmlFor="workspace-edition-select" className="text-xs text-secondary font-medium block mb-1">
+            <div className="mb-5">
+              <label htmlFor="workspace-edition-select">
                 System Edition
               </label>
               <select
                 id="workspace-edition-select"
-                className="input text-sm"
+                className="input"
                 value={formProfile}
                 onChange={(e) => setFormProfile(e.target.value)}
               >
@@ -96,13 +96,13 @@ export default function WorkspaceSettingsModal({ isOpen, onClose }) {
               </select>
             </div>
 
-            <div className="mb-5">
-              <label htmlFor="workspace-currency-select" className="text-xs text-secondary font-medium block mb-1">
+            <div className="mb-6">
+              <label htmlFor="workspace-currency-select">
                 Primary Reporting Currency
               </label>
               <select
                 id="workspace-currency-select"
-                className="input text-sm"
+                className="input"
                 value={formCurrency}
                 onChange={(e) => setFormCurrency(e.target.value)}
               >
@@ -113,12 +113,12 @@ export default function WorkspaceSettingsModal({ isOpen, onClose }) {
               </select>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-glass">
-              <button type="button" className="btn btn-secondary text-xs" onClick={onClose}>
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-glass">
+              <button type="button" className="btn btn-secondary" onClick={onClose}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary text-xs flex items-center gap-1.5">
-                <Check size={14} />
+              <button type="submit" className="btn btn-primary flex items-center gap-2">
+                <Check size={16} />
                 <span>{savedNotice ? 'Saved!' : 'Save Settings'}</span>
               </button>
             </div>

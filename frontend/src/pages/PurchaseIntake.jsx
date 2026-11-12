@@ -1577,11 +1577,11 @@ export function SourcingAgentReview({run,selected,setSelected,busy,onSend,onRepl
      <div style={{marginTop:'26px',padding:'24px 26px',borderRadius:'14px',background:'linear-gradient(135deg, rgba(38,32,29,0.95) 0%, rgba(28,25,23,0.95) 100%)',border:'1.5px solid rgba(239, 153, 118, 0.45)',boxShadow:'0 10px 30px rgba(0,0,0,0.35)'}}>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexWrap:'wrap',gap:'16px',marginBottom:'18px',paddingBottom:'16px',borderBottom:'1px solid rgba(255,255,255,0.08)'}}>
        <div>
-        <div style={{display:'inline-flex',alignItems:'center',gap:'8px',background:'rgba(239, 153, 118, 0.15)',border:'1px solid rgba(239, 153, 118, 0.35)',padding:'4px 12px',borderRadius:'999px',fontSize:'11px',fontWeight:800,letterSpacing:'0.06em',color:'#ef9976',textTransform:'uppercase',marginBottom:'8px'}}>
-         ⚡ Human-in-the-Loop Gate · Payment Settlement Only
+        <div style={{display:'inline-flex',alignItems:'center',gap:'8px',background:paypalPayment?.status?.toLowerCase() === 'completed' ? 'rgba(16,185,129,0.2)' : 'rgba(239, 153, 118, 0.15)',border:paypalPayment?.status?.toLowerCase() === 'completed' ? '1px solid rgba(16,185,129,0.45)' : '1px solid rgba(239, 153, 118, 0.35)',padding:'4px 12px',borderRadius:'999px',fontSize:'11px',fontWeight:800,letterSpacing:'0.06em',color:paypalPayment?.status?.toLowerCase() === 'completed' ? '#34d399' : '#ef9976',textTransform:'uppercase',marginBottom:'8px'}}>
+         {paypalPayment?.status?.toLowerCase() === 'completed' ? '✓ Payment Settled via PayPal Sandbox' : '⚡ Human-in-the-Loop Gate · Payment Settlement Only'}
         </div>
         <h4 style={{margin:'4px 0 6px',fontSize:'20px',fontWeight:800,color:'#fafaf9'}}>
-         Purchase Order {poRecord.po_number} · Ready for Payment
+         Purchase Order {poRecord.po_number} · {paypalPayment?.status?.toLowerCase() === 'completed' ? 'Payment Completed (Settled)' : 'Ready for Payment'}
         </h4>
         <p style={{margin:0,fontSize:'13px',color:'#d6d3d1',maxWidth:'780px',lineHeight:1.55}}>
          The AI Sourcing Agent has autonomously selected {poRecord.winner_vendor_name || favouredVendorName}, verified commercial terms, and negotiated best pricing. Human oversight is involved <strong>strictly at payment time</strong>.
@@ -1628,26 +1628,34 @@ export function SourcingAgentReview({run,selected,setSelected,busy,onSend,onRepl
           )}
          </span>
         </div>
-        <div style={{display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap'}}>
-         <button
-          type="button"
-          className="cv-btn cv-btn-secondary"
-          style={{padding:'9px 18px',fontSize:'12.5px',fontWeight:700,borderRadius:'9px'}}
-          disabled={paypalBusy}
-          onClick={handlePaypalCheckout}
-         >
-          {paypalBusy ? 'Creating Order…' : 'Pay via PayPal Sandbox ↗'}
-         </button>
-         <button
-          type="button"
-          className="cv-btn cv-btn-primary"
-          style={{background:'#ef9976',border:'1px solid #ef9976',color:'#1c1917',padding:'9px 20px',fontSize:'12.5px',fontWeight:800,borderRadius:'9px'}}
-          disabled={paypalBusy}
-          onClick={handlePaypalDirectSettle}
-         >
-          {paypalBusy ? 'Settling…' : '⚡ 1-Click Direct Settlement (Skip Login)'}
-         </button>
-        </div>
+        {paypalPayment?.status?.toLowerCase() === 'completed' ? (
+         <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+          <span style={{background:'rgba(16,185,129,0.2)',color:'#34d399',border:'1px solid rgba(16,185,129,0.45)',fontWeight:800,fontSize:'12.5px',padding:'8px 16px',borderRadius:'8px',display:'inline-flex',alignItems:'center',gap:'6px'}}>
+           ✓ Payment Completed & Reconciled
+          </span>
+         </div>
+        ) : (
+         <div style={{display:'flex',alignItems:'center',gap:'12px',flexWrap:'wrap'}}>
+          <button
+           type="button"
+           className="cv-btn cv-btn-secondary"
+           style={{padding:'9px 18px',fontSize:'12.5px',fontWeight:700,borderRadius:'9px'}}
+           disabled={paypalBusy}
+           onClick={handlePaypalCheckout}
+          >
+           {paypalBusy ? 'Creating Order…' : 'Pay via PayPal Sandbox ↗'}
+          </button>
+          <button
+           type="button"
+           className="cv-btn cv-btn-primary"
+           style={{background:'#ef9976',border:'1px solid #ef9976',color:'#1c1917',padding:'9px 20px',fontSize:'12.5px',fontWeight:800,borderRadius:'9px'}}
+           disabled={paypalBusy}
+           onClick={handlePaypalDirectSettle}
+          >
+           {paypalBusy ? 'Settling…' : '⚡ 1-Click Direct Settlement (Skip Login)'}
+          </button>
+         </div>
+        )}
        </div>
        {paypalMsg && (
         <div style={{marginTop:'12px',padding:'10px 14px',borderRadius:'8px',background:paypalMsg.startsWith('Error')?'rgba(239,68,68,0.12)':'rgba(16,185,129,0.12)',border:`1px solid ${paypalMsg.startsWith('Error')?'rgba(239,68,68,0.3)':'rgba(16,185,129,0.3)'}`,color:paypalMsg.startsWith('Error')?'#fca5a5':'#34d399',fontSize:'12.5px',fontWeight:600}}>

@@ -301,14 +301,20 @@ def upload_invoice(
                       supplier_id=draft.get("supplier_id"), total=draft.get("total"),
                       timestamp=create_ts, log_time=create_human)
 
-    # ── Step 4: Store document file reference ─────────────────────────────────
+    # ── Step 4: Store document file to disk and record in database ─────────────
+    from backend.app.config import UPLOAD_DIR
     import hashlib, uuid as _uuid
-    storage_key = f"inv_{_uuid.uuid4().hex[:12]}_{hashlib.sha1(data).hexdigest()[:8]}"
+    folder = UPLOAD_DIR / "procurement"
+    folder.mkdir(parents=True, exist_ok=True)
+    storage_key = f"{_uuid.uuid4().hex}{suffix}"
+    doc_path = folder / storage_key
+    doc_path.write_bytes(data)
+
     db.add(ProcurementDocument(
         request_id=request_id,
-        filename=file.filename or f"invoice_{storage_key}.pdf",
+        filename=Path(file.filename or f"invoice_{storage_key}.pdf").name[:255],
         storage_key=storage_key,
-        kind="invoice_upload",
+        kind="invoice",
         size=len(data),
     ))
     doc_ts = _now_iso()

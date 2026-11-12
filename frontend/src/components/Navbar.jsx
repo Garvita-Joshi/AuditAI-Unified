@@ -32,24 +32,12 @@ export default function Navbar() {
   return (
     <nav className="navbar glass-card" aria-label="Main navigation">
       <div className="navbar-content">
-        <div className="navbar-brand" onClick={handleNavClick('/')} style={{ cursor: 'pointer' }}>
+        <div className="navbar-brand" onClick={handleNavClick('/procurement')} style={{ cursor: 'pointer' }}>
           <img className="brand-logo" src="/auditai-logo.png" alt="AuditAI mascot" />
           <span className="brand-text">AuditAI</span>
         </div>
 
         <div className="navbar-links">
-          {reviewer && (
-            <NavLink
-              to="/"
-              target="_self"
-              onClick={handleNavClick('/')}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
-              <LayoutDashboard size={16} />
-              <span>Dashboard</span>
-            </NavLink>
-          )}
-
           <NavLink
             to="/procurement"
             target="_self"
@@ -59,6 +47,18 @@ export default function Navbar() {
             <FileText size={16} />
             <span>Procurement</span>
           </NavLink>
+
+          {reviewer && (
+            <NavLink
+              to="/dashboard"
+              target="_self"
+              onClick={handleNavClick('/dashboard')}
+              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+            >
+              <LayoutDashboard size={16} />
+              <span>Dashboard</span>
+            </NavLink>
+          )}
 
           <NavLink
             to="/upload"

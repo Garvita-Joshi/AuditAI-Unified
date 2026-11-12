@@ -2,7 +2,7 @@
   "data_source": "Multi-currency (INR/USD) & Service/Goods calibrated procurement simulator",
   "architecture": "8 features -> Contrastive Autoencoder decoded output -> Isolation Forest; 0.55 AE percentile + 0.45 IF percentile",
   "split": "Independent random seeds; normal-only validation reference; held-out normal and injected anomalies for testing",
-  "training_rows": 6002,
+  "training_rows": 6004,
   "validation_rows": 1500,
   "test_rows": 2000,
   "test_anomalies": 500,
@@ -28,7 +28,7 @@
     "supplier_history_count",
     "supplier_amount_ratio"
   ],
-  "last_retrained_at": "2026-11-12T05:48:01.974109",
+  "last_retrained_at": "2026-11-12T06:31:57.857767",
   "last_finalized_po": "PO-AUDITAI-0001-001",
   "last_finalized_vendor": "RackTech Global",
   "last_authorized_total": "220000.0",
