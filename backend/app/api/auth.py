@@ -127,7 +127,7 @@ def request_otp(payload: OtpRequest, db: Session = Depends(get_db)):
     if not account:
         import os
         auto_prov = os.getenv("AUTH_AUTO_PROVISION", "true").lower() in ("true", "1", "yes")
-        if auto_prov:
+        if auto_prov and not email.endswith("@auditai.example"):
             from backend.app.auth.security import hash_password
             is_admin = ("admin" in email or email in ("prepares23@gmail.com", "garvita_joshi@technologymindz.com"))
             roles = ["admin", "maker", "checker", "manager", "finance", "security", "legal", "procurement", "it", "employee"] if is_admin else ["employee", "maker"]

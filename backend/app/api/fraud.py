@@ -183,6 +183,14 @@ def get_fraud_summary(db: Session = Depends(get_db)):
     """Get dashboard summary statistics."""
     total_claims = db.query(ExpenseClaim).count()
     if total_claims == 0:
+        try:
+            from backend.app.seed_loader import seed_initial_claims_data
+            if seed_initial_claims_data(db):
+                total_claims = db.query(ExpenseClaim).count()
+        except Exception:
+            pass
+
+    if total_claims == 0:
         return {
             "total_claims": 0,
             "flagged_count": 0,

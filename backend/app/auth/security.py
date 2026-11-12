@@ -12,11 +12,15 @@ from sqlalchemy.orm import Session
 from backend.app.db import get_db
 from backend.app.models.auth import AuthSession, AuthUser, ClaimContributor
 
+COMPANY_EMAIL_DOMAINS = {
+    d.strip().lower()
+    for d in os.getenv("COMPANY_EMAIL_DOMAINS", "auditai.example,auditai.local,demo-industries.example,example.com,lnmiit.ac.in").split(",")
+    if d.strip()
+}
+
+
 def get_allowed_email_domains() -> set[str]:
-    raw = os.getenv("COMPANY_EMAIL_DOMAINS", "auditai.example,gmail.com,auditai.local,demo-industries.example,example.com,lnmiit.ac.in")
-    domains = {d.strip().lower() for d in raw.split(",") if d.strip()}
-    domains.add("gmail.com")
-    return domains
+    return set(COMPANY_EMAIL_DOMAINS)
 
 
 SESSION_HOURS = int(os.getenv("AUTH_SESSION_HOURS", "12"))
@@ -29,7 +33,7 @@ def normalize_company_email(email: str) -> str:
     if not re.fullmatch(r"[^@\s]+@[^@\s]+", normalized):
         raise ValueError("Enter a valid company email address.")
     domain = normalized.rsplit("@", 1)[1]
-    allowed = get_allowed_email_domains()
+    allowed = set(COMPANY_EMAIL_DOMAINS)
     if domain not in allowed and normalized not in ("prepares23@gmail.com", "garvita_joshi@technologymindz.com"):
         raise ValueError("Only an approved company email domain is allowed.")
     return normalized
