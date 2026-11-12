@@ -57,6 +57,13 @@ async def lifespan(_app: FastAPI):
         except Exception:
             db.rollback()
 
+        # Seed initial 18 claims & fraud predictions if database is empty (e.g. fresh Railway deploy)
+        try:
+            from backend.app.seed_loader import seed_initial_claims_data
+            seed_initial_claims_data(db)
+        except Exception as e:
+            print(f"[MAIN] Error seeding demo claims: {e}")
+
     import asyncio
     from backend.app.agentic_ai.background_worker import start_autonomous_sourcing_worker, stop_autonomous_sourcing_worker
     worker_task = asyncio.create_task(start_autonomous_sourcing_worker(poll_interval_seconds=15))

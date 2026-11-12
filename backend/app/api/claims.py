@@ -97,6 +97,14 @@ def init_db(db: Session = Depends(get_db), user: AuthUser = Depends(require_role
         raise HTTPException(status_code=500, detail=f"DB init failed: {e}")
 
 
+@router.post("/seed-demo", status_code=status.HTTP_200_OK)
+def seed_demo_claims(db: Session = Depends(get_db)):
+    """Seed or restore the initial 18 claims and fraud predictions for the dashboard."""
+    from backend.app.seed_loader import seed_initial_claims_data
+    seeded = seed_initial_claims_data(db)
+    return {"status": "success", "seeded": seeded, "claims_count": db.query(ExpenseClaim).count()}
+
+
 @router.post("/upload", response_model=UploadResponse)
 async def upload_claims(
     file: UploadFile = File(...),

@@ -1,0 +1,1106 @@
+{
+  "entities": [
+    {
+      "id": 1,
+      "name": "APAC Entity",
+      "currency": "INR",
+      "materiality_threshold": 50000
+    }
+  ],
+  "receipts": [
+    {
+      "id": 1,
+      "receipt_id": "CSV-2191d7e7232f4598",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080805"
+    },
+    {
+      "id": 2,
+      "receipt_id": "CSV-91886c0a3e914a85",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080810"
+    },
+    {
+      "id": 3,
+      "receipt_id": "CSV-cad183bb5e614614",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080812"
+    },
+    {
+      "id": 4,
+      "receipt_id": "CSV-04a86dc4d9e14eac",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080814"
+    },
+    {
+      "id": 5,
+      "receipt_id": "CSV-32dae5b1952b4c93",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080816"
+    },
+    {
+      "id": 6,
+      "receipt_id": "CSV-b13593f9fa08423f",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080818"
+    },
+    {
+      "id": 7,
+      "receipt_id": "CSV-fe9b3e3e773643f1",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080819"
+    },
+    {
+      "id": 8,
+      "receipt_id": "CSV-a6587bbe9abb4800",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080821"
+    },
+    {
+      "id": 9,
+      "receipt_id": "CSV-fa60d8f45a2140b6",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080823"
+    },
+    {
+      "id": 10,
+      "receipt_id": "CSV-64f654eeeec340e4",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080824"
+    },
+    {
+      "id": 11,
+      "receipt_id": "CSV-0271d39a3bfe41f2",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080826"
+    },
+    {
+      "id": 12,
+      "receipt_id": "CSV-da1807f434f645f7",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080828"
+    },
+    {
+      "id": 13,
+      "receipt_id": "CSV-9e1a4b78c68b4292",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080829"
+    },
+    {
+      "id": 14,
+      "receipt_id": "CSV-56d3755c6ba145b1",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080831"
+    },
+    {
+      "id": 15,
+      "receipt_id": "CSV-718464afca5040c6",
+      "file_path": "",
+      "file_type": "imported",
+      "upload_status": "processed",
+      "uploaded_at": "2026-11-02 17:04:17.080832"
+    }
+  ],
+  "ocr_results": [
+    {
+      "id": 1,
+      "receipt_id": 1,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 001",
+      "extracted_amount": 4500,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086158"
+    },
+    {
+      "id": 2,
+      "receipt_id": 2,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 002",
+      "extracted_amount": 4500,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086161"
+    },
+    {
+      "id": 3,
+      "receipt_id": 3,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 003",
+      "extracted_amount": 6000,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086162"
+    },
+    {
+      "id": 4,
+      "receipt_id": 4,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 004",
+      "extracted_amount": 1800,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086164"
+    },
+    {
+      "id": 5,
+      "receipt_id": 5,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 005",
+      "extracted_amount": 1900,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086166"
+    },
+    {
+      "id": 6,
+      "receipt_id": 6,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 006",
+      "extracted_amount": 2000,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086168"
+    },
+    {
+      "id": 7,
+      "receipt_id": 7,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 007",
+      "extracted_amount": 2100,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086169"
+    },
+    {
+      "id": 8,
+      "receipt_id": 8,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 008",
+      "extracted_amount": 2200,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086171"
+    },
+    {
+      "id": 9,
+      "receipt_id": 9,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 009",
+      "extracted_amount": 2300,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086173"
+    },
+    {
+      "id": 10,
+      "receipt_id": 10,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 010",
+      "extracted_amount": 2400,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086174"
+    },
+    {
+      "id": 11,
+      "receipt_id": 11,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 011",
+      "extracted_amount": 2500,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086176"
+    },
+    {
+      "id": 12,
+      "receipt_id": 12,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 012",
+      "extracted_amount": 2600,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086178"
+    },
+    {
+      "id": 13,
+      "receipt_id": 13,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 013",
+      "extracted_amount": 2700,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086179"
+    },
+    {
+      "id": 14,
+      "receipt_id": 14,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 014",
+      "extracted_amount": 2800,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086181"
+    },
+    {
+      "id": 15,
+      "receipt_id": 15,
+      "raw_ocr_text": null,
+      "extracted_vendor": "Aster Test Supplier 015",
+      "extracted_amount": 2900,
+      "extracted_date": null,
+      "extracted_tax_id": null,
+      "extracted_line_items": null,
+      "extraction_method": "imported",
+      "extraction_confidence": null,
+      "processed_at": "2026-11-02 17:04:17.086183"
+    }
+  ],
+  "expense_claims": [
+    {
+      "id": 1,
+      "claim_id": "SELF-LEGACY-13-001",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 4500,
+      "vendor_name": "Aster Test Supplier 001",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 1,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 2,
+      "claim_id": "SELF-LEGACY-13-002",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 45000,
+      "vendor_name": "Aster Test Supplier 002",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "flagged",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 2,
+      "entity_id": null,
+      "is_fraud": 1,
+      "fraud_type": "receipt_mismatch"
+    },
+    {
+      "id": 3,
+      "claim_id": "SELF-LEGACY-13-003",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 6000,
+      "vendor_name": "Aster Test Supplier 003",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 3,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 4,
+      "claim_id": "SELF-LEGACY-13-004",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 1800,
+      "vendor_name": "Aster Test Supplier 004",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 4,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 5,
+      "claim_id": "SELF-LEGACY-13-005",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 1900,
+      "vendor_name": "Aster Test Supplier 005",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 5,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 6,
+      "claim_id": "SELF-LEGACY-13-006",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2000,
+      "vendor_name": "Aster Test Supplier 006",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 6,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 7,
+      "claim_id": "SELF-LEGACY-13-007",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2100,
+      "vendor_name": "Aster Test Supplier 007",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 7,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 8,
+      "claim_id": "SELF-LEGACY-13-008",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2200,
+      "vendor_name": "Aster Test Supplier 008",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 8,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 9,
+      "claim_id": "SELF-LEGACY-13-009",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2300,
+      "vendor_name": "Aster Test Supplier 009",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 9,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 10,
+      "claim_id": "SELF-LEGACY-13-010",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2400,
+      "vendor_name": "Aster Test Supplier 010",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 10,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 11,
+      "claim_id": "SELF-LEGACY-13-011",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2500,
+      "vendor_name": "Aster Test Supplier 011",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 11,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 12,
+      "claim_id": "SELF-LEGACY-13-012",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2600,
+      "vendor_name": "Aster Test Supplier 012",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 12,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 13,
+      "claim_id": "SELF-LEGACY-13-013",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2700,
+      "vendor_name": "Aster Test Supplier 013",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 13,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 14,
+      "claim_id": "SELF-LEGACY-13-014",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2800,
+      "vendor_name": "Aster Test Supplier 014",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 14,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 15,
+      "claim_id": "SELF-LEGACY-13-015",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 2900,
+      "vendor_name": "Aster Test Supplier 015",
+      "claimed_date": "2025-02-28",
+      "category": "Office supplies",
+      "description": "Aster synthetic operational purchase",
+      "status": "scored",
+      "submitted_at": "2025-02-28 11:00:00.000000",
+      "receipt_id": 15,
+      "entity_id": null,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 17,
+      "claim_id": "INV-SR-0059",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 95000,
+      "vendor_name": "Garvita",
+      "claimed_date": "2026-11-10",
+      "category": "IT services",
+      "description": "[SR-0059] Sales Chatbot \u00b7 Invoice INV-0059 \u00b7 Approved PO: INR 95,000.00 \u00b7 ML Verdict: Clean - Considered Not Fraud",
+      "status": "scored",
+      "submitted_at": "2026-11-10 11:54:30.617600",
+      "receipt_id": null,
+      "entity_id": 1,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 18,
+      "claim_id": "INV-SR-0061",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 106840,
+      "vendor_name": "Shekhawati Electricals",
+      "claimed_date": "2026-11-10",
+      "category": "IT services",
+      "description": "[SR-0061] Sales Chatbot \u00b7 Invoice INV-0061 \u00b7 Approved PO: INR 106,840.00 \u00b7 ML Verdict: Clean - Considered Not Fraud",
+      "status": "approved",
+      "submitted_at": "2026-11-10 12:15:36.024426",
+      "receipt_id": null,
+      "entity_id": 1,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    },
+    {
+      "id": 19,
+      "claim_id": "INV-SR-0065",
+      "employee_id": "LEGACY-13",
+      "employee_name": "prepares23",
+      "claimed_amount": 100300,
+      "vendor_name": "V009",
+      "claimed_date": "2026-11-12",
+      "category": "IT services",
+      "description": "[SR-0065] sales chatbot \u00b7 Invoice INV-0065 \u00b7 Approved PO: INR 100,300.00 \u00b7 ML Verdict: Clean - Considered Not Fraud",
+      "status": "approved",
+      "submitted_at": "2026-11-12 06:05:27.062274",
+      "receipt_id": null,
+      "entity_id": 1,
+      "is_fraud": 0,
+      "fraud_type": "none"
+    }
+  ],
+  "claim_contributors": [
+    {
+      "id": 1,
+      "claim_id": "SELF-LEGACY-13-001",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087816"
+    },
+    {
+      "id": 2,
+      "claim_id": "SELF-LEGACY-13-002",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087818"
+    },
+    {
+      "id": 3,
+      "claim_id": "SELF-LEGACY-13-003",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087820"
+    },
+    {
+      "id": 4,
+      "claim_id": "SELF-LEGACY-13-004",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087821"
+    },
+    {
+      "id": 5,
+      "claim_id": "SELF-LEGACY-13-005",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087823"
+    },
+    {
+      "id": 6,
+      "claim_id": "SELF-LEGACY-13-006",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087825"
+    },
+    {
+      "id": 7,
+      "claim_id": "SELF-LEGACY-13-007",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087826"
+    },
+    {
+      "id": 8,
+      "claim_id": "SELF-LEGACY-13-008",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087828"
+    },
+    {
+      "id": 9,
+      "claim_id": "SELF-LEGACY-13-009",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087830"
+    },
+    {
+      "id": 10,
+      "claim_id": "SELF-LEGACY-13-010",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087832"
+    },
+    {
+      "id": 11,
+      "claim_id": "SELF-LEGACY-13-011",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087833"
+    },
+    {
+      "id": 12,
+      "claim_id": "SELF-LEGACY-13-012",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087835"
+    },
+    {
+      "id": 13,
+      "claim_id": "SELF-LEGACY-13-013",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087837"
+    },
+    {
+      "id": 14,
+      "claim_id": "SELF-LEGACY-13-014",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087838"
+    },
+    {
+      "id": 15,
+      "claim_id": "SELF-LEGACY-13-015",
+      "user_id": 13,
+      "source": "claim_upload",
+      "created_at": "2026-11-02 17:04:17.087840"
+    },
+    {
+      "id": 17,
+      "claim_id": "INV-SR-0059",
+      "user_id": 13,
+      "source": "procurement_ml_eval",
+      "created_at": "2026-11-10 11:54:30.619095"
+    },
+    {
+      "id": 18,
+      "claim_id": "INV-SR-0061",
+      "user_id": 13,
+      "source": "procurement_ml_eval",
+      "created_at": "2026-11-10 12:15:36.035282"
+    },
+    {
+      "id": 19,
+      "claim_id": "INV-SR-0065",
+      "user_id": 13,
+      "source": "procurement_ml_eval",
+      "created_at": "2026-11-12 06:05:27.071887"
+    }
+  ],
+  "fraud_predictions": [
+    {
+      "id": 16,
+      "claim_id": "SELF-LEGACY-13-001",
+      "reconstruction_error": 0.007443218491971493,
+      "isolation_forest_score": 0.5454104471526903,
+      "combined_fraud_score": 0.4825420096119216,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 8.412054873292933, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 8.412054873292933, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.507840"
+    },
+    {
+      "id": 17,
+      "claim_id": "SELF-LEGACY-13-002",
+      "reconstruction_error": 1.928241491317749,
+      "isolation_forest_score": 0.5720608262513043,
+      "combined_fraud_score": 0.5093730644682171,
+      "is_flagged": 1,
+      "shap_values": "{\"log_amount\": 2.394047, \"is_round\": 1.106975, \"has_receipt\": -0.927354, \"log_employee_prior_n\": -0.919234, \"log_vendor_prior_n\": 0.717669}",
+      "feature_values": "{\"log_amount\": 10.714439990727769, \"is_negative\": 0.0, \"is_round\": 1.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 8.412054873292933, \"ocr_mismatch_ratio\": 0.9, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.511894"
+    },
+    {
+      "id": 18,
+      "claim_id": "SELF-LEGACY-13-003",
+      "reconstruction_error": 1.7646204233169556,
+      "isolation_forest_score": 0.5534979795738537,
+      "combined_fraud_score": 0.4846906277230037,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 8.699681400989514, \"is_negative\": 0.0, \"is_round\": 1.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 8.699681400989514, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.513056"
+    },
+    {
+      "id": 19,
+      "claim_id": "SELF-LEGACY-13-004",
+      "reconstruction_error": 0.009717822074890137,
+      "isolation_forest_score": 0.5479341794684482,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.496097345175956, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.496097345175956, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.514073"
+    },
+    {
+      "id": 20,
+      "claim_id": "SELF-LEGACY-13-005",
+      "reconstruction_error": 0.00844090897589922,
+      "isolation_forest_score": 0.548207025717838,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.550135342488429, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.550135342488429, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.515022"
+    },
+    {
+      "id": 21,
+      "claim_id": "SELF-LEGACY-13-006",
+      "reconstruction_error": 1.7906450033187866,
+      "isolation_forest_score": 0.5511678731858904,
+      "combined_fraud_score": 0.4826813500272058,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.601402334583733, \"is_negative\": 0.0, \"is_round\": 1.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.601402334583733, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.515951"
+    },
+    {
+      "id": 22,
+      "claim_id": "SELF-LEGACY-13-007",
+      "reconstruction_error": 0.006457723211497068,
+      "isolation_forest_score": 0.545331180693804,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.650168700845001, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.650168700845001, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.516850"
+    },
+    {
+      "id": 23,
+      "claim_id": "SELF-LEGACY-13-008",
+      "reconstruction_error": 0.005705977324396372,
+      "isolation_forest_score": 0.5452082066900668,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.696667081526462, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.696667081526462, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.517875"
+    },
+    {
+      "id": 24,
+      "claim_id": "SELF-LEGACY-13-009",
+      "reconstruction_error": 0.00508703151717782,
+      "isolation_forest_score": 0.5441852759859211,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.741099090035366, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.741099090035366, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.518755"
+    },
+    {
+      "id": 25,
+      "claim_id": "SELF-LEGACY-13-010",
+      "reconstruction_error": 0.004585278686136007,
+      "isolation_forest_score": 0.5441883918159948,
+      "combined_fraud_score": 0.48219498373204805,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.783640596221253, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.783640596221253, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.519632"
+    },
+    {
+      "id": 26,
+      "claim_id": "SELF-LEGACY-13-011",
+      "reconstruction_error": 0.004187507089227438,
+      "isolation_forest_score": 0.5427960218699208,
+      "combined_fraud_score": 0.48232478779034793,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.824445930877619, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.824445930877619, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.520511"
+    },
+    {
+      "id": 27,
+      "claim_id": "SELF-LEGACY-13-012",
+      "reconstruction_error": 0.0038823550567030907,
+      "isolation_forest_score": 0.5425793248051091,
+      "combined_fraud_score": 0.48232478779034793,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.8636512654486515, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.8636512654486515, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.521402"
+    },
+    {
+      "id": 28,
+      "claim_id": "SELF-LEGACY-13-013",
+      "reconstruction_error": 0.003659971756860614,
+      "isolation_forest_score": 0.543360516384607,
+      "combined_fraud_score": 0.48232478779034793,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.901377353792616, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.901377353792616, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.522271"
+    },
+    {
+      "id": 29,
+      "claim_id": "SELF-LEGACY-13-014",
+      "reconstruction_error": 0.0035118069499731064,
+      "isolation_forest_score": 0.543360516384607,
+      "combined_fraud_score": 0.48232478779034793,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.937731775260109, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.937731775260109, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.523141"
+    },
+    {
+      "id": 30,
+      "claim_id": "SELF-LEGACY-13-015",
+      "reconstruction_error": 0.0034303704742342234,
+      "isolation_forest_score": 0.5431766402225301,
+      "combined_fraud_score": 0.48232478779034793,
+      "is_flagged": 0,
+      "shap_values": "null",
+      "feature_values": "{\"log_amount\": 7.972810784121404, \"is_negative\": 0.0, \"is_round\": 0.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 7.972810784121404, \"ocr_mismatch_ratio\": 0.0, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}",
+      "predicted_at": "2026-11-09 05:48:20.528597"
+    },
+    {
+      "id": 32,
+      "claim_id": "INV-SR-0059",
+      "reconstruction_error": 0.026,
+      "isolation_forest_score": 0.594,
+      "combined_fraud_score": 0.2816,
+      "is_flagged": 0,
+      "shap_values": "{\"amount_log\": -0.0001, \"item_count\": -0.0006, \"quantity_total\": -0.0002, \"delivery_ratio\": -0.0009, \"tax_ratio\": -0.0006, \"po_difference_ratio\": -0.0, \"supplier_history_count\": -0.0, \"supplier_amount_ratio\": -0.0011}",
+      "feature_values": "{\"amount_log\": 11.4616, \"item_count\": 1.0, \"quantity_total\": 1.0, \"delivery_ratio\": 0.0, \"tax_ratio\": 0.0, \"po_difference_ratio\": 0.0, \"supplier_history_count\": 6.0, \"supplier_amount_ratio\": 1.005, \"_procurement_ml\": {\"is_procurement_invoice\": true, \"source_type\": \"sourcing\", \"request_id\": 59, \"source_ref\": \"SR-0059\", \"invoice_number\": \"INV-0059\", \"po_number\": \"PO-AUDITAI-0059-156\", \"supplier_id\": \"Garvita\", \"product_title\": \"Sales Chatbot\", \"approved_total\": \"95000.00\", \"po_total\": \"95000.00\", \"stated_total\": \"95000.00\", \"currency\": \"INR\", \"score\": 0.2816, \"threshold\": 0.9, \"is_fraud\": false, \"fraud_decision\": \"CLEAN_APPROVED\", \"verdict\": \"Clean - Considered Not Fraud\", \"decision_label\": \"Clean - Considered Not Fraud\", \"autoencoder_percentile\": 0.026, \"autoencoder_score\": 0.026, \"isolation_forest_percentile\": 0.594, \"isolation_forest_score\": 0.594, \"autoencoder_raw_mse\": 0.000432, \"isolation_forest_raw\": 0.487753, \"feature_values\": {\"amount_log\": 11.4616, \"item_count\": 1.0, \"quantity_total\": 1.0, \"delivery_ratio\": 0.0, \"tax_ratio\": 0.0, \"po_difference_ratio\": 0.0, \"supplier_history_count\": 6.0, \"supplier_amount_ratio\": 1.005}, \"feature_errors\": {\"amount_log\": -0.0001, \"item_count\": -0.0006, \"quantity_total\": -0.0002, \"delivery_ratio\": -0.0009, \"tax_ratio\": -0.0006, \"po_difference_ratio\": -0.0, \"supplier_history_count\": -0.0, \"supplier_amount_ratio\": -0.0011}, \"model\": \"Autoencoder + Isolation Forest\", \"version\": \"procurement-v1-synthetic\", \"training_source\": \"synthetic\", \"basis\": [\"PO Variance: 0.0% (MATCHED)\", \"Delivery Ratio: 0.0% (NORMAL)\", \"Tax Ratio: 0.0% (NORMAL)\", \"Supplier Historical Ratio: 1.01x (CONSISTENT)\"], \"triggers\": [], \"recommendation\": \"Approved: invoice pattern matches verified legitimate spending (PO Variance: 0.0% (MATCHED) | Delivery Ratio: 0.0% (NORMAL) | Tax Ratio: 0.0% (NORMAL) | Supplier Historical Ratio: 1.01x (CONSISTENT)).\", \"note\": \"Evaluated 8 procurement features (PO Variance: 0.0% (MATCHED) | Delivery Ratio: 0.0% (NORMAL) | Tax Ratio: 0.0% (NORMAL) | Supplier Historical Ratio: 1.01x (CONSISTENT)).\", \"paypal_payment\": {\"status\": \"ready_for_checkout\"}, \"evaluated_at\": \"2026-11-10T11:57:25.423507\"}}",
+      "predicted_at": "2026-11-10 11:57:25.424649"
+    },
+    {
+      "id": 33,
+      "claim_id": "INV-SR-0061",
+      "reconstruction_error": 0.026,
+      "isolation_forest_score": 0.594,
+      "combined_fraud_score": 0.2816,
+      "is_flagged": 0,
+      "shap_values": "{\"amount_log\": -0.0001, \"item_count\": -0.0005, \"quantity_total\": -0.0002, \"delivery_ratio\": -0.0009, \"tax_ratio\": -0.0006, \"po_difference_ratio\": -0.0, \"supplier_history_count\": -0.0, \"supplier_amount_ratio\": -0.0012}",
+      "feature_values": "{\"amount_log\": 11.5791, \"item_count\": 1.0, \"quantity_total\": 1.0, \"delivery_ratio\": 0.0, \"tax_ratio\": 0.0, \"po_difference_ratio\": 0.0, \"supplier_history_count\": 6.0, \"supplier_amount_ratio\": 1.005, \"_procurement_ml\": {\"is_procurement_invoice\": true, \"source_type\": \"sourcing\", \"request_id\": 61, \"source_ref\": \"SR-0061\", \"invoice_number\": \"INV-0061\", \"po_number\": \"PO-AUDITAI-0061-166\", \"supplier_id\": \"Shekhawati Electricals\", \"product_title\": \"Sales Chatbot\", \"approved_total\": \"106840.00\", \"po_total\": \"106840.00\", \"stated_total\": \"106840.00\", \"currency\": \"INR\", \"score\": 0.2816, \"threshold\": 0.9, \"is_fraud\": false, \"fraud_decision\": \"CLEAN_APPROVED\", \"verdict\": \"Clean - Considered Not Fraud\", \"decision_label\": \"Clean - Considered Not Fraud\", \"autoencoder_percentile\": 0.026, \"autoencoder_score\": 0.026, \"isolation_forest_percentile\": 0.594, \"isolation_forest_score\": 0.594, \"autoencoder_raw_mse\": 0.000429, \"isolation_forest_raw\": 0.487753, \"feature_values\": {\"amount_log\": 11.5791, \"item_count\": 1.0, \"quantity_total\": 1.0, \"delivery_ratio\": 0.0, \"tax_ratio\": 0.0, \"po_difference_ratio\": 0.0, \"supplier_history_count\": 6.0, \"supplier_amount_ratio\": 1.005}, \"feature_errors\": {\"amount_log\": -0.0001, \"item_count\": -0.0005, \"quantity_total\": -0.0002, \"delivery_ratio\": -0.0009, \"tax_ratio\": -0.0006, \"po_difference_ratio\": -0.0, \"supplier_history_count\": -0.0, \"supplier_amount_ratio\": -0.0012}, \"model\": \"Autoencoder + Isolation Forest\", \"version\": \"procurement-v1-synthetic\", \"training_source\": \"synthetic\", \"basis\": [\"PO Variance: 0.0% (MATCHED)\", \"Delivery Ratio: 0.0% (NORMAL)\", \"Tax Ratio: 0.0% (NORMAL)\", \"Supplier Historical Ratio: 1.01x (CONSISTENT)\"], \"triggers\": [], \"recommendation\": \"Approved: invoice pattern matches verified legitimate spending (PO Variance: 0.0% (MATCHED) | Delivery Ratio: 0.0% (NORMAL) | Tax Ratio: 0.0% (NORMAL) | Supplier Historical Ratio: 1.01x (CONSISTENT)).\", \"note\": \"Evaluated 8 procurement features (PO Variance: 0.0% (MATCHED) | Delivery Ratio: 0.0% (NORMAL) | Tax Ratio: 0.0% (NORMAL) | Supplier Historical Ratio: 1.01x (CONSISTENT)).\", \"paypal_payment\": {\"order_id\": \"92R211285X749251L\", \"paypal_order_id\": \"92R211285X749251L\", \"status\": \"completed\", \"approval_url\": \"https://www.sandbox.paypal.com/checkoutnow?token=92R211285X749251L\", \"amount_usd\": \"1271.90\", \"paypal_amount\": \"1271.90\", \"stated_total\": \"106840.00\", \"currency\": \"INR\", \"exchange_rate_note\": \"Converted from INR 106,840.00 at 1 USD = 84 INR for PayPal Sandbox\", \"merchant_id\": \"B6DUDGVTWZK66\", \"create_key\": \"5c3d5f01-1448-40dd-84fd-4302d2d809aa\", \"capture_key\": \"64493166-b220-4a84-9919-0c019aca472c\", \"environment\": \"sandbox\", \"updated_at\": \"2026-11-10T16:44:05.672575\", \"provider_status\": \"CREATED\", \"captured_at\": \"2026-11-10T16:44:07.831756\"}, \"evaluated_at\": \"2026-11-10T16:44:07.835336\"}}",
+      "predicted_at": "2026-11-10 16:44:07.835656"
+    },
+    {
+      "id": 34,
+      "claim_id": "INV-SR-0065",
+      "reconstruction_error": 0.0273,
+      "isolation_forest_score": 0.5941,
+      "combined_fraud_score": 0.0,
+      "is_flagged": 0,
+      "shap_values": "{}",
+      "feature_values": "{\"_procurement_ml\": {\"is_procurement_invoice\": true, \"source_type\": \"sourcing\", \"request_id\": 65, \"source_ref\": \"SR-0065\", \"invoice_number\": \"INV-0065\", \"po_number\": \"PO-AUDITAI-0065-186\", \"supplier_id\": \"V009\", \"product_title\": \"sales chatbot\", \"approved_total\": \"100300.00\", \"po_total\": \"100300.00\", \"stated_total\": \"100300.00\", \"currency\": \"INR\", \"score\": null, \"threshold\": 0.9, \"is_fraud\": false, \"fraud_decision\": \"CLEAN_APPROVED\", \"verdict\": \"Clean - Considered Not Fraud\", \"decision_label\": \"Clean - Considered Not Fraud\", \"autoencoder_percentile\": 0.0273, \"autoencoder_score\": 0.0273, \"isolation_forest_percentile\": 0.5941, \"isolation_forest_score\": 0.5941, \"autoencoder_raw_mse\": 0.000431, \"isolation_forest_raw\": 0.487753, \"feature_values\": {}, \"feature_errors\": {}, \"model\": \"Autoencoder + Isolation Forest\", \"version\": \"procurement-v1-synthetic\", \"training_source\": \"synthetic\", \"basis\": [], \"triggers\": [], \"recommendation\": \"\", \"note\": \"ML Model continuous training updated with finalized PO PO-AUDITAI-0065-186 (Total Rows: 6,003).\", \"paypal_payment\": {\"order_id\": \"917925711B687014H\", \"paypal_order_id\": \"917925711B687014H\", \"status\": \"completed\", \"approval_url\": \"https://www.sandbox.paypal.com/checkoutnow?token=917925711B687014H\", \"amount_usd\": \"1194.05\", \"paypal_amount\": \"1194.05\", \"stated_total\": \"100300.00\", \"currency\": \"INR\", \"exchange_rate_note\": \"Converted from INR 100,300.00 at 1 USD = 84 INR for PayPal Sandbox\", \"merchant_id\": \"B6DUDGVTWZK66\", \"create_key\": \"b538a4cc-ee92-4931-8e7e-e07ff8793af1\", \"capture_key\": \"84ecbb5d-9d0c-434f-a7a1-a66e6ebfa90b\", \"environment\": \"sandbox\", \"updated_at\": \"2026-11-12T06:07:43.304424\"}, \"evaluated_at\": \"2026-11-12T06:07:43.312752\"}}",
+      "predicted_at": "2026-11-12 06:07:43.313311"
+    }
+  ],
+  "cases": [
+    {
+      "id": 1,
+      "claim_id": "SELF-LEGACY-13-002",
+      "status": "open",
+      "maker_id": null,
+      "checker_id": null,
+      "maker_notes": null,
+      "checker_notes": null,
+      "created_at": "2026-11-02 17:04:17.099637",
+      "updated_at": "2026-11-02 17:04:17.099640"
+    }
+  ],
+  "case_audit_trails": [
+    {
+      "id": 1,
+      "case_id": 1,
+      "action": "policy_review_required",
+      "performed_by": "system",
+      "notes": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": true, \"required_approval_amount\": \"45000\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 45000; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"review\", \"detail\": \"Claim 45000; receipt 4500; difference 40500; tolerance 225.00.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 45000; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}",
+      "timestamp": "2026-11-02 17:04:17.105130"
+    },
+    {
+      "id": 2,
+      "case_id": 1,
+      "action": "policy_review_required",
+      "performed_by": "system",
+      "notes": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": true, \"required_approval_amount\": \"45000.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 45000.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"review\", \"detail\": \"Claim 45000.00; receipt 4500.00; difference 40500.00; tolerance 225.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 45000.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}",
+      "timestamp": "2026-11-02 18:17:31.522064"
+    }
+  ],
+  "review_queue_records": [
+    {
+      "id": 1,
+      "source_key": "expense:1",
+      "case_type": "expense_claim",
+      "source_id": 1,
+      "severity": "medium",
+      "reason": "Policy review: receipt mismatch",
+      "evidence": "{\"claim\": {\"claim_id\": \"SELF-LEGACY-13-002\", \"employee_id\": \"LEGACY-13\", \"employee_name\": \"prepares23\", \"vendor_name\": \"Aster Test Supplier 002\", \"claimed_amount\": \"45000.00\", \"claimed_date\": \"2025-02-28\", \"description\": \"Aster synthetic operational purchase\"}, \"receipt\": {\"receipt_id\": \"CSV-91886c0a3e914a85\", \"upload_status\": \"processed\", \"extracted_amount\": \"4500.00\", \"raw_text\": null}, \"prediction\": {\"score\": 0.5093730644682171, \"feature_values\": {\"log_amount\": 10.714439990727769, \"is_negative\": 0.0, \"is_round\": 1.0, \"hour\": 12.0, \"weekend_flag\": 0.0, \"is_holiday\": 0.0, \"is_after_hours\": 0.0, \"z_global\": 0.0, \"z_vendor\": 0.0, \"z_employee\": 0.0, \"z_category\": 0.0, \"log_vendor_prior_n\": 0.0, \"log_employee_prior_n\": 0.0, \"vendor_is_new\": 1.0, \"employee_is_new\": 1.0, \"pair_is_new\": 1.0, \"vendor_missing\": 0.0, \"employee_missing\": 0.0, \"log_vendor_freq_30d\": 0.0, \"log_employee_freq_7d\": 0.0, \"log_days_since_vendor\": 5.902633333401366, \"duplicate_prior\": 0.0, \"log_pair_amount_1d\": 0.0, \"log_pair_count_1d\": 0.0, \"has_receipt\": 1.0, \"ocr_amount_missing\": 0.0, \"ocr_confidence\": 0.0, \"ocr_confidence_missing\": 1.0, \"ocr_low_confidence\": 0.0, \"log_ocr_amount\": 8.412054873292933, \"ocr_mismatch_ratio\": 0.9, \"ocr_vendor_mismatch\": 0.0, \"ocr_date_gap\": 0.0, \"vendor_name_deviation\": 0.62, \"_model_version\": 3, \"_model_run_id\": \"1ddbe81cf99943cbbeb0e89bf3c3953a\", \"_model_threshold\": 0.5, \"_model_enabled\": true, \"_event_time_known\": 0.0, \"_holiday_policy_flag\": 0.0, \"_supervised_score\": 1.0}, \"shap_values\": {\"log_amount\": 2.394047, \"is_round\": 1.106975, \"has_receipt\": -0.927354, \"log_employee_prior_n\": -0.919234, \"log_vendor_prior_n\": 0.717669}}, \"snapshot_note\": \"Evidence captured when this existing case entered the shared queue; original case history is retained.\", \"native_created_at\": \"2026-11-02T17:04:17.099637Z\", \"payments\": [], \"policy\": {\"policy_version\": \"aster-demo-1\", \"requires_review\": true, \"required_approval_amount\": \"45000.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 45000.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"review\", \"detail\": \"Claim 45000.00; receipt 4500.00; difference 40500.00; tolerance 225.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 45000.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}, \"supporting_claims\": [], \"trigger_fields\": []}",
+      "related_records": "[{\"kind\": \"claim\", \"id\": \"SELF-LEGACY-13-002\"}]",
+      "status": "open",
+      "maker_id": null,
+      "checker_id": null,
+      "excluded_actor_ids": "[]",
+      "created_at": "2026-11-11 06:25:41.919684",
+      "version": 1
+    }
+  ],
+  "claim_policy_checks": [
+    {
+      "claim_id": "SELF-LEGACY-13-001",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"4500.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 4500.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 4500.00; receipt 4500.00; difference 0.00; tolerance 225.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 4500.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536264"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-002",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": true, \"required_approval_amount\": \"45000.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 45000.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"review\", \"detail\": \"Claim 45000.00; receipt 4500.00; difference 40500.00; tolerance 225.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 45000.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536275"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-003",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"6000.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 6000.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 6000.00; receipt 6000.00; difference 0.00; tolerance 300.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 6000.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536912"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-004",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"1800.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 1800.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 1800.00; receipt 1800.00; difference 0.00; tolerance 90.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 1800.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536919"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-005",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"1900.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 1900.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 1900.00; receipt 1900.00; difference 0.00; tolerance 95.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 1900.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536924"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-006",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2000.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2000.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2000.00; receipt 2000.00; difference 0.00; tolerance 100.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2000.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"signal\", \"detail\": \"Round multiple of INR 1,000; requires materiality or another review signal to force review.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536929"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-007",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2100.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2100.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2100.00; receipt 2100.00; difference 0.00; tolerance 105.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2100.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536934"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-008",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2200.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2200.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2200.00; receipt 2200.00; difference 0.00; tolerance 110.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2200.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536938"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-009",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2300.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2300.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2300.00; receipt 2300.00; difference 0.00; tolerance 115.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2300.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536943"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-010",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2400.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2400.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2400.00; receipt 2400.00; difference 0.00; tolerance 120.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2400.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536948"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-011",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2500.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2500.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2500.00; receipt 2500.00; difference 0.00; tolerance 125.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2500.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536952"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-012",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2600.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2600.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2600.00; receipt 2600.00; difference 0.00; tolerance 130.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2600.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536957"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-013",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2700.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2700.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2700.00; receipt 2700.00; difference 0.00; tolerance 135.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2700.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536963"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-014",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2800.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2800.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2800.00; receipt 2800.00; difference 0.00; tolerance 140.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2800.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536968"
+    },
+    {
+      "claim_id": "SELF-LEGACY-13-015",
+      "inputs": "{}",
+      "result": "{\"policy_version\": \"aster-demo-1\", \"requires_review\": false, \"required_approval_amount\": \"2900.00\", \"currency\": null, \"checks\": [{\"code\": \"approval_limit\", \"status\": \"unavailable\", \"detail\": \"Original approver authority was not supplied by an administrator.\", \"related_claims\": []}, {\"code\": \"invoice_splitting\", \"status\": \"unavailable\", \"detail\": \"1 claims, same employee/vendor/local date; combined 2900.00; threshold 50000.\", \"related_claims\": []}, {\"code\": \"duplicate\", \"status\": \"unavailable\", \"detail\": \"No matching evidence; invoice ID or exact receipt fingerprint required for a full check.\", \"related_claims\": []}, {\"code\": \"receipt_mismatch\", \"status\": \"pass\", \"detail\": \"Claim 2900.00; receipt 2900.00; difference 0.00; tolerance 145.0000.\", \"related_claims\": []}, {\"code\": \"high_value\", \"status\": \"unavailable\", \"detail\": \"Required approval amount 2900.00; senior-review threshold 250000.\", \"related_claims\": []}, {\"code\": \"weekend\", \"status\": \"pass\", \"detail\": \"Claim date 2025-02-28; exception recorded: False.\", \"related_claims\": []}, {\"code\": \"after_hours\", \"status\": \"unavailable\", \"detail\": \"No timezone-aware transaction timestamp supplied; upload time is not transaction time.\", \"related_claims\": []}, {\"code\": \"sequence_gap\", \"status\": \"unavailable\", \"detail\": \"Vendor invoice series and numeric sequence required.\", \"related_claims\": []}, {\"code\": \"suspicious_wording\", \"status\": \"pass\", \"detail\": \"No configured phrases matched.\", \"related_claims\": []}, {\"code\": \"missing_info\", \"status\": \"pass\", \"detail\": \"Core descriptive fields present; optional evidence availability is reported separately.\", \"related_claims\": []}, {\"code\": \"round_number\", \"status\": \"pass\", \"detail\": \"Not a round INR 1,000 multiple.\", \"related_claims\": []}]}",
+      "checked_at": "2026-11-09 05:48:20.536972"
+    }
+  ]
+}
