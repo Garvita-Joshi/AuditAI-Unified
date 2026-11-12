@@ -207,6 +207,57 @@
   background: #f1aa8d;
 }
 
+/* Custom Styled File Input Picker */
+.custom-file-input {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 42px;
+  padding: 0 14px;
+  background: #1c1815;
+  border: 1px solid #443a33;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.15s ease;
+  min-width: 220px;
+}
+
+.custom-file-input:hover {
+  border-color: #ef9976;
+  background: #251f1a;
+}
+
+.custom-file-btn {
+  background: #382f28;
+  color: #fafaf9;
+  border: 1px solid #54463c;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.custom-file-name {
+  font-size: 12.5px;
+  color: #a8a29e;
+  max-width: 170px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-file-input input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+
 /* Pipeline Status Card */
 .pipeline-status-card {
   background: #1c1815 !important;

@@ -33,3 +33,25 @@
 .procurement .p-metric>span{color:#e0d5cd!important}
 .procurement .p-metric>small{color:#bfb3aa!important}
 .procurement .p-environment{background:#352a25;color:#e4c3b2}
+
+/* Universal Form Control Theming across entire unified app */
+select, input[type="text"], input[type="number"], input[type="search"], input[type="date"], textarea {
+  color-scheme: dark !important;
+  background-color: #25201c !important;
+  color: #f5f5f4 !important;
+  border: 1px solid #443a33 !important;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+select:focus, input[type="text"]:focus, input[type="number"]:focus, input[type="search"]:focus, input[type="date"]:focus, textarea:focus {
+  border-color: #ef9976 !important;
+  box-shadow: 0 0 0 2px rgba(239, 153, 118, 0.25) !important;
+}
+
+select option {
+  background-color: #201a16 !important;
+  color: #f5f5f4 !important;
+}

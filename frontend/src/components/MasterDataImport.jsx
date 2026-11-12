@@ -120,15 +120,21 @@ export default function MasterDataImport() {
               <input required value={claimId} onChange={(e) => setClaimId(e.target.value)} placeholder="AST-DEMO-CLM-001" />
             </label>
           )}
-          <label>
+          <label htmlFor="master-csv-file-input">
             {dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}
-            <input
-              key={dataset}
-              type="file"
-              accept={dataset === 'receipts' ? '.png,.jpg,.jpeg,.pdf,.tiff,.bmp' : '.csv,text/csv'}
-              required
-              onChange={(e) => setFile(e.target.files[0] || null)}
-            />
+            <div className="custom-file-input">
+              <span className="custom-file-btn">Choose file</span>
+              <span className="custom-file-name">{file ? file.name : 'No file chosen'}</span>
+              <input
+                id="master-csv-file-input"
+                aria-label={dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}
+                key={dataset}
+                type="file"
+                accept={dataset === 'receipts' ? '.png,.jpg,.jpeg,.pdf,.tiff,.bmp' : '.csv,text/csv'}
+                required
+                onChange={(e) => setFile(e.target.files[0] || null)}
+              />
+            </div>
           </label>
           <button className="btn btn-primary" disabled={busy || !file || (dataset === 'receipts' && !claimId.trim())}>
             {busy ? 'Importing and checking...' : 'Import and check'}

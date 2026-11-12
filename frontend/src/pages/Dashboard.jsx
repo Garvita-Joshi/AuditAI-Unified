@@ -100,11 +100,17 @@ export default function Dashboard() {
         </span>
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Audit Dashboard</h1>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Audit Dashboard</h1>
+          <p className="text-xs text-secondary mt-1">Real-time expense anomaly signals, policy findings, and reviewer metrics.</p>
+        </div>
       </div>
 
-      <h2>Expense model and policy results</h2>
+      <div className="mb-4">
+        <h2 className="text-lg font-bold tracking-tight text-primary">Expense model and policy results</h2>
+        <p className="text-xs text-secondary mt-0.5">Automated detection signals and model explanation benchmarks.</p>
+      </div>
       {/* Case Cycle KPI Row */}
       <div className="grid-cols-3 mb-6">
         <div className="glass-card flex items-center gap-4" style={{ padding: '16px 24px' }}>

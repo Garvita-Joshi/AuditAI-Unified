@@ -1,12 +1,58 @@
-.transfer-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; }
-.transfer-controls label { display: grid; gap: .5rem; }
-.transfer-controls input { max-width: 100%; padding: .6rem; border: 1px solid var(--border-light, #555); border-radius: 8px; background: var(--bg-secondary, #17202b); color: inherit; }
-.transfer-controls input[type=number] { width: 160px; }
+.transfer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem;
+  padding: 20px 24px;
+  background: #1c1815 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px;
+}
+
+.transfer-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f5f5f4;
+}
+
+.transfer-controls select,
+.transfer-controls input {
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid #443a33;
+  border-radius: 9px;
+  background: #25201c !important;
+  color: #f5f5f4 !important;
+  font-size: 13.5px;
+  min-width: 170px;
+  outline: none;
+  color-scheme: dark;
+  transition: all 0.15s ease;
+}
+
+.transfer-controls select:focus,
+.transfer-controls input:focus {
+  border-color: #ef9976;
+  background: #2c241f !important;
+  box-shadow: 0 0 0 3px rgba(239, 153, 118, 0.22);
+}
+
+.transfer-controls .btn {
+  height: 42px;
+  padding: 0 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 9px;
+}
+
 .transfer-path { display: flex; flex-wrap: wrap; padding: 0; list-style: none; gap: .5rem; margin: 1rem 0; font-weight: 600; overflow-wrap: anywhere; }
 .circular-payments h1, .circular-payments h2 { line-height: 1.4; }
 .circular-payments .table-container { overflow-x: auto; }
 .circular-payments p { line-height: 1.6; }
 .transfer-review-form { display: grid; gap: 1rem; margin: 1rem 0; }
 .transfer-review-form label { display: grid; gap: .5rem; }
-.transfer-review-form textarea, .transfer-review-form select { background: var(--bg-secondary, #17202b); color: inherit; border: 1px solid var(--border-light, #555); border-radius: 8px; padding: .75rem; }
+.transfer-review-form textarea, .transfer-review-form select { background: #25201c; color: inherit; border: 1px solid #443a33; border-radius: 8px; padding: .75rem; color-scheme: dark; }
 .transfer-review-form textarea { min-height: 90px; }

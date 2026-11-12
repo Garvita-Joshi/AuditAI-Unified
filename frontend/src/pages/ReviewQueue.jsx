@@ -43,13 +43,43 @@ export default function ReviewQueue() {
       active = false;
     };
   }, [type, status, severity, offset, refresh]);
-  return <main className="main-content"><h1>Shared review queue</h1><p>All review cases in one place. Findings are review signals, never proof of fraud.</p>
-    <form className="glass-card transfer-controls mb-4" onSubmit={e=>{e.preventDefault();setRefresh(v=>v+1);}}>
-      <label>Case type<select value={type} onChange={e=>setFilter('case_type',e.target.value)}><option value="">All types</option>{Object.entries(TYPES).map(([v,t])=><option key={v} value={v}>{t}</option>)}</select></label>
-      <label>Status<select value={status} onChange={e=>setFilter('status',e.target.value)}><option value="">All statuses</option>{Object.entries(STATES).map(([v,t])=><option key={v} value={v}>{t}</option>)}</select></label>
-      <label>Severity<select value={severity} onChange={e=>setFilter('severity',e.target.value)}><option value="">All severities</option>{['low','medium','high','critical'].map(v=><option key={v}>{v}</option>)}</select></label>
-      <button className="btn btn-secondary" disabled={busy}>Refresh queue</button>
-    </form>
+  return (
+    <main className="main-content">
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Shared review queue</h1>
+          <p className="text-xs text-secondary mt-1">
+            All review cases in one place. Findings are review signals, never proof of fraud.
+          </p>
+        </div>
+      </div>
+
+      <form className="glass-card transfer-controls mb-6" onSubmit={e => { e.preventDefault(); setRefresh(v => v + 1); }}>
+        <label>
+          <span>Case type</span>
+          <select value={type} onChange={e => setFilter('case_type', e.target.value)}>
+            <option value="">All types</option>
+            {Object.entries(TYPES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Status</span>
+          <select value={status} onChange={e => setFilter('status', e.target.value)}>
+            <option value="">All statuses</option>
+            {Object.entries(STATES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Severity</span>
+          <select value={severity} onChange={e => setFilter('severity', e.target.value)}>
+            <option value="">All severities</option>
+            {['low', 'medium', 'high', 'critical'].map(v => <option key={v}>{v}</option>)}
+          </select>
+        </label>
+        <button className="btn btn-secondary" disabled={busy}>
+          Refresh queue
+        </button>
+      </form>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">Loading queue...</p>}
     {data && (
       <>
@@ -157,5 +187,6 @@ export default function ReviewQueue() {
         </div>
       </>
     )}
-  </main>;
+  </main>
+  );
 }

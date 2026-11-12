@@ -88,17 +88,34 @@ export default function AuditScreens() {
       </div>
 
       {/* Tabs Row */}
-      <div className="flex gap-2 mb-6 border-b border-glass pb-3" style={{ flexWrap: 'wrap' }}>
+      <div
+        className="flex gap-2 mb-6 border-b border-glass pb-3"
+        style={{
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          scrollbarWidth: 'none',
+          paddingBottom: '8px',
+          alignItems: 'center',
+        }}
+      >
         {allTabs.map(tab => {
           const Icon = tab.icon;
           const isSelected = activeTab === tab.id;
           return (
             <button
               key={tab.id}
-              className={`btn ${isSelected ? 'btn-primary' : 'btn-secondary'} py-2 px-4 text-sm flex items-center gap-1.5`}
+              className={`btn ${isSelected ? 'btn-primary' : 'btn-secondary'} flex items-center gap-2`}
+              style={{
+                padding: '8px 15px',
+                fontSize: '13px',
+                fontWeight: isSelected ? 700 : 500,
+                borderRadius: '9px',
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+              }}
               onClick={() => setActiveTab(tab.id)}
             >
-              {Icon && <Icon size={16} />}
+              {Icon && <Icon size={15} />}
               <span>{tab.label}</span>
             </button>
           );
