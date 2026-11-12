@@ -45,6 +45,8 @@ Thumbs.db
 # Data (large files)
 data/*.csv
 data/*.json
+!data/company_workflow_data.json
+!data/vendors/company_catalog.json
 uploads/
 
 # Logs
@@ -64,7 +66,7 @@ __pycache__/
 frontend/dist/
 
 .runtime/
-data/company_workflow_data.json
-data/vendors/company_catalog.json
+!data/company_workflow_data.json
+!data/vendors/company_catalog.json
 
 .venv-model/

@@ -25,9 +25,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu -r requirements.txt
 
-# Copy backend code, models, and scripts
+# Copy backend code, models, scripts, and vendor catalog data
 COPY backend/ ./backend/
 COPY scripts/ ./scripts/
+COPY data/ ./data/
 
 # Copy built frontend SPA from Stage 1
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
@@ -38,3 +39,4 @@ EXPOSE 8000
 
 # Start unified FastAPI server (serves both API & Frontend SPA)
 CMD ["sh", "-c", "uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+

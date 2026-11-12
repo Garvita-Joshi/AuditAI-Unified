@@ -117,7 +117,21 @@ def load_catalog():
     offers = []
     seen_keys = set()
 
-    # 1. Primary: Load curated company workflow dataset
+    # 1. Primary: Load curated company vendor catalog with verified emails
+    catalog_path = root / 'data' / 'vendors' / 'company_catalog.json'
+    if catalog_path.exists() and catalog_path.stat().st_size <= 5 * 1024 * 1024:
+        try:
+            raw_catalog = json.loads(catalog_path.read_text())
+            if isinstance(raw_catalog, list):
+                for item in raw_catalog:
+                    key = (item.get('vendor_id'), item.get('sku'))
+                    if key not in seen_keys:
+                        seen_keys.add(key)
+                        offers.append(CatalogOffer.model_validate(item))
+        except Exception:
+            pass
+
+    # 2. Secondary: Load curated company workflow dataset
     company_data_path = root / 'data' / 'company_workflow_data.json'
     if company_data_path.exists():
         from backend.app.procurement.company_data import workbook_catalog
@@ -128,7 +142,7 @@ def load_catalog():
                 seen_keys.add(key)
                 offers.append(CatalogOffer.model_validate(item))
 
-    # 2. Secondary: Load extended synthetic catalog (provides USD offers and broader product SKUs)
+    # 3. Tertiary: Load extended synthetic catalog (provides USD offers and broader product SKUs)
     synth_path = root / 'data' / 'vendors' / 'synthetic_catalog_full.json'
     if synth_path.exists() and synth_path.stat().st_size <= 5 * 1024 * 1024:
         try:
