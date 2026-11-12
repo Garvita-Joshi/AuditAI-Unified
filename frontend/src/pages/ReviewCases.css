@@ -15,14 +15,29 @@
   overflow-x: auto !important;
   max-height: 560px;
   position: relative;
-  border-radius: var(--radius-md, 12px);
+  border-radius: 14px;
+  background: #1c1815 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .review-queue-table-container th {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: #181818;
+  background: #241e1a !important;
+  color: #a8a29e;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 14px 18px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.review-queue-table-container td {
+  padding: 16px 18px !important;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .master-checks h2 { margin:24px 0 16px; font-size:1.4rem; }

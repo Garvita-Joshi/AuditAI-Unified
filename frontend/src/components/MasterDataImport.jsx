@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Database } from 'lucide-react';
+import { Database, Building2, Users, CreditCard, Download, FileSpreadsheet } from 'lucide-react';
 import { masterDataApi, claimsApi, transfersApi } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
 import AutomaticCheckResult from './AutomaticCheckResult';
@@ -8,6 +8,11 @@ const DATASETS = {
   'vendor-master': 'Vendor master',
   'employee-roster': 'Employee roster',
   'payroll-payments': 'Payroll payments',
+};
+const DATASET_ICONS = {
+  'vendor-master': Building2,
+  'employee-roster': Users,
+  'payroll-payments': CreditCard,
 };
 const ALL_TYPES = {
   ...DATASETS,
@@ -67,7 +72,7 @@ export default function MasterDataImport() {
   return (
     <section className="upload-section-card mb-6">
       <div className="flex items-center gap-2 mb-2">
-        <Database size={20} className="text-accent-primary" />
+        <Database size={22} className="text-accent-primary" />
         <h2 className="upload-section-title" style={{ margin: 0 }}>Master Reference Data & Ledger Ingestion</h2>
       </div>
       <p className="upload-section-sub">
@@ -79,15 +84,21 @@ export default function MasterDataImport() {
         {Object.entries(DATASETS).map(([key, label]) => {
           const s = status.find((r) => r.dataset === key);
           const isLoaded = (s?.rows_loaded ?? 0) > 0;
+          const Icon = DATASET_ICONS[key] || FileSpreadsheet;
           return (
             <div key={key} className="master-pill-card">
-              <div>
-                <div className="pill-title">{label}</div>
-                <div className="pill-sub">
-                  {s?.rows_loaded ?? 0} rows; last attempt {s?.last_imported_at || 'Never'}; status {s?.last_import_status || 'Not imported'}
+              <div className="flex items-center gap-3">
+                <div className="master-pill-icon">
+                  <Icon size={18} />
+                </div>
+                <div>
+                  <div className="pill-title">{label}</div>
+                  <div className="pill-sub">
+                    {s?.rows_loaded ?? 0} rows · {s?.last_imported_at || 'Never'} · {s?.last_import_status || 'Not imported'}
+                  </div>
                 </div>
               </div>
-              <span className={`badge text-[11px] ${isLoaded ? 'badge-green' : 'badge-gray'}`} style={{ padding: '3px 10px', borderRadius: '6px' }}>
+              <span className={`badge text-[11px] ${isLoaded ? 'badge-green' : 'badge-gray'}`} style={{ padding: '4px 10px', borderRadius: '6px' }}>
                 {isLoaded ? 'Loaded' : 'Pending'}
               </span>
             </div>
@@ -97,57 +108,63 @@ export default function MasterDataImport() {
 
       {user?.roles?.includes('admin') ? (
         <form className="master-form-controls" onSubmit={upload}>
-          <label>
-            Dataset type
-            <select
-              value={dataset}
-              onChange={(e) => {
-                setDataset(e.target.value);
-                setFile(null);
-                setReport(null);
-              }}
-            >
-              {Object.entries(ALL_TYPES).map(([k, v]) => (
-                <option key={k} value={k}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </label>
-          {dataset === 'receipts' && (
-            <label>
-              Target Claim ID
-              <input required value={claimId} onChange={(e) => setClaimId(e.target.value)} placeholder="AST-DEMO-CLM-001" />
+          <div className="master-form-row">
+            <label className="master-input-group">
+              <span>Dataset type</span>
+              <select
+                value={dataset}
+                onChange={(e) => {
+                  setDataset(e.target.value);
+                  setFile(null);
+                  setReport(null);
+                }}
+              >
+                {Object.entries(ALL_TYPES).map(([k, v]) => (
+                  <option key={k} value={k}>
+                    {v}
+                  </option>
+                ))}
+              </select>
             </label>
-          )}
-          <label htmlFor="master-csv-file-input">
-            {dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}
-            <div className="custom-file-input">
-              <span className="custom-file-btn">Choose file</span>
-              <span className="custom-file-name">{file ? file.name : 'No file chosen'}</span>
-              <input
-                id="master-csv-file-input"
-                aria-label={dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}
-                key={dataset}
-                type="file"
-                accept={dataset === 'receipts' ? '.png,.jpg,.jpeg,.pdf,.tiff,.bmp' : '.csv,text/csv'}
-                required
-                onChange={(e) => setFile(e.target.files[0] || null)}
-              />
-            </div>
-          </label>
-          <button className="btn btn-primary" disabled={busy || !file || (dataset === 'receipts' && !claimId.trim())}>
-            {busy ? 'Importing and checking...' : 'Import and check'}
-          </button>
-          {DATASETS[dataset] ? (
-            <a href={`/samples/master-data/${dataset}.csv`} download className="text-xs text-accent-primary hover:underline" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
-              Download synthetic example CSV
-            </a>
-          ) : (
-            <a href="/downloads/aster/aster_upload_pack.zip" download className="text-xs text-accent-primary hover:underline" style={{ alignSelf: 'center', marginLeft: 'auto' }}>
-              Download Aster demo files
-            </a>
-          )}
+            {dataset === 'receipts' && (
+              <label className="master-input-group">
+                <span>Target Claim ID</span>
+                <input required value={claimId} onChange={(e) => setClaimId(e.target.value)} placeholder="AST-DEMO-CLM-001" />
+              </label>
+            )}
+            <label className="master-input-group" htmlFor="master-csv-file-input">
+              <span>{dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}</span>
+              <div className="custom-file-input">
+                <span className="custom-file-btn">Choose file</span>
+                <span className="custom-file-name">{file ? file.name : 'No file chosen'}</span>
+                <input
+                  id="master-csv-file-input"
+                  aria-label={dataset === 'receipts' ? 'Receipt image or PDF' : 'CSV file'}
+                  key={dataset}
+                  type="file"
+                  accept={dataset === 'receipts' ? '.png,.jpg,.jpeg,.pdf,.tiff,.bmp' : '.csv,text/csv'}
+                  required
+                  onChange={(e) => setFile(e.target.files[0] || null)}
+                />
+              </div>
+            </label>
+            <button className="btn btn-primary master-submit-btn" disabled={busy || !file || (dataset === 'receipts' && !claimId.trim())}>
+              {busy ? 'Importing and checking...' : 'Import and check'}
+            </button>
+          </div>
+          <div className="master-actions-row">
+            {DATASETS[dataset] ? (
+              <a href={`/samples/master-data/${dataset}.csv`} download className="master-download-link">
+                <Download size={14} />
+                <span>Download synthetic example CSV ({DATASETS[dataset]})</span>
+              </a>
+            ) : (
+              <a href="/downloads/aster/aster_upload_pack.zip" download className="master-download-link">
+                <Download size={14} />
+                <span>Download Aster demo files</span>
+              </a>
+            )}
+          </div>
         </form>
       ) : (
         <p className="text-xs text-muted">

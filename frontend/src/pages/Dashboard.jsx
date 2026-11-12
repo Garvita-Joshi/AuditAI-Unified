@@ -176,12 +176,6 @@ export default function Dashboard() {
         />
       </div>
 
-      <ExplainabilityPanel
-        claims={data.recent_flagged}
-        reasonBreakdown={data.explainability?.reason_breakdown || []}
-        threshold={null}
-      />
-
       <div className="grid-cols-2 mb-6">
         {/* Flagged Counts Monthly Bar Chart */}
         <div className="glass-card">

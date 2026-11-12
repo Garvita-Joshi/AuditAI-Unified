@@ -451,27 +451,29 @@ export default function Upload() {
       )}
 
       <div className="pipeline-status-card">
-        <h3 className="text-base font-semibold mb-4">Pipeline Status</h3>
-        <div className="flex items-center justify-between text-xs">
-          <div className={`flex flex-col items-center ${csvUploadState === 'complete' ? 'text-status-success' : 'text-muted'}`}>
-            <div className="w-3.5 h-3.5 rounded-full bg-current mb-1.5"></div>
-            <span>Data Ingestion</span>
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h3 className="text-base font-semibold" style={{ margin: 0 }}>End-to-End Ingestion Pipeline</h3>
+            <p className="text-xs text-secondary mt-1">Multi-stage autonomous audit processing pipeline status.</p>
           </div>
-          <div className="h-px bg-border-light flex-1 mx-3"></div>
-          <div className={`flex flex-col items-center ${rcpUploadState === 'complete' ? 'text-status-success' : 'text-muted'}`}>
-            <div className="w-3.5 h-3.5 rounded-full bg-current mb-1.5"></div>
-            <span>OCR Extraction</span>
-          </div>
-          <div className="h-px bg-border-light flex-1 mx-3"></div>
-          <div className="flex flex-col items-center text-muted">
-            <div className="w-3.5 h-3.5 rounded-full bg-current mb-1.5"></div>
-            <span>Feature Engineering</span>
-          </div>
-          <div className="h-px bg-border-light flex-1 mx-3"></div>
-          <div className="flex flex-col items-center text-muted">
-            <div className="w-3.5 h-3.5 rounded-full bg-current mb-1.5"></div>
-            <span>ML Scoring</span>
-          </div>
+          <span className="badge text-xs" style={{ background: 'rgba(239,153,118,0.15)', color: '#ef9976', border: '1px solid rgba(239,153,118,0.3)' }}>Active Engine</span>
+        </div>
+        <div className="pipeline-steps-grid">
+          {[
+            { num: 1, label: 'Data Ingestion', sub: 'CSV & Ledger sync', state: csvUploadState === 'complete' ? 'complete' : 'ready' },
+            { num: 2, label: 'OCR Extraction', sub: 'Field & amount parsing', state: rcpUploadState === 'complete' ? 'complete' : 'ready' },
+            { num: 3, label: 'Feature Engineering', sub: 'Anomaly indicator build', state: (csvUploadState === 'complete' || rcpUploadState === 'complete') ? 'ready' : 'standby' },
+            { num: 4, label: 'ML Scoring', sub: 'Fraud & risk inference', state: (csvUploadState === 'complete' || rcpUploadState === 'complete') ? 'ready' : 'standby' },
+          ].map(s => (
+            <div key={s.num} className={`pipeline-step-item ${s.state}`}>
+              <div className="step-num">{s.state === 'complete' ? '✓' : `0${s.num}`}</div>
+              <div className="step-info">
+                <span className="step-title">{s.label}</span>
+                <span className="step-sub">{s.sub}</span>
+              </div>
+              <span className={`step-badge ${s.state}`}>{s.state === 'complete' ? 'Complete' : s.state === 'ready' ? 'Ready' : 'Pending'}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

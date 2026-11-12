@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { RefreshCw, ShieldAlert, CheckCircle2, Clock, AlertTriangle, Filter } from 'lucide-react';
 import { reviewQueueApi } from '../api/client';
 import { TYPES, STATES } from './reviewLabels';
 import './CircularPayments.css';
@@ -54,30 +55,73 @@ export default function ReviewQueue() {
         </div>
       </div>
 
+      {/* Queue Stat Summary Cards */}
+      <div className="grid-cols-4 mb-6" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14 }}>
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(239, 153, 118, 0.12)', color: '#ef9976', display: 'grid', placeItems: 'center' }}>
+            <Filter size={18} />
+          </div>
+          <div>
+            <div className="text-xs text-secondary uppercase font-semibold">Total Cases</div>
+            <div className="text-lg font-bold text-primary">{data?.total ?? 0}</div>
+          </div>
+        </div>
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(251, 191, 36, 0.12)', color: '#fbbf24', display: 'grid', placeItems: 'center' }}>
+            <Clock size={18} />
+          </div>
+          <div>
+            <div className="text-xs text-secondary uppercase font-semibold">Awaiting Maker</div>
+            <div className="text-lg font-bold text-primary">{data?.items?.filter(i => i.status === 'awaiting_maker')?.length ?? 0}</div>
+          </div>
+        </div>
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(248, 113, 113, 0.12)', color: '#f87171', display: 'grid', placeItems: 'center' }}>
+            <ShieldAlert size={18} />
+          </div>
+          <div>
+            <div className="text-xs text-secondary uppercase font-semibold">High / Critical</div>
+            <div className="text-lg font-bold text-primary">{data?.items?.filter(i => i.severity === 'high' || i.severity === 'critical')?.length ?? 0}</div>
+          </div>
+        </div>
+        <div className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(16, 185, 129, 0.12)', color: '#34d399', display: 'grid', placeItems: 'center' }}>
+            <CheckCircle2 size={18} />
+          </div>
+          <div>
+            <div className="text-xs text-secondary uppercase font-semibold">Disposed / Closed</div>
+            <div className="text-lg font-bold text-primary">{data?.items?.filter(i => i.status === 'disposed' || i.status === 'closed')?.length ?? 0}</div>
+          </div>
+        </div>
+      </div>
+
       <form className="glass-card transfer-controls mb-6" onSubmit={e => { e.preventDefault(); setRefresh(v => v + 1); }}>
-        <label>
-          <span>Case type</span>
-          <select value={type} onChange={e => setFilter('case_type', e.target.value)}>
-            <option value="">All types</option>
-            {Object.entries(TYPES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
-          </select>
-        </label>
-        <label>
-          <span>Status</span>
-          <select value={status} onChange={e => setFilter('status', e.target.value)}>
-            <option value="">All statuses</option>
-            {Object.entries(STATES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
-          </select>
-        </label>
-        <label>
-          <span>Severity</span>
-          <select value={severity} onChange={e => setFilter('severity', e.target.value)}>
-            <option value="">All severities</option>
-            {['low', 'medium', 'high', 'critical'].map(v => <option key={v}>{v}</option>)}
-          </select>
-        </label>
-        <button className="btn btn-secondary" disabled={busy}>
-          Refresh queue
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end', flex: 1 }}>
+          <label style={{ flex: 1, minWidth: 160 }}>
+            <span>Case type</span>
+            <select value={type} onChange={e => setFilter('case_type', e.target.value)}>
+              <option value="">All types</option>
+              {Object.entries(TYPES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+            </select>
+          </label>
+          <label style={{ flex: 1, minWidth: 160 }}>
+            <span>Status</span>
+            <select value={status} onChange={e => setFilter('status', e.target.value)}>
+              <option value="">All statuses</option>
+              {Object.entries(STATES).map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+            </select>
+          </label>
+          <label style={{ flex: 1, minWidth: 160 }}>
+            <span>Severity</span>
+            <select value={severity} onChange={e => setFilter('severity', e.target.value)}>
+              <option value="">All severities</option>
+              {['low', 'medium', 'high', 'critical'].map(v => <option key={v}>{v}</option>)}
+            </select>
+          </label>
+        </div>
+        <button className="btn btn-secondary" disabled={busy} style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <RefreshCw size={14} className={busy ? 'spinning' : ''} />
+          <span>Refresh queue</span>
         </button>
       </form>
     {error&&<p role="alert">{error}</p>}{busy&&<p role="status">Loading queue...</p>}

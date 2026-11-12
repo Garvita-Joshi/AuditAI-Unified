@@ -86,18 +86,21 @@ def dispatch_rfqs(db, run, requested_by, vendor_ids=None, retry_failed=False):
         result = {'vendor_id': vendor.id, 'vendor_name': vendor.vendor_name,
                   'email': vendor.vendor_email, 'composed_by': 'ai_agent', 'simulated': False}
         try:
+            print(f"[SOURCING-DISPATCH] Dispatching RFQ to {vendor.vendor_email} for vendor #{vendor.id} ({vendor.vendor_name})...")
             response = send_rfq(vendor.vendor_email, vendor.rfq_subject, vendor.rfq_body,
                 user_email=requested_by, vendor_name=vendor.vendor_name,
                 run_id=run.id, vendor_id=vendor.id)
             vendor.sent_at = datetime.utcnow()
             vendor.status = 'rfq_sent'
-            note = f"SMTP accepted the RFQ for {response.get('recipient', vendor.vendor_email)}."
+            note = response.get('note') or f"SMTP accepted the RFQ for {response.get('recipient', vendor.vendor_email)}."
+            print(f"[SOURCING-DISPATCH] RFQ accepted for {vendor.vendor_name}: {note}")
             log(vendor, 'rfq_sent', sent=True, sent_at=vendor.sent_at.isoformat(),
                 ref_token=response.get('ref_token'), note=note)
             result.update(status='rfq_sent', note=note)
         except Exception as exc:
             vendor.status = 'send_failed'
             error = str(exc)[:300]
+            print(f"[SOURCING-DISPATCH] RFQ failed for {vendor.vendor_name}: {error}")
             log(vendor, 'rfq_send_failed', sent=False, error=error)
             result.update(status='send_failed', error=error)
         db.commit()
