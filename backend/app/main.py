@@ -1,5 +1,8 @@
 from contextlib import asynccontextmanager
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.auth.security import get_current_user, require_roles

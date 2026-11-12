@@ -265,223 +265,298 @@ def send_rfq(to_email: str, subject: str, body: str, user_email: str | None = No
         raise RuntimeError(f"SMTP send failed: {err_msg}") from exc
 
 
-def fetch_inbox_replies(run_id: int) -> list[dict]:
-    """Connect to Gmail via IMAP and fetch all replies referencing the given sourcing run_id."""
+def get_imap_config() -> dict:
+    smtp_cfg = get_smtp_config()
+    host = os.getenv('SOURCING_IMAP_HOST') or 'imap.gmail.com'
+    port_str = os.getenv('SOURCING_IMAP_PORT') or '993'
+    try:
+        port = int(port_str)
+    except ValueError:
+        port = 993
+    username = os.getenv('SOURCING_IMAP_USERNAME') or smtp_cfg['username'] or ''
+    password = os.getenv('SOURCING_IMAP_PASSWORD') or smtp_cfg['password'] or ''
+    use_ssl = os.getenv('SOURCING_IMAP_SSL', '1').lower() in {'1', 'true', 'yes'} or port == 993
+
+    clean_username = parseaddr(username)[1] or username.strip()
+    clean_password = ''.join(password.split())
+
+    return {
+        'host': host.strip(),
+        'port': port,
+        'username': clean_username,
+        'password': clean_password,
+        'use_ssl': use_ssl,
+        'configured': bool(host.strip() and clean_username and clean_password),
+    }
+
+
+def test_imap_connection() -> dict:
+    """Validate IMAP connection to check inbox accessibility."""
     import imaplib
-    import email
+    cfg = get_imap_config()
+    if not cfg['configured']:
+        return {
+            'success': False,
+            'message': 'IMAP credentials missing. Set SOURCING_IMAP_USERNAME and SOURCING_IMAP_PASSWORD (or SMTP credentials) in .env.',
+        }
+    try:
+        if cfg['use_ssl']:
+            mail = imaplib.IMAP4_SSL(cfg['host'], cfg['port'], ssl_context=mail_tls_context(), timeout=15)
+        else:
+            mail = imaplib.IMAP4(cfg['host'], cfg['port'], timeout=15)
+        mail.login(cfg['username'], cfg['password'])
+        status, counts = mail.select('INBOX', readonly=True)
+        mail.logout()
+        return {
+            'success': True,
+            'message': f"IMAP connected successfully to {cfg['host']}:{cfg['port']} for {cfg['username']}. INBOX status: {status}.",
+        }
+    except Exception as exc:
+        return {
+            'success': False,
+            'message': f"IMAP connection failed: {exc}",
+        }
+
+
+def _decode_mime_header(raw) -> str:
     from email.header import decode_header
-    import re
+    if not raw:
+        return ''
+    decoded = decode_header(raw)
+    parts = []
+    for content, enc in decoded:
+        if isinstance(content, bytes):
+            parts.append(content.decode(enc or 'utf-8', errors='ignore'))
+        else:
+            parts.append(str(content))
+    return ''.join(parts)
 
-    cfg = get_smtp_config()
-    username = cfg['username']
-    password = cfg['password']
-    imap_host = 'imap.gmail.com'
-    imap_port = 993
 
-    matched_replies = []
+def _collect_imap_message_ids(mail, max_count: int = 50, run_id: int | None = None) -> list[bytes]:
+    """Perform a tiered multi-query IMAP search so replies are never missed even if search index lags."""
+    seen = set()
+    ordered_ids = []
 
-    def _decode(raw):
-        if not raw:
-            return ''
-        decoded = decode_header(raw)
-        parts = []
-        for content, enc in decoded:
-            if isinstance(content, bytes):
-                parts.append(content.decode(enc or 'utf-8', errors='ignore'))
-            else:
-                parts.append(str(content))
-        return ''.join(parts)
+    queries = []
+    if run_id:
+        queries.append(f'TEXT "AuditAI-R{run_id}"')
+    queries.append('TEXT "AuditAI"')
+    queries.append('SUBJECT "AuditAI"')
+    queries.append('SUBJECT "RFQ"')
+    queries.append('SUBJECT "Re:"')
+    queries.append('UNSEEN')
+    queries.append('ALL')
+
+    for q in queries:
+        try:
+            status, msgs = mail.search(None, q)
+            if status == 'OK' and msgs and msgs[0]:
+                for mid in msgs[0].split():
+                    if mid not in seen:
+                        seen.add(mid)
+                        ordered_ids.append(mid)
+        except Exception:
+            pass
+        if len(ordered_ids) >= max_count:
+            break
 
     try:
-        mail = imaplib.IMAP4_SSL(imap_host, imap_port, ssl_context=mail_tls_context(), timeout=20)
-        mail.login(username, password)
-        mail.select('INBOX')
+        ordered_ids.sort(key=lambda x: int(x))
+    except Exception:
+        pass
+    return ordered_ids[-max_count:]
 
-        # Search for messages containing AuditAI-R{run_id} or AuditAI
-        search_query = f'TEXT "AuditAI-R{run_id}"'
-        status, messages = mail.search(None, search_query)
 
-        # Fallback to general AuditAI search if run-specific search returns 0
-        if not messages[0].split():
-            status, messages = mail.search(None, 'TEXT "AuditAI"')
+def _parse_email_message(raw_bytes: bytes, mid_str: str) -> dict | None:
+    """Extract sender, tracking codes, and clean vendor reply from an RFC822 email payload."""
+    import email
+    import re
+    try:
+        raw_msg = email.message_from_bytes(raw_bytes)
+        subject = _decode_mime_header(raw_msg.get('Subject', ''))
+        from_addr = _decode_mime_header(raw_msg.get('From', ''))
+        to_addr = _decode_mime_header(raw_msg.get('To', ''))
+        date_str = _decode_mime_header(raw_msg.get('Date', ''))
+        ref_hdr = _decode_mime_header(raw_msg.get('X-AuditAI-Ref', ''))
+        in_reply_to = _decode_mime_header(raw_msg.get('In-Reply-To', ''))
+        references = _decode_mime_header(raw_msg.get('References', ''))
 
-        msg_ids = messages[0].split()
-        # Take latest 25 messages
-        for mid in reversed(msg_ids[-25:]):
-            res, data = mail.fetch(mid, '(RFC822)')
-            if res != 'OK' or not data or not data[0]:
-                continue
-            raw_msg = email.message_from_bytes(data[0][1])
-            subject = _decode(raw_msg.get('Subject', ''))
-            from_addr = _decode(raw_msg.get('From', ''))
-            date_str = _decode(raw_msg.get('Date', ''))
-
-            # Extract body
-            body_text = ''
-            if raw_msg.is_multipart():
-                for part in raw_msg.walk():
-                    ctype = part.get_content_type()
-                    cdisp = str(part.get('Content-Disposition') or '')
-                    if ctype == 'text/plain' and 'attachment' not in cdisp:
-                        try:
-                            body_text = part.get_payload(decode=True).decode('utf-8', errors='ignore')
-                            break
-                        except Exception:
-                            pass
-            else:
+        body_text = ''
+        if raw_msg.is_multipart():
+            for part in raw_msg.walk():
+                ctype = part.get_content_type()
+                cdisp = str(part.get('Content-Disposition') or '')
+                if ctype == 'text/plain' and 'attachment' not in cdisp:
+                    try:
+                        body_text = part.get_payload(decode=True).decode('utf-8', errors='ignore')
+                        break
+                    except Exception:
+                        pass
+        else:
+            if raw_msg.get_content_type() == 'text/plain':
                 try:
                     body_text = raw_msg.get_payload(decode=True).decode('utf-8', errors='ignore')
                 except Exception:
                     pass
 
-            full_content = f"{subject}\n{body_text}"
+        # HTML fallback if text/plain was empty or missing
+        if not body_text.strip():
+            if raw_msg.is_multipart():
+                for part in raw_msg.walk():
+                    ctype = part.get_content_type()
+                    cdisp = str(part.get('Content-Disposition') or '')
+                    if ctype == 'text/html' and 'attachment' not in cdisp:
+                        try:
+                            raw_html = part.get_payload(decode=True).decode('utf-8', errors='ignore')
+                            clean = re.sub(r'<(style|script)[^>]*>.*?</\1>', ' ', raw_html, flags=re.DOTALL | re.IGNORECASE)
+                            clean = re.sub(r'<br\s*/?>|</p>|</div>|</blockquote>|</tr>|</li>', '\n', clean, flags=re.IGNORECASE)
+                            clean = re.sub(r'<[^>]+>', ' ', clean)
+                            body_text = '\n'.join(line.strip() for line in clean.splitlines() if line.strip())
+                            break
+                        except Exception:
+                            pass
+            elif raw_msg.get_content_type() == 'text/html':
+                try:
+                    raw_html = raw_msg.get_payload(decode=True).decode('utf-8', errors='ignore')
+                    clean = re.sub(r'<(style|script)[^>]*>.*?</\1>', ' ', raw_html, flags=re.DOTALL | re.IGNORECASE)
+                    clean = re.sub(r'<br\s*/?>|</p>|</div>|</blockquote>|</tr>|</li>', '\n', clean, flags=re.IGNORECASE)
+                    clean = re.sub(r'<[^>]+>', ' ', clean)
+                    body_text = '\n'.join(line.strip() for line in clean.splitlines() if line.strip())
+                except Exception:
+                    pass
 
-            # Check if this email references this run: AuditAI-R{run_id}-V{vendor_id}
-            ref_match = re.search(rf'AuditAI-R{run_id}-V(\d+)', full_content)
-            if not ref_match:
-                # Also support general V{vendor_id}
-                ref_match = re.search(r'AuditAI-R\d+-V(\d+)', full_content)
+        full_content = f"{subject}\n{ref_hdr}\n{in_reply_to}\n{references}\n{body_text}"
 
-            if not ref_match:
+        # Flexible pattern matching: AuditAI-R{run_id}-V{vendor_id}
+        ref_match = re.search(r'AuditAI[-_\s]*R(\d+)[-_\s]*V(\d+)', full_content, re.IGNORECASE)
+        run_id = int(ref_match.group(1)) if ref_match else None
+        vendor_id = int(ref_match.group(2)) if ref_match else None
+
+        # Clean reply extraction: isolate actual new vendor response from quoted thread history
+        clean_lines = []
+        for line in body_text.splitlines():
+            stripped = line.strip()
+            if (
+                stripped.startswith('>')
+                or re.search(r'On\s+.+wrote:', stripped, re.IGNORECASE)
+                or re.search(r'^-+\s*Original Message\s*-+', stripped, re.IGNORECASE)
+                or 'COMMERCIAL REQUEST FOR QUOTATION (RFQ)' in stripped
+                or 'Tracking Ref Code:' in stripped
+                or 'Dispatched via   : AuditAI' in stripped
+                or (stripped.startswith('From:') and '@' in stripped)
+            ):
+                break
+            clean_lines.append(line)
+
+        clean_reply = '\n'.join(clean_lines).strip()
+        if not clean_reply:
+            # If line-by-line stripping was too aggressive, check if body has substantive text
+            if 'COMMERCIAL REQUEST FOR QUOTATION (RFQ)' not in body_text and len(body_text.strip()) > 3:
+                clean_reply = body_text.strip()
+
+        # If it's solely our outbound RFQ template without any reply, ignore
+        if not clean_reply or clean_reply.startswith('COMMERCIAL REQUEST FOR QUOTATION'):
+            return None
+
+        return {
+            'run_id': run_id,
+            'vendor_id': vendor_id,
+            'clean_reply': clean_reply,
+            'subject': subject,
+            'from_addr': from_addr,
+            'to_addr': to_addr,
+            'date_str': date_str,
+            'message_id': mid_str,
+        }
+    except Exception:
+        return None
+
+
+def fetch_inbox_replies(run_id: int) -> list[dict]:
+    """Connect to Gmail via IMAP and fetch all replies referencing the given sourcing run_id."""
+    import imaplib
+
+    cfg = get_imap_config()
+    if not cfg['configured']:
+        return []
+
+    matched_replies = []
+    try:
+        if cfg['use_ssl']:
+            mail = imaplib.IMAP4_SSL(cfg['host'], cfg['port'], ssl_context=mail_tls_context(), timeout=20)
+        else:
+            mail = imaplib.IMAP4(cfg['host'], cfg['port'], timeout=20)
+        mail.login(cfg['username'], cfg['password'])
+        mail.select('INBOX', readonly=True)
+
+        msg_ids = _collect_imap_message_ids(mail, max_count=40, run_id=run_id)
+        for mid in reversed(msg_ids):
+            res, data = mail.fetch(mid, '(RFC822)')
+            if res != 'OK' or not data or not data[0]:
                 continue
-
-            vendor_id = int(ref_match.group(1))
-
-            # Strip quoted email history (lines starting with > or On ... wrote:)
-            clean_lines = []
-            for line in body_text.splitlines():
-                stripped = line.strip()
-                if stripped.startswith('>') or re.match(r'^On\s.+wrote:\s*$', stripped, re.IGNORECASE):
-                    break
-                # Stop if hitting the original commercial RFQ banner
-                if 'COMMERCIAL REQUEST FOR QUOTATION (RFQ)' in line or '============================================================' in line:
-                    break
-                clean_lines.append(line)
-
-            clean_reply = '\n'.join(clean_lines).strip()
-            # If clean_reply is empty, this email contains only the outbound RFQ banner (it's our sent email, not a vendor reply)
-            if not clean_reply:
+            parsed = _parse_email_message(data[0][1], mid.decode() if isinstance(mid, bytes) else str(mid))
+            if not parsed or not parsed.get('clean_reply'):
                 continue
-
-            matched_replies.append({
-                'vendor_id': vendor_id,
-                'clean_reply': clean_reply,
-                'subject': subject,
-                'from_addr': from_addr,
-                'date_str': date_str,
-                'message_id': mid.decode(),
-            })
+            # Match if run_id matches or if vendor_id was captured for this run
+            if parsed.get('run_id') == run_id or parsed.get('vendor_id') is not None:
+                matched_replies.append({
+                    'vendor_id': parsed.get('vendor_id'),
+                    'clean_reply': parsed['clean_reply'],
+                    'subject': parsed['subject'],
+                    'from_addr': parsed['from_addr'],
+                    'date_str': parsed['date_str'],
+                    'message_id': parsed['message_id'],
+                })
 
         mail.close()
         mail.logout()
         return matched_replies
-
     except Exception as exc:
-        # Don't crash if IMAP check encounters network or auth issue
+        print(f"[IMAP-INBOX] Fetch notice for run {run_id}: {exc}")
         return []
 
 
-def fetch_all_inbox_replies(max_messages: int = 40) -> dict[int, list[dict]]:
+def fetch_all_inbox_replies(max_messages: int = 50) -> dict[int, list[dict]]:
     """Single-connection batch IMAP pull: fetches recent vendor replies across ALL active runs.
     Returns a dict mapping run_id -> list of matched replies.
-    This enables the 24/7 background worker to poll without hitting IMAP rate limits.
     """
     import imaplib
-    import email
-    from email.header import decode_header
-    import re
     from collections import defaultdict
 
-    cfg = get_smtp_config()
-    username = cfg['username']
-    password = cfg['password']
-    imap_host = 'imap.gmail.com'
-    imap_port = 993
+    cfg = get_imap_config()
+    if not cfg['configured']:
+        return {}
 
     grouped_replies: dict[int, list[dict]] = defaultdict(list)
-
-    def _decode(raw):
-        if not raw:
-            return ''
-        decoded = decode_header(raw)
-        parts = []
-        for content, enc in decoded:
-            if isinstance(content, bytes):
-                parts.append(content.decode(enc or 'utf-8', errors='ignore'))
-            else:
-                parts.append(str(content))
-        return ''.join(parts)
-
     try:
-        mail = imaplib.IMAP4_SSL(imap_host, imap_port, ssl_context=mail_tls_context(), timeout=20)
-        mail.login(username, password)
-        mail.select('INBOX')
+        if cfg['use_ssl']:
+            mail = imaplib.IMAP4_SSL(cfg['host'], cfg['port'], ssl_context=mail_tls_context(), timeout=20)
+        else:
+            mail = imaplib.IMAP4(cfg['host'], cfg['port'], timeout=20)
+        mail.login(cfg['username'], cfg['password'])
+        mail.select('INBOX', readonly=True)
 
-        status, messages = mail.search(None, 'TEXT "AuditAI"')
-        if not messages or not messages[0].split():
-            mail.close()
-            mail.logout()
-            return {}
-
-        msg_ids = messages[0].split()
-        for mid in reversed(msg_ids[-max_messages:]):
+        msg_ids = _collect_imap_message_ids(mail, max_count=max_messages)
+        for mid in reversed(msg_ids):
             res, data = mail.fetch(mid, '(RFC822)')
             if res != 'OK' or not data or not data[0]:
                 continue
-            raw_msg = email.message_from_bytes(data[0][1])
-            subject = _decode(raw_msg.get('Subject', ''))
-            from_addr = _decode(raw_msg.get('From', ''))
-            date_str = _decode(raw_msg.get('Date', ''))
-
-            body_text = ''
-            if raw_msg.is_multipart():
-                for part in raw_msg.walk():
-                    ctype = part.get_content_type()
-                    cdisp = str(part.get('Content-Disposition') or '')
-                    if ctype == 'text/plain' and 'attachment' not in cdisp:
-                        try:
-                            body_text = part.get_payload(decode=True).decode('utf-8', errors='ignore')
-                            break
-                        except Exception:
-                            pass
-            else:
-                try:
-                    body_text = raw_msg.get_payload(decode=True).decode('utf-8', errors='ignore')
-                except Exception:
-                    pass
-
-            full_content = f"{subject}\n{body_text}"
-            ref_match = re.search(r'AuditAI-R(\d+)-V(\d+)', full_content)
-            if not ref_match:
+            parsed = _parse_email_message(data[0][1], mid.decode() if isinstance(mid, bytes) else str(mid))
+            if not parsed or not parsed.get('clean_reply'):
                 continue
-
-            run_id = int(ref_match.group(1))
-            vendor_id = int(ref_match.group(2))
-
-            clean_lines = []
-            for line in body_text.splitlines():
-                stripped = line.strip()
-                if stripped.startswith('>') or re.match(r'^On\s.+wrote:\s*$', stripped, re.IGNORECASE):
-                    break
-                if 'COMMERCIAL REQUEST FOR QUOTATION (RFQ)' in line or '============================================================' in line:
-                    break
-                clean_lines.append(line)
-
-            clean_reply = '\n'.join(clean_lines).strip()
-            if not clean_reply:
-                continue
-
-            grouped_replies[run_id].append({
-                'vendor_id': vendor_id,
-                'clean_reply': clean_reply,
-                'subject': subject,
-                'from_addr': from_addr,
-                'date_str': date_str,
-                'message_id': mid.decode(),
-            })
+            if parsed.get('run_id'):
+                grouped_replies[parsed['run_id']].append({
+                    'vendor_id': parsed.get('vendor_id'),
+                    'clean_reply': parsed['clean_reply'],
+                    'subject': parsed['subject'],
+                    'from_addr': parsed['from_addr'],
+                    'date_str': parsed['date_str'],
+                    'message_id': parsed['message_id'],
+                })
 
         mail.close()
         mail.logout()
         return dict(grouped_replies)
-    except Exception:
+    except Exception as exc:
+        print(f"[IMAP-INBOX] Batch pull notice: {exc}")
         return {}

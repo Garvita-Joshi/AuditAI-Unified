@@ -51,46 +51,49 @@ def _run_worker_tick():
             .all()
         )
 
-        active_runs = []
+        active_run_ids = []
         for run in candidate_runs:
             if is_archived(db, 'sourcing', run.request_id):
                 continue
-            # Ensure the request still exists
             row = db.query(SourcingRequest).filter_by(id=run.request_id).first()
             if not row:
                 continue
-            # Verify if this run has sent or queued vendor outreach
             has_outreach = db.query(AgentVendor).filter(
                 AgentVendor.run_id == run.id,
                 (AgentVendor.sent_at.isnot(None) | (AgentVendor.status == 'draft_ready'))
             ).first()
             if has_outreach:
-                active_runs.append((run, row))
+                active_run_ids.append((run.id, row.id, run.owner_id))
 
-        _worker_stats["active_runs_tracked"] = len(active_runs)
-        if not active_runs:
+        _worker_stats["active_runs_tracked"] = len(active_run_ids)
+        if not active_run_ids:
             return
 
-        # 2. Single-connection IMAP batch pull for all active runs
+    # 2. Single-connection IMAP batch pull for all active runs
+    replies_by_run = {}
+    try:
+        replies_by_run = fetch_all_inbox_replies(max_messages=40)
+    except Exception as imap_err:
+        logger.debug("Background worker IMAP batch pull notice: %s", imap_err)
         replies_by_run = {}
-        try:
-            replies_by_run = fetch_all_inbox_replies(max_messages=40)
-        except Exception as imap_err:
-            logger.debug("Background worker IMAP batch pull notice: %s", imap_err)
-            replies_by_run = {}
 
-        # 3. Process each active run autonomously
-        for run, row in active_runs:
+    # 3. Process each active run autonomously in its own isolated transaction
+    for run_id, request_id, owner_id in active_run_ids:
+        with SessionLocal() as db:
             try:
-                user = db.query(User).filter_by(id=run.owner_id).first()
+                run = db.query(AgentRun).filter_by(id=run_id).first()
+                row = db.query(SourcingRequest).filter_by(id=request_id).first()
+                if not run or not row:
+                    continue
+                user = db.query(User).filter_by(id=owner_id).first()
                 user_email = user.email if user and user.email else ""
-                run_replies = replies_by_run.get(run.id, [])
+                run_replies = replies_by_run.get(run_id, [])
 
                 if run_replies:
                     _worker_stats["replies_processed_total"] += len(run_replies)
                     logger.info(
                         "Autonomous worker found %d reply(ies) for Run %d (Req %d). Processing cycle...",
-                        len(run_replies), run.id, row.id
+                        len(run_replies), run_id, request_id
                     )
 
                 process_autonomous_sourcing_cycle(
@@ -105,7 +108,7 @@ def _run_worker_tick():
                 db.commit()
             except Exception as run_err:
                 db.rollback()
-                logger.debug("Background autonomous cycle for run %d skipped: %s", run.id, run_err)
+                logger.debug("Background autonomous cycle for run %d skipped: %s", run_id, run_err)
                 _worker_stats["last_error"] = str(run_err)
 
 

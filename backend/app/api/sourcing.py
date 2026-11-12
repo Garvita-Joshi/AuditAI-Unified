@@ -1545,15 +1545,24 @@ def process_autonomous_sourcing_cycle(db: Session, run: AgentRun, row: SourcingR
     for reply in inbox_replies:
         vendor_record_id = reply.get('vendor_id')
         clean_reply = (reply.get('clean_reply') or '').strip()
-        if not vendor_record_id or not clean_reply:
+        if not clean_reply:
             continue
 
-        vendor = db.query(AgentVendor).filter_by(id=vendor_record_id, run_id=run.id).first()
+        vendor = None
+        if vendor_record_id:
+            vendor = db.query(AgentVendor).filter_by(id=vendor_record_id, run_id=run.id).first()
+        if not vendor and reply.get('from_addr'):
+            clean_from = parseaddr(reply['from_addr'])[1].strip().lower()
+            if clean_from:
+                vendor = db.query(AgentVendor).filter(
+                    AgentVendor.run_id == run.id,
+                    AgentVendor.vendor_email.ilike(clean_from)
+                ).first()
         if not vendor:
             continue
 
         # Replies that follow a counteroffer are read against that counteroffer, not as a fresh quote.
-        if _is_counteroffer_reply(vendor) and vendor.reply_text and vendor.reply_text.strip() != clean_reply:
+        if _is_counteroffer_reply(vendor) and (not vendor.reply_text or vendor.reply_text.strip() != clean_reply):
             if _apply_counteroffer_response(db, run, row, vendor, clean_reply, actor='Autonomous IMAP Agent'):
                 new_replies += 1
             continue
@@ -1870,19 +1879,30 @@ def process_autonomous_sourcing_cycle(db: Session, run: AgentRun, row: SourcingR
                 v_comp_merged['round_2_approved_and_sent'] = bool(existing_neg.get('round_2_approved_and_sent', False))
                 v_comp_merged['negotiation_round'] = existing_neg.get('negotiation_round') or 1
 
-                already_sent_r1 = bool(existing_neg.get('counteroffer_sent')) or v.status in ('negotiation_counteroffer_sent', 'round_2_counteroffer_sent', 'po_authorized')
-                v_comp_merged['counteroffer_sent'] = True
-                v_comp_merged['counteroffer_sent_at'] = existing_neg.get('counteroffer_sent_at') or datetime.utcnow().isoformat()
-                if v.status not in ('round_2_counteroffer_sent', 'po_authorized', *_COUNTER_RESPONSE_STATUSES):
-                    v.status = 'negotiation_counteroffer_sent'
-
+                already_sent_r1 = bool(existing_neg.get('counteroffer_dispatched') or existing_neg.get('smtp_dispatched'))
                 if not already_sent_r1:
                     counter_body = v_comp.get('counteroffer_email_draft')
                     target_email = (v.vendor_email or '').strip()
-                    smtp_dispatched = False
-                    if poll_inbox and counter_body and target_email and '@' in target_email:
+                    target_price = v_comp.get('counteroffer_target_price') or (float(offer.get('total_price') or budget or 1000) * 0.90)
+
+                    if not counter_body or len(counter_body.strip()) < 15:
+                        counter_body = (
+                            f"Dear {v.vendor_name} Commercial & Sales Team,\n\n"
+                            f"Thank you for submitting your quotation for {row.title or 'our requisition'} [Ref: AuditAI-R{run.id}-V{v.id}].\n\n"
+                            f"Following our preliminary commercial evaluation against approved corporate benchmark policies, "
+                            f"AuditAI hereby submits our Round 1 Counteroffer at {currency} {target_price:,.2f} all-inclusive, "
+                            f"with corporate payment terms of Net 30 days and confirmed delivery schedule.\n\n"
+                            f"Please reply directly to this email thread to confirm your acceptance of these revised terms.\n\n"
+                            f"Sincerely,\n"
+                            f"AuditAI Autonomous Procurement Desk\n"
+                            f"Tracking Ref: [AuditAI-R{run.id}-V{v.id}]"
+                        )
+                        v_comp_merged['counteroffer_email_draft'] = counter_body
+
+                    if target_email and '@' in target_email:
                         try:
                             counter_subj = f"Round 1 Policy Counteroffer: [Ref: AuditAI-R{run.id}-V{v.id}] - {v.vendor_name}"
+                            print(f"[COUNTEROFFER-DISPATCH] Sending Round 1 Counteroffer to {target_email} for {v.vendor_name}...")
                             res = send_rfq(
                                 to_email=target_email,
                                 subject=counter_subj,
@@ -1892,7 +1912,12 @@ def process_autonomous_sourcing_cycle(db: Session, run: AgentRun, row: SourcingR
                                 run_id=run.id,
                                 vendor_id=v.id,
                             )
-                            smtp_dispatched = True
+                            v_comp_merged['counteroffer_dispatched'] = True
+                            v_comp_merged['smtp_dispatched'] = True
+                            v_comp_merged['counteroffer_sent'] = True
+                            v_comp_merged['counteroffer_sent_at'] = datetime.utcnow().isoformat()
+                            v.status = 'negotiation_counteroffer_sent'
+
                             _agent_log(db, run, row, 'auto_counteroffer_sent', {
                                 'vendor': v.vendor_name,
                                 'round': 1,
@@ -1909,19 +1934,27 @@ def process_autonomous_sourcing_cycle(db: Session, run: AgentRun, row: SourcingR
                                 'round': 1,
                                 'recipient': target_email,
                                 'policies': v_comp_merged.get('company_policies_applied', []),
-                                'note': f"Round 1 Autonomous Policy Engine recorded counteroffer for {v.vendor_name} (Round 2 queued for human approval)",
+                                'note': f"Round 1 Autonomous Policy Engine queued counteroffer for {v.vendor_name}",
                                 'smtp_note': str(err)[:160],
                             }, actor='Autonomous AI Negotiator (Round 1)')
                     else:
+                        v_comp_merged['counteroffer_dispatched'] = True
+                        v_comp_merged['counteroffer_sent'] = True
+                        v_comp_merged['counteroffer_sent_at'] = datetime.utcnow().isoformat()
+                        v.status = 'negotiation_counteroffer_sent'
                         _agent_log(db, run, row, 'auto_counteroffer_sent', {
                             'vendor': v.vendor_name,
                             'round': 1,
                             'recipient': target_email or v.vendor_name,
                             'policies': v_comp_merged.get('company_policies_applied', []),
-                            'note': f"Round 1 Autonomous Policy Engine automatically dispatched counteroffer to {v.vendor_name} (Round 2 queued for human approval)",
+                            'note': f"Round 1 Autonomous Policy Engine recorded counteroffer for {v.vendor_name}",
                         }, actor='Autonomous AI Negotiator (Round 1)')
                         record_action(db, 'sourcing', row.id, run.owner_id, 'auto_counteroffer_sent',
                                       vendor=v.vendor_name, vendor_id=v.id, round=1)
+                else:
+                    v_comp_merged['counteroffer_sent'] = True
+                    if v.status not in ('round_2_counteroffer_sent', 'po_authorized', *_COUNTER_RESPONSE_STATUSES):
+                        v.status = 'negotiation_counteroffer_sent'
 
             offer['negotiation_data'] = v_comp_merged
             v.offer = offer
