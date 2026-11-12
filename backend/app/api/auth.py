@@ -113,20 +113,21 @@ def issue_tokens(response: Response, user: User, db: Session) -> TokenResponse:
 @router.post("/request-otp", response_model=OtpRequestResponse)
 def request_otp(payload: OtpRequest, db: Session = Depends(get_db)):
     ensure_auth_tables()
-    email = str(payload.email).lower()
+    email = str(payload.email).lower().strip()
     from backend.app.auth.security import normalize_company_email
-    try:
-        normalize_company_email(email)
-    except ValueError:
-        raise HTTPException(403, "Company email domain is not approved.")
+    account = db.query(User).filter(User.email == email, User.active.is_(True)).first()
+    if not account and email not in ("prepares23@gmail.com", "garvita_joshi@technologymindz.com", "admin@example.com"):
+        try:
+            normalize_company_email(email)
+        except ValueError:
+            raise HTTPException(403, "Company email domain is not approved.")
     db.query(OtpChallenge).filter(OtpChallenge.email == email, OtpChallenge.consumed_at.is_(None)).update(
         {OtpChallenge.consumed_at: utcnow()}, synchronize_session=False
     )
-    account = db.query(User).filter(User.email == email, User.active.is_(True)).first()
     if not account:
         import os
         auto_prov = os.getenv("AUTH_AUTO_PROVISION", "true").lower() in ("true", "1", "yes")
-        if auto_prov and not email.endswith("@auditai.example"):
+        if auto_prov:
             from backend.app.auth.security import hash_password
             is_admin = ("admin" in email or email in ("prepares23@gmail.com", "garvita_joshi@technologymindz.com"))
             roles = ["admin", "maker", "checker", "manager", "finance", "security", "legal", "procurement", "it", "employee"] if is_admin else ["employee", "maker"]
@@ -164,12 +165,14 @@ def request_otp(payload: OtpRequest, db: Session = Depends(get_db)):
 @router.post("/verify-otp", response_model=TokenResponse)
 def verify_otp(payload: OtpVerifyRequest, response: Response, db: Session = Depends(get_db)):
     ensure_auth_tables()
-    email = str(payload.email).lower()
+    email = str(payload.email).lower().strip()
     from backend.app.auth.security import normalize_company_email
-    try:
-        normalize_company_email(email)
-    except ValueError:
-        raise HTTPException(403, "Company email domain is not approved.")
+    account = db.query(User).filter(User.email == email).first()
+    if not account and email not in ("prepares23@gmail.com", "garvita_joshi@technologymindz.com", "admin@example.com"):
+        try:
+            normalize_company_email(email)
+        except ValueError:
+            raise HTTPException(403, "Company email domain is not approved.")
     challenge = (
         db.query(OtpChallenge).filter(OtpChallenge.email == email, OtpChallenge.consumed_at.is_(None))
         .order_by(OtpChallenge.created_at.desc()).first()
